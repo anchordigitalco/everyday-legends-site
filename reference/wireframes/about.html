@@ -1,0 +1,495 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframe · About the Foundation · Everyday Legends</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d1d1d;--mid:#595959;--soft:#8f8f8f;--line:#b5b5b5;--fill:#e7e7e7;--pale:#f4f4f4;--dark:#2d2d2d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{overflow-wrap:break-word;font-family:'Public Sans',Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.5}
+a{color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 48px}
+.narrow{max-width:900px;margin:0 auto}
+section{position:relative}
+.sec{position:absolute;top:14px;left:14px;z-index:5;font-size:10px;font-weight:700;letter-spacing:.12em;background:#000;color:#fff;padding:3px 8px}
+.dark{background:var(--dark);color:#f2f2f2}
+.dark .sec{background:#fff;color:#000}
+[data-r]::before{content:attr(data-r);display:block;font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--soft);margin-bottom:8px;font-style:normal}
+.dark [data-r]::before{color:#9b9b9b}
+.photo{position:relative;background:var(--fill);border:1.5px solid var(--line);display:grid;place-items:center;color:var(--mid);font-size:11px;font-weight:700;letter-spacing:.14em;
+ background-image:linear-gradient(to top right,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px)),linear-gradient(to top left,transparent calc(50% - .75px),var(--line) 50%,transparent calc(50% + .75px))}
+.photo span{background:var(--fill);padding:4px 8px;text-align:center}
+.btn{display:inline-block;padding:15px 24px;background:var(--ink);color:#fff;font-weight:700;font-size:14px;text-decoration:none;border:0;cursor:pointer;font-family:inherit}
+.btn.alt{background:var(--fill);color:var(--ink)}
+.dark .btn{background:#fff;color:var(--ink)}
+.btn:hover{background:#000}.btn.alt:hover{background:#d4d4d4}.dark .btn:hover{background:#ddd}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #000;outline-offset:3px}
+.dark a:focus-visible{outline-color:#fff}
+.note{font-size:11.5px;line-height:1.5;color:var(--mid);border-left:2px dashed var(--line);padding-left:10px;font-style:italic;max-width:52ch;text-align:left}
+.dark .note{color:#b3b3b3;border-color:#666}
+.small{font-size:13px;color:var(--mid)}
+.dark .small{color:#bdbdbd}
+nav.top{border-bottom:1px solid var(--line);background:#fff;position:relative;z-index:10}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;gap:24px}
+nav.top .mark{font-weight:800;font-size:15px;text-decoration:none;letter-spacing:.04em}
+nav.top ul{display:flex;gap:26px;list-style:none;font-size:14px;align-items:center}
+nav.top ul a{text-decoration:none}
+nav.top ul a[aria-current]{border-bottom:2px solid var(--ink);padding-bottom:3px}
+.banner{background:#000;color:#fff;font-size:11px;letter-spacing:.08em;padding:7px 48px;display:flex;justify-content:space-between;gap:20px}
+footer{border-top:1px solid var(--line);padding:40px 0 48px;font-size:13px;color:var(--mid)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+input,textarea{font:inherit;padding:14px 16px;border:1.5px solid var(--line);background:#fff;min-width:0;width:100%}
+#thumb{position:fixed;right:20px;bottom:20px;z-index:100;padding:12px 16px;background:#000;color:#fff;border:0;font:700 12px/1 'Public Sans',sans-serif;letter-spacing:.06em;cursor:pointer}
+body.thumb{background:#bdbdbd}
+body.thumb .page{transform:scale(.17);transform-origin:top center;width:1280px;margin:30px auto 0;box-shadow:0 0 0 1px #888;background:#fff}
+body.thumb .note,body.thumb [data-r]::before{visibility:hidden}
+
+/* ---- The Wall language ---- */
+.rule{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);height:6px}
+.hdr{padding:104px 0 0;text-align:center}
+.hdr h1{font-size:74px;font-weight:300;letter-spacing:.05em;line-height:1.05;margin:44px auto 40px;max-width:16ch}
+.hdr .lede{font-size:19px;max-width:40ch;margin:38px auto 0}
+.blk{padding:130px 0;text-align:center}
+.blk.alt{background:var(--pale);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.blk h2{font-size:14px;font-weight:700;letter-spacing:.16em}
+.blk .lede{font-size:42px;font-weight:300;line-height:1.15;letter-spacing:.01em;max-width:24ch;margin:22px auto 0}
+.blk .body{font-size:17px;max-width:58ch;margin:32px auto 0;text-align:left}
+.blk .cta{margin-top:44px}
+.blk .note{margin:40px auto 0}
+.plaques{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1080px;margin:64px auto 0}
+.plaques div{border:1px solid var(--ink);outline:1px solid var(--ink);outline-offset:5px;padding:44px 22px}
+.plaques .t{font-size:21px;font-weight:600;letter-spacing:.03em}
+.plaques .d{font-size:14px;color:var(--mid);margin-top:14px;text-align:left}
+.wall{padding:64px 0 72px;background:var(--pale);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.wall .yr{font-size:13px;font-weight:700;letter-spacing:.18em;text-align:center;margin-bottom:26px}
+.names{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);max-width:1080px;margin:0 auto}
+.names div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 22px;font-size:22px;font-weight:600;letter-spacing:.03em;text-align:left}
+.names div .role{display:block;font-size:12.5px;font-weight:400;color:var(--mid);letter-spacing:.06em;margin-top:6px}
+.names.orgs div{font-size:19px}
+.pull{font-size:30px;font-weight:300;line-height:1.3;max-width:26ch;margin:56px auto 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:32px 0}
+.entry{display:grid;grid-template-columns:1.3fr 1fr;gap:44px;align-items:start;text-align:left;padding:56px 0;border-bottom:1px solid var(--line)}
+.entry:first-of-type{border-top:1px solid var(--line)}
+.entry .photo{height:360px}
+.entry.lead{grid-template-columns:1fr;gap:28px}
+.entry.lead .photo{height:520px}
+.entry h3{font-size:26px;font-weight:600;letter-spacing:.02em}
+.entry .meta{font-size:12.5px;color:var(--mid);letter-spacing:.06em;margin-bottom:10px}
+.entry p{font-size:16px;margin-top:12px;max-width:62ch}
+.split{display:grid;grid-template-columns:1fr 1fr;align-items:center}
+.card{background:#fff;border:1px solid var(--ink);outline:1px solid var(--ink);outline-offset:7px;padding:60px 52px;text-align:center}
+.embed{border:1.5px dashed var(--line);background:var(--pale);padding:56px 24px;max-width:620px;margin:44px auto 0;text-align:center}
+.embed .lbl{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--mid)}
+.embed .h{height:230px;margin-top:18px;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--soft);font-size:12px}
+.form{max-width:620px;margin:44px auto 0;display:grid;gap:14px;text-align:left}
+.bios{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;max-width:1080px;margin:56px auto 0;text-align:left}
+.bios .photo{height:300px}
+.bios h3{font-size:22px;font-weight:600;margin-top:18px}
+.bios .role{font-size:12.5px;color:var(--mid);letter-spacing:.08em;margin-top:4px}
+.bios p{font-size:15px;margin-top:12px}
+.tbf{color:var(--soft);font-style:italic;font-weight:400}
+.reglabel{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--soft);max-width:1080px;margin:0 auto 8px;text-align:left}
+@media (max-width:900px){
+ .wrap{padding:0 20px}.banner{padding:7px 20px;flex-direction:column}
+ nav.top ul li.hide{display:none}
+ .hdr h1{font-size:40px}.blk{padding:80px 0}.blk .lede{font-size:28px}
+ .plaques,.bios,.names{grid-template-columns:1fr}
+ .entry,.entry.lead,.split{grid-template-columns:1fr;gap:24px}
+ .entry .photo,.entry.lead .photo{height:260px}
+ .card{padding:36px 22px}.pull{font-size:22px}
+}
+
+/* ================= PUSHED ================= */
+.hatch{background-color:#6a6a6a;background-image:repeating-linear-gradient(45deg,#8a8a8a 0 2px,transparent 2px 14px),repeating-linear-gradient(-45deg,#555 0 2px,transparent 2px 14px)}
+
+/* 1. slab hero */
+.slab{min-height:100vh;background:var(--dark);color:#f2f2f2;display:grid;grid-template-rows:auto 1fr auto;padding:28px 0 44px;overflow:hidden}
+.slab > .wrap{width:100%}
+.slab .top{display:flex;justify-content:space-between;align-items:start;gap:24px}
+.slab .org{font-size:15px;font-weight:700;letter-spacing:.06em}
+.slab .org::before{color:#9b9b9b}
+.carve{position:relative;align-self:center;font-size:clamp(88px,15.5vw,236px);font-weight:800;line-height:.86;letter-spacing:-.03em;margin:0 -6px}
+.carve .ol{color:transparent;-webkit-text-stroke:1.5px #777}
+.carve .fl{position:absolute;inset:0}
+.carve .w{white-space:nowrap}
+.carve .fl span{opacity:0;animation:cut .5s cubic-bezier(.2,.8,.2,1) forwards;color:transparent;-webkit-background-clip:text;background-clip:text;background-attachment:fixed;background-color:#a8a8a8;background-image:repeating-linear-gradient(45deg,#d0d0d0 0 2px,transparent 2px 12px),repeating-linear-gradient(-45deg,#7c7c7c 0 2px,transparent 2px 12px)}
+@keyframes cut{to{opacity:1}}
+.slab .bottom{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end}
+.slab .lede{grid-column:1/6;font-size:19px}
+.slab .ctas{grid-column:7/-1;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.slab .note{grid-column:1/-1;margin-top:26px}
+
+
+/* 1. gate hero: walk through the logo's arch */
+.gate{height:280vh;background:var(--pale)}
+.gate .stick{position:sticky;top:0;height:100vh;overflow:hidden}
+.gate .beyond{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0}
+.gate .beyond .k{font-size:14px;font-weight:700;letter-spacing:.16em}
+.gate .beyond .l{font-size:64px;font-weight:300;line-height:1.05;margin-top:16px}
+.door{position:absolute;left:50%;top:40%;width:300px;height:420px;margin:-210px 0 0 -150px;will-change:transform}
+.hole{position:absolute;inset:0;border-radius:150px 150px 0 0;box-shadow:0 0 0 250vmax var(--dark);outline:2px solid #9a9a9a;display:grid;place-items:center}
+.mono{text-align:center;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--mid);border:1.5px dashed var(--line);padding:26px 22px;margin-top:70px}
+.mono small{font-weight:400;letter-spacing:.04em}
+.rays{position:absolute;left:-150px;top:-120px;width:600px;height:600px;stroke:#9a9a9a;stroke-width:3;stroke-linecap:round;pointer-events:none}
+.under{position:absolute;left:0;right:0;top:calc(40% + 240px);text-align:center;color:#f2f2f2;padding:0 20px}
+.under h1{font-size:40px;font-weight:300;letter-spacing:.18em;line-height:1.15}
+.under h1::before{color:#9b9b9b}
+.under .lede{font-size:18px;max-width:44ch;margin:18px auto 0;color:#d8d8d8}
+.under .lede::before{color:#9b9b9b}
+.under .ctas{display:flex;gap:12px;justify-content:center;margin-top:26px}
+.under .btn{background:#fff;color:var(--ink)}.under .btn.alt{background:#555;color:#fff}
+.gnote{position:absolute;right:40px;top:40px;background:#3a3a3a;color:#cfcfcf !important;padding:10px;border-color:#666 !important;max-width:40ch}
+@media (max-width:900px),(prefers-reduced-motion:reduce){
+ .gate{height:auto}.gate .stick{position:relative;height:auto;min-height:100vh;background:var(--dark);padding:90px 0 60px}
+ .door{position:relative;left:auto;top:auto;margin:40px auto 0;transform:none !important}
+ .under{position:relative;top:auto;margin-top:60px;opacity:1 !important}
+ .gate .beyond{display:none}.gnote{position:static;margin:28px 20px 0}
+}
+@media (max-width:900px){.door{width:220px;height:308px}.hole{border-radius:110px 110px 0 0}.rays{left:-110px;top:-88px;width:440px;height:440px}.mono{margin-top:40px;padding:16px 12px}.under h1{font-size:26px;letter-spacing:.12em}}
+
+/* 2. the hall: pinned horizontal walk */
+.hall{height:420vh;background:var(--pale);border-bottom:1px solid var(--line)}
+.hall .stick{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.hall .rail{position:absolute;left:0;right:0;top:50%;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);height:6px;margin-top:118px}
+.track{display:flex;align-items:flex-end;gap:120px;padding:0 48px;will-change:transform}
+.track .cap{flex:0 0 auto;max-width:360px;align-self:center}
+.track .cap h2{font-size:14px;font-weight:700;letter-spacing:.16em}
+.track .cap p{font-size:40px;font-weight:300;line-height:1.1;margin-top:14px}
+.track .yr{flex:0 0 auto;font-size:300px;font-weight:800;line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--line);letter-spacing:-.04em}
+.track .nm{flex:0 0 auto;white-space:nowrap}
+.track .nm b{display:block;font-size:112px;font-weight:300;line-height:1;letter-spacing:-.01em}
+.track .nm span{display:block;font-size:13px;color:var(--mid);letter-spacing:.08em;margin-top:40px}
+.track .nm.org b{font-weight:700}
+.track .gap{flex:0 0 1px;align-self:stretch;background:var(--line)}
+.hall .progress{position:absolute;left:48px;right:48px;bottom:40px;height:2px;background:var(--line)}
+.hall .progress i{display:block;height:100%;width:0;background:var(--ink)}
+.hall .note{position:absolute;right:48px;top:40px;background:#fff;padding:10px}
+
+/* 3. mission: plaques hung from a rail */
+.hang{padding:150px 0 170px;overflow:hidden}
+.hang .grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.hang h2{grid-column:1/-1;font-size:14px;font-weight:700;letter-spacing:.16em}
+.hang .lede{grid-column:1/10;font-size:88px;font-weight:300;line-height:1;letter-spacing:-.02em;margin-top:20px}
+.hang .body{grid-column:8/12;font-size:17px;margin-top:48px}
+.hang .railwrap{grid-column:1/-1;position:relative;margin-top:88px;height:420px}
+.hang .railwrap .r{position:absolute;left:-48px;right:-48px;top:0;border-top:3px solid var(--ink)}
+.plaque{position:absolute;top:0;border:1px solid var(--ink);outline:1px solid var(--ink);outline-offset:6px;background:#fff;padding:36px 28px;display:flex;align-items:flex-end}
+.plaque::before{content:'';position:absolute;left:50%;top:-40px;height:40px;border-left:1px solid var(--ink)}
+.plaque p{font-size:30px;font-weight:600;line-height:1.05;letter-spacing:.01em}
+.p1{left:0;width:32%;height:300px;transform:translateY(40px)}
+.p2{left:36%;width:26%;height:220px;transform:translateY(130px)}
+.p3{left:66%;width:34%;height:260px;transform:translateY(64px)}
+.hang .cta{grid-column:8/12;margin-top:40px}
+
+/* 4. legends in action: dates engraved in the margin */
+.dated{padding:120px 0;background:var(--pale);border-top:1px solid var(--line)}
+.dated .head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:70px}
+.dated h2{font-size:14px;font-weight:700;letter-spacing:.16em}
+.dated .head p{font-size:52px;font-weight:300;line-height:1.05;max-width:16ch;margin-top:12px}
+.row{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;padding:48px 0;border-top:1px solid var(--ink)}
+.row .when{grid-column:1/4;font-size:64px;font-weight:800;line-height:.9;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.row .when small{display:block;font-size:13px;font-weight:600;letter-spacing:.1em;-webkit-text-stroke:0;color:var(--mid);margin-top:14px}
+.row .photo{height:300px}
+.row h3{font-size:28px;font-weight:600;line-height:1.1}
+.row p{font-size:15.5px;margin-top:12px}
+.r1 .photo{grid-column:4/-1;height:500px}.r1 .txt{grid-column:4/10;margin-top:26px}
+.r2 .txt{grid-column:4/8}.r2 .photo{grid-column:8/-1}
+.r3 .photo{grid-column:4/9}.r3 .txt{grid-column:9/-1;align-self:end}
+
+/* 5. luncheon: the invitation, laid on the photo */
+.invite{position:relative;height:880px;overflow:hidden}
+.invite > .photo{position:absolute;inset:0;border:0}
+.invite .card{position:absolute;right:9%;top:50%;width:min(460px,86vw);transform:translateY(-50%) rotate(-3deg);box-shadow:0 30px 60px rgba(0,0,0,.18)}
+.invite .card h2{font-size:14px;font-weight:700;letter-spacing:.16em}
+.invite .card .lede{font-size:34px;font-weight:300;line-height:1.12;margin-top:16px}
+.invite .card p.b{font-size:15px;margin-top:20px}
+.invite .note{position:absolute;left:48px;bottom:40px;background:#fff;padding:10px}
+
+/* 6. support slab */
+.give{background:var(--dark);color:#f2f2f2;padding:180px 0 150px}
+.give .grid{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.give h2{grid-column:1/-1;font-size:14px;font-weight:700;letter-spacing:.16em}
+.give .lede{grid-column:1/11;font-size:104px;font-weight:300;line-height:.98;letter-spacing:-.025em;margin-top:24px}
+.give .body{grid-column:1/6;font-size:18px;margin-top:56px}
+.give .cta{grid-column:8/-1;margin-top:56px;align-self:start}
+.give .cta .btn{font-size:20px;padding:28px 56px}
+.give .marg{grid-column:1/7;margin-top:72px;border-top:1px solid #666;padding-top:18px}
+
+@media (max-width:900px){
+ .carve{font-size:17vw}
+ .slab .bottom,.hang .grid,.give .grid,.row{grid-template-columns:1fr}
+ .slab .bottom>*,.hang .grid>*,.give .grid>*,.row>*{grid-column:1/-1 !important}
+ .slab .ctas{justify-content:flex-start;margin-top:22px}
+ .hall{height:auto}.hall .stick{position:static;height:auto;padding:80px 0}
+ .track{flex-direction:column;align-items:flex-start;gap:28px;transform:none !important;padding:0 20px}
+ .track .nm b{font-size:40px;white-space:normal}.track .nm span{margin-top:8px}.track .yr{font-size:120px}.track .gap,.hall .rail,.hall .progress{display:none}
+ .hall .note{position:static;margin:24px 20px 0}
+ .hang .lede{font-size:42px}.hang .railwrap{height:auto;margin-top:40px}.hang .railwrap .r{display:none}
+ .plaque{position:relative;left:auto !important;width:100% !important;height:auto !important;transform:none !important;margin-top:40px}
+ .dated .head{flex-direction:column;align-items:flex-start}.dated .head p{font-size:32px}
+ .row .when{font-size:44px}.row .photo,.r1 .photo{height:240px;margin-top:20px}
+ .invite{height:auto;padding:0 0 40px}.invite > .photo{position:relative;height:320px}
+ .invite .card{position:relative;right:auto;top:auto;transform:rotate(-2deg);margin:-60px auto 0}
+ .invite .note{position:static;margin:24px 20px 0}
+ .give .lede{font-size:48px}.give .cta .btn{padding:20px 32px}
+}
+@media (prefers-reduced-motion:reduce){
+ .carve .fl span{animation:none;opacity:1}
+ .hall{height:auto}.hall .stick{position:static;height:auto;padding:100px 0}
+ .track{flex-wrap:wrap;transform:none !important;row-gap:48px}.hall .progress{display:none}
+}
+
+/* ===== shared chrome ===== */
+nav.top .mark{display:flex;align-items:center;gap:12px}
+nav.top .mark img{height:52px;width:auto;filter:grayscale(1) contrast(1.4) brightness(.55)}
+footer .lock img{height:84px;width:auto;filter:grayscale(1) contrast(1.4) brightness(.55);display:block;margin-bottom:14px}
+
+/* ===== inner page header: the wall with a niche ===== */
+.wallhdr{background:var(--dark);color:#f2f2f2;padding:96px 0 110px;text-align:center;overflow:hidden}
+.niche{position:relative;width:260px;height:360px;margin:40px auto 0}
+.niche .in{position:absolute;inset:0;border-radius:130px 130px 0 0;outline:2px solid #9a9a9a;overflow:hidden}
+.niche .in .photo{position:absolute;inset:0;border:0}
+.niche .rays{position:absolute;left:-130px;top:-104px;width:520px;height:520px;stroke:#8a8a8a;stroke-width:3;stroke-linecap:round}
+.wallhdr h1{font-size:44px;font-weight:300;letter-spacing:.18em;line-height:1.15;margin-top:56px}
+.wallhdr h1::before,.wallhdr .lede::before,.wallhdr .body::before{color:#9b9b9b}
+.wallhdr .lede{font-size:30px;font-weight:300;line-height:1.2;max-width:26ch;margin:30px auto 0;color:#e8e8e8}
+.wallhdr .body{font-size:16.5px;max-width:56ch;margin:22px auto 0;color:#cfcfcf}
+.wallhdr .note{margin:34px auto 0;background:#3a3a3a;color:#cfcfcf;border-color:#666;padding:10px}
+
+/* ===== grid helper ===== */
+.g12{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.kick{font-size:14px;font-weight:700;letter-spacing:.16em}
+
+/* ===== ABOUT: story + inscription ===== */
+.story{padding:140px 0 0}
+.story .kick{grid-column:2/6}
+.story .b{grid-column:2/8;font-size:18px;margin-top:22px}
+.inscr{background:var(--pale);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);margin-top:110px;padding:70px 0}
+.inscr p{font-size:clamp(40px,7.4vw,112px);font-weight:300;line-height:.98;letter-spacing:-.015em;text-align:center}
+.inscr p::before{text-align:left}
+
+/* ===== ABOUT: founders, the torch line ===== */
+.founders{padding:150px 0}
+.founders .side{grid-column:1/4;position:sticky;top:110px;align-self:start}
+.founders .side h2{font-size:30px;font-weight:300;line-height:1.1;margin-top:12px}
+.founders .line{grid-column:4/5;position:relative;justify-self:center;width:2px;background:var(--line)}
+.founders .line i{position:absolute;left:0;top:0;width:2px;height:100%;background:var(--ink);transform-origin:top;transform:scaleY(0)}
+.founders .line b{position:sticky;top:48vh;display:block;width:34px;height:52px;margin-left:-16px;border:1.5px dashed var(--ink);background:#fff;font-size:8px;text-align:center;line-height:52px;font-weight:700;letter-spacing:.1em}
+.founders .copy{grid-column:5/11}
+.founders .copy .photo{height:440px;margin-bottom:48px}
+.founders .copy p{font-size:20px;line-height:1.55;margin-bottom:26px}
+
+/* ===== ABOUT: we aim to, stepped ===== */
+.aim{padding:130px 0;background:var(--pale);border-top:1px solid var(--line)}
+.aim .kick{margin-bottom:44px}
+.aim p{font-size:clamp(28px,3.6vw,50px);font-weight:300;line-height:1.1;border-top:1px solid var(--ink);padding:28px 0}
+.aim p:nth-of-type(2){margin-left:16.6%}.aim p:nth-of-type(3){margin-left:33.3%;border-bottom:1px solid var(--ink)}
+
+/* ===== ABOUT: plaques with descriptions ===== */
+.hang.tall .railwrap{height:560px}
+.hang.tall .plaque{flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:14px}
+.hang.tall .plaque .d{font-size:14.5px;color:var(--mid);font-weight:400;line-height:1.45}
+.hang.tall .p1{height:360px}.hang.tall .p2{height:300px}.hang.tall .p3{height:340px}
+
+/* ===== ABOUT: leadership in niches ===== */
+.lead{padding:140px 0}
+.lead .kick{grid-column:1/-1;text-align:center;margin-bottom:64px}
+.bust{text-align:center}
+.bust .arch{position:relative;margin:0 auto;border-radius:999px 999px 0 0;outline:1.5px solid var(--ink);outline-offset:8px;overflow:hidden}
+.bust .arch .photo{position:absolute;inset:0;border:0}
+.bust h3{font-size:28px;font-weight:300;letter-spacing:.06em;margin-top:34px}
+.bust .role{font-size:12.5px;letter-spacing:.14em;color:var(--mid);margin-top:8px}
+.bust p{font-size:15.5px;text-align:left;margin-top:18px}
+.b1{grid-column:2/6}.b1 .arch{width:300px;height:400px}
+.b2{grid-column:8/12;margin-top:120px}.b2 .arch{width:300px;height:400px}
+.b3{grid-column:3/6;margin-top:80px}.b3 .arch,.b4 .arch{width:200px;height:270px}
+.b4{grid-column:8/11;margin-top:150px}
+
+/* ===== ABOUT + SUPPORT: cornerstone ===== */
+.corner{padding:140px 0;background:var(--pale);border-top:1px solid var(--line)}
+.stone{grid-column:1/6;border:1px solid var(--ink);outline:1px solid var(--ink);outline-offset:8px;background:#e2e2e2;padding:64px 36px;text-align:center}
+.stone .n{font-size:22px;font-weight:300;letter-spacing:.2em;line-height:1.5}
+.stone .e{font-size:64px;font-weight:800;color:transparent;-webkit-text-stroke:1.5px var(--ink);letter-spacing:.02em;margin:22px 0 14px;line-height:1}
+.stone .s{font-size:13px;letter-spacing:.2em;color:var(--mid)}
+.corner .txt{grid-column:7/-1;align-self:center}
+.corner .txt p{font-size:17px;margin-bottom:20px}
+
+/* ===== COMMUNITY: left rail, identical entries ===== */
+.log{padding:110px 0 130px}
+.log .intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:56px}
+.ev{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.ev .when{grid-column:1/4;border-right:7px double var(--ink);padding:64px 28px 64px 0;text-align:right}
+.ev .when b{display:block;white-space:nowrap;font-size:clamp(44px,4.4vw,64px);font-weight:800;line-height:.9;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.ev .when span{display:block;font-size:12px;letter-spacing:.16em;color:var(--mid);margin-top:14px}
+.ev .ent{grid-column:4/-1;padding:64px 0}
+.ev .photo{height:420px}
+.ev .txt{max-width:640px;margin-top:30px}
+.ev .meta{font-size:12px;letter-spacing:.16em;color:var(--mid)}
+.ev h3{font-size:32px;font-weight:300;line-height:1.12;letter-spacing:.01em;margin-top:10px}
+.ev p.b{font-size:17px;line-height:1.55;margin-top:14px}
+.ev .lnk{font-size:13px;margin-top:14px}
+.ev + .ev .when,.ev + .ev .ent{border-top:1px solid var(--line)}
+
+/* ===== LUNCHEON: invitation hero ===== */
+.inv-hero{position:relative;min-height:100vh;overflow:hidden}
+.inv-hero > .photo{position:absolute;inset:0;border:0}
+.inv-hero .card{position:absolute;left:50%;top:50%;width:min(580px,88vw);transform:translate(-50%,-50%) rotate(-3deg);padding:70px 60px;box-shadow:0 40px 80px rgba(0,0,0,.2)}
+.inv-hero .card h1{font-size:54px;font-weight:300;letter-spacing:.08em;line-height:1.05}
+.inv-hero .card .dk{font-size:12.5px;letter-spacing:.2em;color:var(--mid);margin-top:16px}
+.inv-hero .card .lede{font-size:24px;font-weight:300;line-height:1.25;margin-top:26px}
+.inv-hero .note{position:absolute;right:40px;top:40px;background:#fff;padding:10px}
+
+/* ===== LUNCHEON: recap mosaic ===== */
+.recap{padding:130px 0 120px}
+.recap .intro{grid-column:2/8;font-size:24px;font-weight:300;line-height:1.35}
+.mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:120px;gap:16px;margin-top:150px;position:relative}
+.mosaic .m1{grid-column:1/8;grid-row:1/5}.mosaic .m2{grid-column:8/13;grid-row:1/3}
+.mosaic .m3{grid-column:8/11;grid-row:3/5}.mosaic .m4{grid-column:11/13;grid-row:3/5}
+.mosaic .m5{grid-column:4/10;grid-row:5/8}
+.mosaic .date{position:absolute;left:-10px;top:-72px;font-size:150px;font-weight:800;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--ink);z-index:2;pointer-events:none}
+
+/* ===== LUNCHEON: honoree hall with portraits ===== */
+.hall.honor .track{align-items:flex-end;gap:110px}
+.hall.honor .nm{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:300px}
+.hall.honor .nm .pt{width:220px;height:294px;border-radius:110px 110px 0 0;overflow:hidden;position:relative;border:1.5px solid var(--ink);margin-bottom:30px;background:#fff;padding:7px}
+.hall.honor .nm .pt .photo{position:absolute;inset:7px;border:0;border-radius:103px 103px 0 0}
+.hall.honor .nm b{font-size:56px;white-space:nowrap}
+.hall.honor .nm span{margin-top:14px}
+.hall.honor .rail{margin-top:230px}
+.hall.honor .gap{align-self:center;height:60%}
+/* ===== SUPPORT: header slab, arch form ===== */
+.gslab{background:var(--dark);color:#f2f2f2;padding:120px 0 130px;overflow:hidden}
+.gslab .kick::before,.gslab .lede::before{color:#9b9b9b}
+.gslab .lede{font-size:clamp(46px,8vw,120px);font-weight:300;line-height:.96;letter-spacing:-.025em;margin-top:24px;max-width:13ch}
+.giveform{padding:130px 0;overflow:hidden}
+.giveform .b{grid-column:1/6;font-size:19px;line-height:1.55;align-self:center}
+.giveform .gate2{grid-column:7/-1;position:relative;padding-top:120px}
+.giveform .gate2 .rays{position:absolute;left:50%;top:0;width:640px;height:640px;margin-left:-320px;stroke:var(--line);stroke-width:3;stroke-linecap:round;z-index:0}
+.giveform .gframe{position:relative;z-index:1;border:1.5px solid var(--ink);border-radius:240px 240px 0 0;background:#fff;padding:120px 40px 44px;text-align:center}
+.giveform .gframe .lbl{font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--mid)}
+.giveform .gframe .h{height:300px;margin-top:18px;border:1.5px dashed var(--line);background:var(--pale);display:grid;place-items:center;color:var(--soft);font-size:12.5px}
+.spons{padding:70px 0;border-top:1px solid var(--line);text-align:center}
+
+/* ===== CONTACT: the register ===== */
+.reg{padding:120px 0 140px}
+.reg form{grid-column:1/8}
+.reg label{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--mid);margin-bottom:46px}
+.reg input,.reg textarea{border:0;border-bottom:1.5px solid var(--ink);padding:14px 0 10px;font-size:28px;font-weight:300;background:transparent;margin-top:8px}
+.reg textarea{min-height:150px;resize:vertical}
+.reg aside{grid-column:9/-1;border-left:1px solid var(--ink);padding-left:32px;align-self:start}
+.reg aside p{font-size:20px;font-weight:300;margin-bottom:14px}
+
+@media (max-width:900px){
+ nav.top .mark img{height:40px}
+ .g12{grid-template-columns:1fr}.g12>*{grid-column:1/-1 !important}
+ .wallhdr{padding:70px 0 80px}.wallhdr h1{font-size:26px;letter-spacing:.12em}.wallhdr .lede{font-size:22px}
+ .niche{width:200px;height:277px}.niche .in{border-radius:100px 100px 0 0}.niche .rays{left:-100px;top:-80px;width:400px;height:400px}
+ .inscr{padding:44px 0}
+ .founders .side{position:static}.founders .line{display:none}.founders .copy p{font-size:17px}.founders .copy .photo{height:260px}
+ .aim p{margin-left:0 !important}
+ .hang.tall .railwrap{height:auto}
+ .b1,.b2,.b3,.b4{margin-top:56px !important}.b1 .arch,.b2 .arch{width:240px;height:320px}
+ .stone .e{font-size:40px}.corner .txt{margin-top:48px}
+  .ev{border-left:7px double var(--ink);padding-left:18px}.ev .when{border-right:0;text-align:left;padding:40px 0 0}.ev .when b{font-size:44px}.ev .ent{padding:20px 0 44px}.ev .photo{height:240px}.ev h3{font-size:24px}.ev + .ev .when{border-top:0}
+ .inv-hero .card{padding:40px 26px}.inv-hero .card h1{font-size:32px}.inv-hero .note{position:static;margin:20px}
+ .inv-hero{min-height:760px}
+ .mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:110px}.mosaic>div{grid-column:auto !important;grid-row:span 2 !important}.mosaic .m1,.mosaic .m5{grid-column:1/-1 !important}.mosaic .date{font-size:80px;top:-44px}
+ .hall.honor .nm{min-width:0}.hall.honor .nm .pt{width:160px;height:214px}.hall.honor .nm .pt .photo{border-radius:73px 73px 0 0}.hall.honor .nm b{font-size:34px;white-space:normal}
+ .giveform .gate2{padding-top:70px;margin-top:48px}.giveform .gate2 .rays{width:420px;height:420px;margin-left:-210px}.giveform .gframe{padding:80px 20px 28px;border-radius:160px 160px 0 0}
+ .reg aside{border-left:0;padding-left:0;margin-top:40px;border-top:1px solid var(--ink);padding-top:24px}.reg input,.reg textarea{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){.founders .line i{transform:scaleY(1)}}
+</style></head><body><div class="page">
+<div class="banner"><span>WIREFRAME · THE WALL, PUSHED · ABOUT THE FOUNDATION</span><span>Scroll slowly through Founders' Story</span></div>
+<nav class="top" aria-label="Main"><div class="wrap">
+<a class="mark" href="home.html" aria-label="Everyday Legends Foundation, home"><img src="everyday-legends-mark.svg" alt=""><span>Everyday Legends</span></a>
+<ul><li class="hide"><a href="about.html" aria-current="page">About</a></li><li class="hide"><a href="community.html">In the Community</a></li><li class="hide"><a href="luncheon.html">Legends Among Us</a></li><li class="hide"><a href="contact.html">Contact</a></li><li><a class="btn" href="support.html">Donate</a></li></ul></div></nav><section class="wallhdr"><span class="sec">1 HEADER · THE NICHE</span><div class="wrap">
+<div class="niche"><div class="in"><div class="photo"><span>PHOTO · FAMILY</span></div></div><svg class="rays" viewBox="-300 -330 600 600" aria-hidden="true"><line x1="-189.9" y1="-66.6" x2="-299.8" y2="-70.5"/><line x1="-170.5" y1="-99.4" x2="-263.1" y2="-120.7" stroke-dasharray="10 9"/><line x1="-173.6" y1="-137.3" x2="-274.1" y2="-182.0"/><line x1="-143.4" y1="-160.4" x2="-221.2" y2="-214.9"/><line x1="-132.0" y1="-196.7" x2="-208.4" y2="-275.8" stroke-dasharray="10 9"/><line x1="-95.3" y1="-206.8" x2="-147.1" y2="-286.4"/><line x1="-71.2" y1="-236.2" x2="-112.4" y2="-338.2"/><line x1="-33.4" y1="-231.8" x2="-51.5" y2="-325.0" stroke-dasharray="10 9"/><line x1="0.0" y1="-250.0" x2="0.0" y2="-360.0"/><line x1="33.4" y1="-231.8" x2="51.5" y2="-325.0"/><line x1="71.2" y1="-236.2" x2="112.4" y2="-338.2" stroke-dasharray="10 9"/><line x1="95.3" y1="-206.8" x2="147.1" y2="-286.4"/><line x1="132.0" y1="-196.7" x2="208.4" y2="-275.8"/><line x1="143.4" y1="-160.4" x2="221.2" y2="-214.9" stroke-dasharray="10 9"/><line x1="173.6" y1="-137.3" x2="274.1" y2="-182.0"/><line x1="170.5" y1="-99.4" x2="263.1" y2="-120.7"/><line x1="189.9" y1="-66.6" x2="299.8" y2="-70.5" stroke-dasharray="10 9"/></svg></div>
+<h1 data-r="TITLE">About the Foundation</h1><p class="lede" data-r="LEDE">A culture where scholarship, athletics, and service are equally celebrated.</p><p class="body" data-r="BODY">Where young people are empowered to lead with integrity, excellence, and purpose, and where communities rally around those who shape the future.</p><p class="note">Every inner page enters through the same arch from the logo, standing still. Only the homepage walks you through it. Inside the niche sits the photo that belongs to that page.</p></div></section>
+
+<section class="story"><span class="sec">2 OUR STORY</span><div class="wrap g12">
+<p class="kick" data-r="TITLE">Our Story</p>
+<p class="b" data-r="BODY">Everyday Legends was created to honor the pillars that shape identity and purpose: sports, scholarship, and community.</p>
+<p class="b" data-r="BODY">Athletics provides a safe space where discipline, resilience, and character are developed. Education remains the foundation for opportunity, critical thinking, and long-term advancement. Community and leadership ensure that impact extends beyond individual success, shaping culture and creating lasting change.</p>
+</div>
+<div class="inscr"><div class="wrap"><p data-r="PULL QUOTE">At the intersection of these forces, legacy is built.</p></div></div>
+<div class="wrap"><p class="note" style="margin-top:22px">The page's one pull quote, set as an inscription across the full width, the way a line is cut into the face of a building.</p></div>
+</section>
+
+<section class="founders"><span class="sec">3 FOUNDERS' STORY · LONGEST</span><div class="wrap g12">
+<div class="side"><p class="kick" data-r="TITLE">Founders' Story</p><h2>&amp; Inspiration</h2>
+<p class="small" style="margin-top:24px" data-r="MARGINALIA">Founded (to be filled)</p>
+<p class="note" style="margin-top:28px">The torch line. Her story says the torch is being passed, and the logo has a torch. A line runs down beside the story and fills as you read, with the torch marker carried down it. The whole section is the handoff.</p></div>
+<div class="line" aria-hidden="true"><i></i><b>TORCH</b></div>
+<div class="copy">
+<div class="photo"><span>PHOTO · THE McCLAIN FAMILY</span></div>
+<p data-r="BODY">The mission of Everyday Legends is deeply personal. The three pillars of scholarship, community, and sports are the very foundation of the McClain household, where time, energy, sacrifice, and purpose have been intentionally invested for years. These values shaped the upbringing of our family and continue to guide the next generation.</p>
+<p data-r="BODY">Today, the torch is being passed to our three sons, who carry forward the importance of leadership, discipline, service, and giving back.</p>
+<p data-r="BODY">Jaylen McClain, Co-Founder of Everyday Legends, uses his athletic platform as a force for good, reinforcing to young people that success is not only measured by personal accomplishments but by how you uplift others. Jaylen demonstrates that athletic achievement and community responsibility can coexist. He, with his brothers coming behind him, represents the vision of using his platform and success responsibly. Everyday Legends exists to ensure that this spirit of service continues for years to come.</p>
+</div></div></section>
+
+<section class="aim"><span class="sec">4 WE AIM TO</span><div class="wrap">
+<p class="kick" style="border:0;padding:0;font-size:14px" data-r="TITLE">We aim to</p>
+<p data-r="BODY">Provide scholarships that remove financial barriers to opportunity</p>
+<p data-r="BODY">Support athletic programs that cultivate leadership and character</p>
+<p data-r="BODY">Honor and support individuals whose impact transforms communities</p>
+<p class="note" style="border-top:0;border-left:2px dashed var(--line);padding:0 0 0 10px;margin:28px 0 0;font-size:11.5px">Three lines stepping down and to the right, like lines on a stair of stone, so the list reads as a progression rather than bullets.</p>
+</div></section>
+
+<section class="hang tall"><span class="sec">5 WHAT WE DO</span><div class="wrap grid">
+<h2 data-r="TITLE">What we do</h2>
+<p class="lede" style="font-size:56px" data-r="">Three pillars, hung from one rail.</p>
+<div class="railwrap"><div class="r" aria-hidden="true"></div>
+<div class="plaque p1"><p data-r="DECK">Scholarship Support</p><span class="d" data-r="BODY">Provide financial assistance to students who demonstrate academic excellence, leadership, and perseverance.</span></div>
+<div class="plaque p2"><p data-r="DECK">Athletic Investment</p><span class="d" data-r="BODY">Support programs that develop discipline, character, and teamwork in young athletes.</span></div>
+<div class="plaque p3"><p data-r="DECK">Community Recognition</p><span class="d" data-r="BODY">Highlight and fund organizations and culture-shapers who strengthen our communities through service and impact.</span></div>
+</div></div></section>
+
+<section class="lead"><span class="sec">6 LEADERSHIP</span><div class="wrap g12">
+<p class="kick" data-r="TITLE">Leadership</p>
+<div class="bust b1"><div class="arch"><div class="photo"><span>PORTRAIT</span></div></div><h3 data-r="DECK">Dr. Syreeta McClain</h3><p class="role">CO-FOUNDER &amp; EXECUTIVE DIRECTOR</p>
+<p data-r="BODY">Dr. Syreeta McClain is a high school principal and an educational consultant, with more than two decades in alternative education. She is the founder of Premier Leadership, and she manages the careers of her three sons through high school and Division I football.</p></div>
+<div class="bust b2"><div class="arch"><div class="photo"><span>PORTRAIT</span></div></div><h3 data-r="DECK">Jaylen McClain</h3><p class="role">CO-FOUNDER</p><p class="tbf" data-r="BODY">(to be filled)</p></div>
+<div class="bust b3"><div class="arch"><div class="photo"><span>PORTRAIT</span></div></div><h3 class="tbf" data-r="DECK">Board member (to be filled)</h3><p class="role">TITLE (TO BE FILLED)</p></div>
+<div class="bust b4"><div class="arch"><div class="photo"><span>PORTRAIT</span></div></div><h3 class="tbf" data-r="DECK">Board member (to be filled)</h3><p class="role">TITLE (TO BE FILLED)</p></div>
+</div>
+<div class="wrap"><p class="note" style="margin:60px auto 0">Portraits sit in arch niches, like busts in a gallery wall. Founders large, board smaller, staggered in height so four people never read as a row of four cards.</p></div>
+</section>
+
+<section class="corner"><span class="sec">7 ACCOUNTABILITY · THE CORNERSTONE</span><div class="wrap g12">
+<div class="stone" aria-label="Everyday Legends Foundation, Inc., EIN 39-4769708">
+<p class="n">EVERYDAY LEGENDS<br>FOUNDATION, INC.</p><p class="e">39-4769708</p><p class="s">EIN · 501(c)(3) · EST. (TO BE FILLED)</p></div>
+<div class="txt"><p class="kick" style="margin-bottom:20px" data-r="TITLE">Accountability</p>
+<p data-r="BODY">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code. EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law.</p>
+<p data-r="BODY">Gifts go three ways. To community organizations already running their own initiatives, where we add to the work rather than duplicate it. To athletics, through football camps and high school programs. And to education, through scholarships.</p>
+<p class="small"><a href="#">Privacy policy</a></p>
+<div style="margin-top:26px"><a class="btn" href="support.html">Donate</a></div>
+<p class="note" style="margin-top:28px">The legal facts cut into a cornerstone, the block every public building uses for its name and founding year. Same words as the approved copy, rearranged. The founding year slots in when she sends it.</p></div>
+</div></section>
+<footer><div class="wrap">
+<div class="lock"><img src="everyday-legends-logo.svg" alt="Everyday Legends Foundation">© 2026 Everyday Legends Foundation, Inc. All rights reserved.<br>info@everydaylegend.com · Instagram @everydaylegendsfoundation</div>
+<div style="align-self:end"><a href="#">Privacy Policy</a> &nbsp;&nbsp; Built by Anchor Digital</div></div></footer>
+</div><button id="thumb" type="button" aria-pressed="false">Thumbnail test</button>
+<script>
+const tb=document.getElementById('thumb');
+tb.addEventListener('click',()=>{const on=document.body.classList.toggle('thumb');tb.setAttribute('aria-pressed',on);tb.textContent=on?'Full size':'Thumbnail test';window.scrollTo(0,0);tick();});
+const mq=matchMedia('(max-width:900px), (prefers-reduced-motion: reduce)');
+const off=()=>mq.matches||document.body.classList.contains('thumb');
+const clamp=(v)=>Math.min(1,Math.max(0,v));
+const gate=document.querySelector('.gate');
+const G=gate?{door:gate.querySelector('.door'),rays:gate.querySelector('.rays'),under:gate.querySelector('.under'),beyond:gate.querySelector('.beyond'),mono:gate.querySelector('.mono')}:null;
+const hall=document.querySelector('.hall'),track=hall&&hall.querySelector('.track'),bar=hall&&hall.querySelector('.progress i');
+const fl=document.querySelector('.founders'),fli=fl&&fl.querySelector('.line i');
+function tick(){
+  if(G){ if(off()){G.door.style.transform='';[G.rays,G.mono,G.under,G.beyond].forEach(e=>e.style.opacity='');}
+    else{const r=gate.getBoundingClientRect(),p=clamp(-r.top/(gate.offsetHeight-innerHeight));
+      G.door.style.transform='scale('+(1+Math.pow(p,2.2)*13)+')';G.rays.style.opacity=Math.max(0,1-p*3.2);G.mono.style.opacity=Math.max(0,1-p*4);
+      G.under.style.opacity=Math.max(0,1-p*3);G.beyond.style.opacity=clamp((p-.55)/.3);} }
+  if(hall){ if(off()){track.style.transform='';}
+    else{const r=hall.getBoundingClientRect(),q=clamp((-r.top/(hall.offsetHeight-innerHeight)-.06)/.94);
+      track.style.transform='translate3d('+(-q*(track.scrollWidth-innerWidth))+'px,0,0)';if(bar)bar.style.width=(q*100)+'%';} }
+  if(fli){ if(matchMedia('(prefers-reduced-motion: reduce)').matches){fli.style.transform='scaleY(1)';}
+    else{const r=fl.getBoundingClientRect();fli.style.transform='scaleY('+clamp((innerHeight*.5-r.top)/r.height)+')';} }
+}
+let t=false;addEventListener('scroll',()=>{if(!t){t=true;requestAnimationFrame(()=>{t=false;tick();});}},{passive:true});
+addEventListener('resize',tick);tick();
+</script></body></html>
