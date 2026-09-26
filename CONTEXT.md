@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About.
 
 ## How this file works
 
@@ -84,10 +84,13 @@ Behavior:
 
 ## Photos
 
-- Black and white (Yamean Studios / McKee Place, files ending `-137`, `-119`, `-48`, `-53`, `-20`, `-9`): the day itself. Speeches, the room, the story.
+- Black and white (Yamean Studios / McKee Place, files ending `-137`, `-119`, `-117`, `-48`, `-53`, `-20`, `-9`): the day itself. Speeches, the room, the story.
+- Studio (`KNOW_shoot_5.jpg`): Dr. McClain's portrait, color. Leadership only.
 - Color (`Everyday_Legends_2026_*`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work.
 - The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push.
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
+- Arch and niche slots take tall files only, so the watermark stays in frame. Wide files run full frame.
+- Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
 - Every content photo goes through `astro:assets` with real alt text. MUST NOT set content photos as CSS backgrounds. Alt text MUST NOT name anyone the copy deck does not name.
 - Photo treatment as built in Phase 5 (paper-deep tint through `mix-blend-multiply`). One file per slot so each swaps cleanly.
 
@@ -97,11 +100,12 @@ Behavior:
 | Home, Legends in Action card 2 | ELSalvationArmy.webp |
 | Home, Legends in Action card 3 | -137 |
 | Home, Legends Among Us | 178 |
-| Legends Among Us recap | -48, -53, -20, then -119 closing, centered |
+| Legends Among Us recap | -53, -20, then -119 closing, centered; fourth chosen in that slice |
 | Legends Among Us honorees | 128, 123, 124, 190, 219 |
 | In the Community, luncheon entry | 177 |
-| About, beside the torch line | -53 (candidate) |
-| Spare | -9 |
+| About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
+| About, beside the torch line | -48, full frame |
+| About, Leadership | KNOW_shoot_5 (Dr. McClain), -117 (Jaylen) |
 
 ## Motion
 
@@ -119,7 +123,7 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
 1. `text-reveal.tsx`, Mission lede.
    Keep: per word, slide preset (opacity 0 to 1, y 20 to 0), 0.05s stagger, 0.3s per word.
    Change: plays once when 30% in view. Reduced motion shows static text. Blur presets never used.
-2. `hover-reveal-cards.tsx`, Legends in Action rows.
+2. `hover-reveal-cards.tsx`, Legends in Action rows and About Leadership.
    Keep: hovered image scales to 1.05; siblings scale to 0.97 at opacity 0.6; 500ms ease-in-out; focus-visible matches hover.
    Change: no blur, no `transition-all`, real images through `astro:assets`, applied to the three alternating rows (never a card grid), Brass and Ink styling. Touch devices get no hover effect.
 3. `interactive-hover-button.tsx`, every solid button on the site.
@@ -132,7 +136,9 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
    Keep: easing `[0.22, 1, 0.36, 1]`; ink circle rise 0.8s after a 0.1s delay; links fade in over 0.4s starting at 0.4s + 0.08s × index; hamburger to X, each bar rotating 45° over 0.4s.
    Change: trigger at top right, never floating at the bottom. The ink circle scales up (transform) from the trigger into a full-screen ink panel. No per-letter hover roll. Real links. A real button with `aria-expanded`. Escape closes. Focus stays inside while open. Body scroll locked while open. Tapping outside or tapping a link closes it. The bars stay paper on the ink trigger. Fonts and colors from this file.
 
-Mission pillars are custom gsap, not 21st.dev: each drop line grows from the rail (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot. 0.12s stagger. Plays once.
+Mission pillars are custom gsap, not 21st.dev: each drop line grows from the rail (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot. 0.12s stagger. Plays once. About's What we do reuses it with fuller plates.
+
+About adds no new 21st.dev components. Its other motion is custom gsap: the niche photo settles on load (scale 1.06 to 1 with opacity, about 0.9s, menu curve), the torch line, the inscription rising line by line out of a mask, and the We aim to stair entrance.
 
 ## Nav and footer
 
@@ -196,14 +202,14 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment.
 
 ## Open client items that touch the build
 
 - Zeffy link. Donate points to `/support` until then.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
 - Clean, unwatermarked photo files and the credit line.
-- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line, sponsorship packages link, original headshots.
+- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link, original headshots.
 - Newsletter provider, for the form backend.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.

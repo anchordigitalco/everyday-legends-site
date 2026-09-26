@@ -32,6 +32,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - **"Inaugural class, 2026"** as the class heading on the honorees wall.
 - Nav uses the mark only; footer uses the full lockup.
 - Home card 3 body, now filled (see 1.3). The wording is ours.
+- Jaylen's Leadership body (see 2.6). Researched placeholder, the wording is ours. "Team captain" is for the 2026 season and needs a yearly check.
 - The program book confirms three scholarships were awarded in 2026. Copy that describes scholarship as something the foundation intends to fund needs her decision. Do not change it until she answers.
 
 ## Sitemap
@@ -180,7 +181,7 @@ Her words, kept as written. This is the longest section on About by design. The 
 | Deck | Dr. Syreeta McClain · Co-Founder & Executive Director | 6 | REUSED |
 | Body | Dr. Syreeta McClain is a high school principal and an educational consultant, with more than two decades in alternative education. She is the founder of Premier Leadership, and she manages the careers of her three sons through high school and Division I football. | 43 | REUSED |
 | Deck | Jaylen McClain · Co-Founder | 4 | FROM YOU |
-| Body | (to be filled) | 30 | To be filled |
+| Body | Jaylen McClain, a Seton Hall Prep graduate, is a safety and team captain at Ohio State. He won a national championship as a freshman and founded the Jaylen McClain Youth Football Camp. | 32 | NEW, researched placeholder, pending approval |
 | Deck | Board members (to be filled) | 5 each | To be filled |
 | Body | (to be filled) | 40 each | To be filled |
 
@@ -298,7 +299,7 @@ Contact form messages go to info@everydaylegend.com. MUST NOT show a mailing add
 None of these block the build. Each drops into a space already designed for it.
 
 1. Board member names and titles. The program lists a board but no names.
-2. A line or two on Jaylen for Leadership.
+2. Approval of the placeholder line on Jaylen for Leadership, or her own wording.
 3. The founding year.
 4. The new Zeffy general donation form link. **Blocks launch.**
 5. The sponsorship packages link, for the Sponsorship CTA.
