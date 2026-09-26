@@ -1,35 +1,17 @@
 ---
 import { Image } from 'astro:assets';
 import '../styles/global.css';
+import HomeIntro from '../components/HomeIntro.astro';
 import markUrl from '../../brand_assets/everyday-legends-mark.svg?url';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import { honorees } from '../data/honorees';
 
-// Rays and arch are measured from everyday-legends-mark.svg (same viewBox, same units).
-// Arch centreline: circle at (2047.9, 1708.5), r 433.05, stroke 15.4. Opening (inner edge): r 425.3.
-// Base rule only where she draws it (x 1608–1784 and 2305–2487); the letters own the rest.
-// Rays: 17, principal-axis fit per ray path, round caps inset by half the stroke.
-const rays = [
-  { x1: 2557.5, y1: 1645.6, x2: 2920.9, y2: 1645.8 },
-  { x1: 2541.4, y1: 1554.3, x2: 2777.5, y2: 1507.1 },
-  { x1: 2508.7, y1: 1457.3, x2: 2873, y2: 1303.4, dash: '66 46.6 89.3 50.4 60.1 38.8 44.3' },
-  { x1: 2466, y1: 1375.4, x2: 2666.1, y2: 1238.3 },
-  { x1: 2390.1, y1: 1298.2, x2: 2732.8, y2: 957.9 },
-  { x1: 2320.6, y1: 1245.2, x2: 2456.8, y2: 1039.3 },
-  { x1: 2232.2, y1: 1202.7, x2: 2424.1, y2: 742, dash: '66.9 57.1 87.7 76.4 89 84.8 37.2' },
-  { x1: 2136.1, y1: 1178.5, x2: 2194.6, y2: 921.1 },
-  { x1: 2048.5, y1: 1171.5, x2: 2048.4, y2: 664.1 },
-  { x1: 1956.4, y1: 1177.9, x2: 1902.8, y2: 919.9 },
-  { x1: 1861.5, y1: 1206.2, x2: 1660.7, y2: 727.2, dash: '73.2 66.6 92.8 73.5 99.1 60 54.2' },
-  { x1: 1775.8, y1: 1243.5, x2: 1634, y2: 1027.9 },
-  { x1: 1701, y1: 1291.4, x2: 1354.8, y2: 947.8 },
-  { x1: 1627.5, y1: 1378.9, x2: 1424.1, y2: 1227.1 },
-  { x1: 1587.6, y1: 1456.5, x2: 1214.8, y2: 1298.7, dash: '64.3 60.2 83.7 51.6 63.3 47.9 33.9' },
-  { x1: 1552.2, y1: 1554.5, x2: 1308.8, y2: 1498.7 },
-  { x1: 1538.3, y1: 1636.6, x2: 1171.4, y2: 1635.1 },
+const navLinks = [
+  { label: 'About', href: '/about' },
+  { label: 'In the Community', href: '/in-the-community' },
+  { label: 'Legends Among Us', href: '/legends-among-us' },
+  { label: 'Contact', href: '/contact' },
 ];
-
-const navLinks = ['Home', 'About', 'In the Community', 'Legends Among Us', 'Contact'];
 ---
 <html lang="en">
   <head>
@@ -38,19 +20,23 @@ const navLinks = ['Home', 'About', 'In the Community', 'Legends Among Us', 'Cont
     <title>Everyday Legends Foundation</title>
     <meta name="description" content="Supporting scholars, athletes, and community leaders who exemplify excellence and impact." />
     <link rel="icon" type="image/svg+xml" href={markUrl} />
+    <script is:inline>
+      // Decides before first paint whether the intro overlay shows: once per session, never with reduced motion.
+      (function () {
+        try {
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (sessionStorage.getItem('el-intro-seen')) return;
+          sessionStorage.setItem('el-intro-seen', '1');
+          document.documentElement.classList.add('el-intro', 'el-intro-dark');
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&display=swap"
     />
-    <script is:inline>
-      // ?frame=0..1 freezes both scroll moments at a fixed progress for screenshots.
-      (function () {
-        var f = new URLSearchParams(location.search).get('frame');
-        if (f !== null && !isNaN(parseFloat(f))) document.documentElement.classList.add('is-frame');
-      })();
-    </script>
   </head>
   <body>
     <svg class="sr-defs" aria-hidden="true" focusable="false">
@@ -59,74 +45,52 @@ const navLinks = ['Home', 'About', 'In the Community', 'Legends Among Us', 'Cont
         <feColorMatrix type="saturate" values="0" />
       </filter>
     </svg>
+    <svg class="page-grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+
+    <HomeIntro />
 
     <header class="nav">
-      <a class="nav__mark" href="#" aria-label="Everyday Legends Foundation">
+      <a class="nav__mark" href="/" aria-label="Everyday Legends Foundation, home">
         <img src={markUrl} alt="" width="60" height="53" />
       </a>
       <nav aria-label="Main">
         <ul class="nav__links">
-          {navLinks.map((label) => (
-            <li><a class="nav__link" href="#">{label}</a></li>
+          {navLinks.map((l) => (
+            <li><a class="nav__link" href={l.href} data-label={l.label}><span>{l.label}</span></a></li>
           ))}
         </ul>
       </nav>
-      <a class="btn btn--on-ink nav__donate" href="/support">Donate</a>
+      <a class="btn btn--primary nav__donate" href="/support" data-label="Donate"><span>Donate</span></a>
     </header>
 
     <main>
-      <!-- 1 · The dark wall, and the walk through her arch -->
-      <section class="gate" aria-labelledby="hero-title">
-        <div class="gate__stage">
-          <div class="gate__wall" aria-hidden="true"></div>
-
-          <div class="gate__rig" data-rig>
-            <div class="arch-opening" aria-hidden="true">
-              <div data-slot="arch-video"></div>
-            </div>
-            <svg id="arch" viewBox="1123 616 1845 1620" aria-hidden="true" focusable="false">
-              <path
-                id="arch-outline"
-                d="M1784 2142.4H1614.9V1708.5A433.05 433.05 0 0 1 2480.9 1708.5V2142.4H2305"
-              />
-              <g id="rays">
-                {rays.map((r) => (
-                  <line class="ray" x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke-dasharray={r.dash} />
-                ))}
-              </g>
-            </svg>
-            <img class="gate__mark" src={markUrl} alt="" data-mark />
+      <!-- 1 · Hero, on paper -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="grid hero__grid">
+          <h1 id="hero-title" class="display hero__title" data-hero-item>Everyday Legends Foundation</h1>
+          <p class="hero__lede" data-hero-item>Supporting scholars, athletes, and community leaders who exemplify excellence and impact.</p>
+          <div class="hero__ctas" data-hero-item>
+            <a class="btn btn--primary" href="/support">Donate</a>
+            <a class="btn btn--secondary" href="/about">About the foundation</a>
           </div>
-
-          <div class="gate__copy" data-hero-copy>
-            <h1 id="hero-title" class="gate__title">Everyday Legends Foundation</h1>
-            <p class="gate__lede">Supporting scholars, athletes, and community leaders who exemplify excellence and impact.</p>
-            <div class="gate__ctas">
-              <a class="btn btn--on-ink" href="/support">Donate</a>
-              <a class="btn btn--on-ink-quiet" href="/about">About the foundation</a>
-            </div>
-          </div>
-
-          <div class="gate__grain" aria-hidden="true"><svg><rect width="100%" height="100%" filter="url(#grain)" /></svg></div>
-          <div class="gate__daylight" aria-hidden="true" data-daylight></div>
         </div>
       </section>
 
       <!-- 2 · The hall: names hung from a brass rail -->
-      <section class="hall" aria-labelledby="class-heading">
-        <div class="hall__stage">
+      <section class="hall" aria-labelledby="class-heading" data-hall>
+        <div class="hall__stage" data-hall-stage>
+          <div class="hall__rail" aria-hidden="true"></div>
           <div class="hall__track" data-track>
-            <div class="hall__rail" aria-hidden="true"></div>
             <div class="hall__class">
               <h2 id="class-heading" class="label hall__heading">Inaugural class, 2026</h2>
               <span class="hall__drop" aria-hidden="true"></span>
-              <p class="hall__year" aria-hidden="true" data-year="2026">2026</p>
+              <p class="display hall__year" aria-hidden="true">2026</p>
             </div>
             <ol class="hall__names">
               {honorees.map((name) => (
                 <li class="hall__name">
                   <span class="hall__drop" aria-hidden="true"></span>
-                  <span class="hall__text">{name}</span>
+                  <span class="display hall__text">{name}</span>
                 </li>
               ))}
             </ol>
@@ -152,7 +116,7 @@ const navLinks = ['Home', 'About', 'In the Community', 'Legends Among Us', 'Cont
           <p class="card__lede">Our signature afternoon of recognition.</p>
           <p class="card__body">The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and leadership.</p>
           <p class="label card__marg">The Highlawn · West Orange, New Jersey</p>
-          <a class="btn btn--ink" href="/legends-among-us">The luncheon</a>
+          <a class="btn btn--primary" href="/legends-among-us">The luncheon</a>
         </article>
       </section>
     </main>

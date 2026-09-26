@@ -1,0 +1,59 @@
+---
+// The Home intro: her mark on the ink wall, lit, then walked through. CONTEXT.md, "Home intro".
+// Every <path> below is copied verbatim from brand_assets/everyday-legends-mark.svg. Paths are only
+// grouped (and path 0 is shown twice under two clips), never redrawn or edited.
+import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
+
+const paths = markRaw.match(/<path\b[^>]*\/>/g) ?? [];
+if (paths.length !== 37) throw new Error(`everyday-legends-mark.svg: expected 37 paths, found ${paths.length}`);
+const p = (...idx: number[]) => idx.map((i) => paths[i]).join('');
+
+// Path 0 is one shape holding the E, the L, the torch stem and cup, and the flame's outline.
+// The flame ends at y 1617 and the cup rim starts at y 1619 (measured by rasterising path 0),
+// so a clip at y 1619 separates the flame from everything below it.
+const CUT = 1619;
+
+// 17 rays, lit center outward (right side first at each step). Dashed rays are four segments each.
+const rays: number[][] = [
+  [2], // vertical
+  [8], [9],
+  [20, 23, 26, 35], [19, 21, 25, 32], // steep dashed
+  [13], [11],
+  [4], [3],
+  [15], [12],
+  [22, 30, 31, 33], [24, 27, 28, 34], // shallow dashed
+  [14], [10],
+  [6], [5], // horizontal
+];
+---
+<div class="intro" aria-hidden="true" data-intro>
+  <div class="intro__wall">
+    <svg class="intro__grain" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+  </div>
+  <div class="intro__rig" data-intro-rig>
+    <div class="intro__opening">
+      <div class="intro__glow" data-intro-glow></div>
+      <div class="intro__paper" data-intro-paper></div>
+    </div>
+    <svg class="intro__mark" viewBox="1123 616 1845 1620" focusable="false">
+      <defs>
+        <clipPath id="el-clip-flame"><rect x="1123" y="616" width="1845" height={CUT - 616} /></clipPath>
+        <clipPath id="el-clip-body"><rect x="1123" y={CUT} width="1845" height={2236 - CUT} /></clipPath>
+      </defs>
+      <g data-intro-letters>
+        <g clip-path="url(#el-clip-body)" set:html={p(0)} />
+        <Fragment set:html={p(18)} />
+      </g>
+      <g set:html={p(1)} />
+      <g>
+        {rays.map((idx) => <g class="intro__ray" data-intro-ray set:html={p(...idx)} />)}
+      </g>
+      <g data-intro-torch>
+        <g data-intro-flame>
+          <g clip-path="url(#el-clip-flame)" set:html={p(0)} />
+          <Fragment set:html={p(7, 16, 17, 29, 36)} />
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
