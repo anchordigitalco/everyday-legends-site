@@ -6,7 +6,7 @@
 
 - Read CONTEXT.md (imported above) when the repo has one. It holds this project's locked decisions and wins over anything generic in this file.
 - Decide the stack before writing any code (see Stack).
-- Load the `frontend-design` skill before writing frontend code, every session, no exceptions.
+- Read the frontend-design skill at `./frontend-design/SKILL.md` in this repo before writing frontend code, every session, no exceptions. MUST NOT use the copy in `~/.claude`.
 - Check `brand_assets/` for logos, colors, and photos before designing. Use real assets over placeholders.
 
 ## Keep instruction files short
@@ -60,6 +60,7 @@
 - No default Tailwind palette (blue-600, indigo-500, and so on) and no purple or indigo gradients.
 - No ghost or outline buttons. Solid fill, 4.5:1 text contrast, and hover, focus-visible, and active states on every clickable element.
 - No Inter, Roboto, Open Sans, Lato, Arial, Space Grotesk, or system fonts.
+- No orphans. Any text block that wraps ends with at least two words on its last line, at every width.
 - No flat solid-color hero backgrounds. Heroes carry grain, texture, or depth.
 - Do not copy a reference design visually.
 - Do not stop after one screenshot pass.

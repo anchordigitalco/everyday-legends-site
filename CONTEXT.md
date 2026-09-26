@@ -78,7 +78,7 @@ Behavior:
 - Body: Bricolage Grotesque 300. Text under 16px (nav links, small UI labels) may use 400. Nothing else uses 400.
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Display to body size ratio of 3x or more at every breakpoint.
-- No orphans in any title, lede, or card title at any verification width. Use `text-wrap: balance` and confirm on the screenshot.
+- No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it.
 - The middot `·` is copy and is never replaced.
 
 ## Photos
@@ -107,7 +107,7 @@ Behavior:
 - Animate transform and opacity only. Never `transition-all`.
 - Scroll-driven moments: exactly 2. The Home hall and the About torch line. The cap is 3, and the third slot stays empty unless Jackson approves one. Everything else plays once when it enters view.
 - The Legends Among Us honorees are a static hall. The wireframe's side scroll there is superseded.
-- Easing: spring-style, or the menu curve `[0.22, 1, 0.36, 1]`.
+- Easing: movement uses spring-style easing or the menu curve `[0.22, 1, 0.36, 1]`. Pure opacity fades (glow, overlays, flicker) use sine.
 - Every animation has a reduced-motion state that shows final content with no movement.
 - No empty screens. At every scroll position, something with content is in view.
 
@@ -147,8 +147,8 @@ Space tokens: `--space-tight`, `--space-standard`, `--space-generous`, declared 
 |---|---|---|---|---|---|---|---|
 | 1 | Hero, on paper | Intro, then fade up | Title cols 1 to 9; lede cols 1 to 7; CTAs under the lede | None | Page top | None | Short |
 | 2 | Hall | Pinned side scroll (scroll-driven 1) | Rail full bleed | None | Tight | "INAUGURAL CLASS, 2026" label and the outline 2026 numeral | Pin covers 150vh of scroll at most |
-| 3 | Our Mission | Text reveal on the lede; pillars drop | Title and lede cols 1 to 6; body cols 8 to 12; pillars hang across cols 2 to 11 | None | Generous | None | Tallest on Home |
-| 4 | Legends in Action | Rows fade up once; spotlight hover | Alternating rows: photo cols 1 to 7 with text cols 8 to 12, then mirrored | Large, one per row | Standard | Title, deck, and "See all our work" in the head | Medium |
+| 3 | Our Mission | Text reveal on the lede; plaques drop | Title and lede cols 1 to 6; body cols 8 to 12; three plaques in one row across cols 1 to 12 | None | Generous | None | Medium |
+| 4 | Legends in Action | Rows fade up once; spotlight hover | Alternating rows: photo cols 1 to 7 with text cols 8 to 12, then mirrored | Large, one per row | Standard | Title, deck, and "See all our work" in the head | Tallest on Home |
 | 5 | Legends Among Us | Card settles to its angle once | Photo full bleed; card cols 2 to 6 | Full bleed, dark gradient on the left | Standard | Marginalia on the card | Medium |
 | 6 | Support the Foundation | Fade up | Ink slab full bleed; title and lede cols 1 to 6; body cols 7 to 11; marginalia under the body | None | Standard | 501(c)(3) marginalia | Medium short |
 | 7 | Newsletter | None | Cols 4 to 9, centered | None | Tight | None | Shortest |
@@ -157,7 +157,8 @@ Row rules:
 - Hero: the hall's rail MUST be visible inside the first viewport at 1440×900 and 390×844.
 - Hall: the eight honorees in program order, names only. No roles, no caption. The wireframe's "Wall of Honor", "The people we have named.", and "ROLE" are not copy and MUST NOT render. Under 900px and in reduced motion it becomes a plain vertical list.
 - Legends in Action: cards in copy deck order (1 Rahway PAL, 2 Salvation Army, 3 Legends Among Us). No dates anywhere, and no invented marginalia in their place.
-- Legends Among Us: the only rotated element on the site. "Us" and "Jersey" MUST NOT orphan.
+- Mission: the plaques are text only, sized to their words. No empty frames, no images. The whole section is at most 1.2 viewports tall at 1440×900.
+- Legends Among Us: the only rotated element on the site. The location line breaks only at the middot.
 - Newsletter: Name, Email, Sign up, styled in Brass and Ink. No backend exists yet, so the form MUST NOT show a success state. List it as open in the report.
 - Height spread on Home, tallest to shortest: 4:1 or more.
 
@@ -183,7 +184,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 1. The hall pin never exceeds 150vh. The Phase 5 hall ran long.
 2. No dead scroll. Phase 5 left two empty screens between the arch and the hall.
-3. No orphans in display type. The Phase 5 invitation card had two.
+3. No orphans anywhere. The Phase 5 card had two and slice 2 left a third.
 4. Every button is solid with 4.5:1 text. "About the foundation" read as a ghost button in Phase 5.
 5. Nothing overlaps unintentionally at any scroll position or width. The Phase 5 title overlapped the arch.
 6. No 3D and no video in the intro. The Runway take read as cheap CGI.

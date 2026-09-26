@@ -9,6 +9,7 @@ const PRINT = CustomEase.create('print', 'M0,0 C0.16,1 0.3,1 1,1');
 // The menu curve, cubic-bezier(.22,1,.36,1). CONTEXT.md, Motion.
 const MENU = CustomEase.create('menu', 'M0,0 C0.22,1 0.36,1 1,1');
 const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
+const ANY_MOTION = '(prefers-reduced-motion: no-preference)';
 
 // Measured from her mark (viewBox 1123 616 1845 1620): the arch circle centre as a fraction of the
 // rig box, and the opening's inner radius as a fraction of its width.
@@ -22,7 +23,23 @@ const FAILSAFE_MS = 4500;
 export function initHome() {
   initIntro();
   initHall();
+  initPillars();
+  initActionRows();
   initCard();
+}
+
+// Runs `play` once, the first time `el` is at least `threshold` in view.
+function onceInView(el: Element, threshold: number, play: () => void) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      play();
+    },
+    { threshold },
+  );
+  io.observe(el);
+  return io;
 }
 
 function initIntro() {
@@ -88,7 +105,7 @@ function initIntro() {
 
   const tl = gsap.timeline({ onComplete: finish });
   // 2. 0 to 1.2s: rays light one by one, center outward, 40ms apart.
-  tl.to(rays, { opacity: 1, duration: 0.56, ease: MENU, stagger: 0.04 }, 0);
+  tl.to(rays, { opacity: 1, duration: 0.56, ease: 'sine.out', stagger: 0.04 }, 0);
   // 3. 0.4 to 1.6s: the warm glow builds inside the arch.
   tl.to(glow, { opacity: 1, duration: 1.2, ease: 'sine.inOut' }, 0.4);
   // 5. 1.6 to 2.8s: the mark scales up about the centre of the arch opening. Letters and torch
@@ -209,6 +226,53 @@ function initCard() {
     return () => {
       io.disconnect();
       gsap.set(card, { clearProps: 'all' });
+    };
+  });
+}
+
+// Our Mission. Custom gsap, not 21st.dev (CONTEXT.md): each drop line grows from the rail
+// (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot.
+// 0.12s stagger between pillars. Plays once.
+function initPillars() {
+  const hang = document.querySelector<HTMLElement>('[data-pillars]');
+  if (!hang) return;
+  const drops = [...hang.querySelectorAll<HTMLElement>('[data-pillar-drop]')];
+  const plaques = [...hang.querySelectorAll<HTMLElement>('[data-pillar-plaque]')];
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(drops, { scaleY: 0, transformOrigin: '50% 0%' });
+    gsap.set(plaques, { opacity: 0, y: -24 });
+    const io = onceInView(hang, 0.3, () => {
+      const tl = gsap.timeline();
+      drops.forEach((drop, i) => {
+        const at = i * 0.12;
+        tl.to(drop, { scaleY: 1, duration: 0.5, ease: MENU }, at);
+        tl.to(plaques[i], { y: 0, duration: 0.5, ease: 'back.out(1.6)' }, at + 0.5);
+        tl.to(plaques[i], { opacity: 1, duration: 0.2, ease: 'sine.out' }, at + 0.5);
+      });
+    });
+
+    return () => {
+      io.disconnect();
+      gsap.set([...drops, ...plaques], { clearProps: 'all' });
+    };
+  });
+}
+
+// Legends in Action. Each row fades up once as it enters. The spotlight hover is CSS.
+function initActionRows() {
+  const rows = document.querySelectorAll<HTMLElement>('[data-action-row]');
+  if (!rows.length) return;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(rows, { opacity: 0, y: 32 });
+    const observers = [...rows].map((row) =>
+      onceInView(row, 0.2, () => gsap.to(row, { opacity: 1, y: 0, duration: 0.6, ease: MENU })),
+    );
+
+    return () => {
+      observers.forEach((io) => io.disconnect());
+      gsap.set(rows, { clearProps: 'all' });
     };
   });
 }
