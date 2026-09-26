@@ -14,5 +14,8 @@
     "astro": "^7.3.4",
     "gsap": "^3.15.0",
     "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.12.0"
   }
 }
