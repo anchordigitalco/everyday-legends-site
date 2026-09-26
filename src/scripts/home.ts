@@ -4,8 +4,6 @@ import { CustomEase } from 'gsap/CustomEase';
 
 gsap.registerPlugin(ScrollTrigger, CustomEase);
 
-// Crisp, like print: cubic-bezier(.16,1,.3,1), 600ms. The invitation card's entrance.
-const PRINT = CustomEase.create('print', 'M0,0 C0.16,1 0.3,1 1,1');
 // The menu curve, cubic-bezier(.22,1,.36,1). CONTEXT.md, Motion.
 const MENU = CustomEase.create('menu', 'M0,0 C0.22,1 0.36,1 1,1');
 const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
@@ -21,11 +19,22 @@ const FLAME_BASE = '2131 1619'; // centre of the flame where it meets the cup, i
 const FAILSAFE_MS = 4500;
 
 export function initHome() {
+  initNav();
   initIntro();
   initHall();
   initPillars();
   initActionRows();
   initCard();
+  initFadeUps();
+  initNewsletter();
+}
+
+// The sticky nav's paper backing fades in once the page leaves the top (CSS: html.nav-backed).
+function initNav() {
+  const root = document.documentElement;
+  const update = () => root.classList.toggle('nav-backed', scrollY > 8);
+  update();
+  addEventListener('scroll', update, { passive: true });
 }
 
 // Runs `play` once, the first time `el` is at least `threshold` in view.
@@ -217,7 +226,7 @@ function initCard() {
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         io.disconnect();
-        gsap.to(card, { opacity: 1, y: 0, rotation: 2, duration: 0.6, ease: PRINT });
+        gsap.to(card, { opacity: 1, y: 0, rotation: 2, duration: 0.6, ease: MENU });
       },
       { threshold: 0.3 },
     );
@@ -274,5 +283,31 @@ function initActionRows() {
       observers.forEach((io) => io.disconnect());
       gsap.set(rows, { clearProps: 'all' });
     };
+  });
+}
+
+// Support the Foundation: its content fades up once as it enters.
+function initFadeUps() {
+  const items = document.querySelectorAll<HTMLElement>('[data-fade-up]');
+  if (!items.length) return;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(items, { opacity: 0, y: 32 });
+    const observers = [...items].map((el) =>
+      onceInView(el, 0.2, () => gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: MENU })),
+    );
+
+    return () => {
+      observers.forEach((io) => io.disconnect());
+      gsap.set(items, { clearProps: 'all' });
+    };
+  });
+}
+
+// Newsletter: no provider is connected yet (CONTEXT.md, open items). The browser still checks the
+// fields, but a valid submit goes nowhere and shows no success state.
+function initNewsletter() {
+  document.querySelector<HTMLFormElement>('[data-newsletter]')?.addEventListener('submit', (e) => {
+    e.preventDefault();
   });
 }

@@ -1,0 +1,28 @@
+---
+// Every solid button on the site. Adapted from reference/21st/interactive-hover-button.tsx
+// (21st.dev). CONTEXT.md, "21st.dev islands", item 3. No state, so it is Astro and CSS.
+// Kept: the label slides out right (4px to 48px) and fades; a second label with an arrow slides in
+//       (48px to -4px) and fades up; the fill grows from an 8px dot at left 20%, top 40%; 300ms.
+// Changed: solid fill at rest, never an outline; the fill grows by transform scale only; renders as
+//          <a> (a submit control renders as <button>); auto width; pressed scales to 0.97;
+//          focus-visible matches hover. Styles live in global.css under "Buttons".
+type Props = {
+  label: string;
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'on-ink';
+  type?: 'submit' | 'button';
+  class?: string;
+  [attr: string]: unknown;
+};
+const { label, href, variant = 'primary', type, class: extra, ...rest } = Astro.props;
+const Tag = href ? 'a' : 'button';
+const tagProps = href ? { href } : { type: type ?? 'button' };
+---
+<Tag class:list={['btn', `btn--${variant}`, extra]} {...tagProps} {...rest}>
+  <span class="btn__fill" aria-hidden="true"></span>
+  <span class="btn__label">{label}</span>
+  <span class="btn__hover" aria-hidden="true">
+    <span>{label}</span>
+    <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+  </span>
+</Tag>

@@ -16,6 +16,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
 - Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. No CMS; Jackson makes updates.
+- EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
 - Donations: Zeffy, link pending. No payments in our code. Until the link arrives, every Donate points to `/support`.
 - References, never built and never copied visually: `reference/wireframes/` (structure only), `reference/21st/` (motion only).
 
@@ -54,7 +55,7 @@ Behavior:
 
 | Token | Hex | Allowed uses |
 |---|---|---|
-| ink | #15120E | Text, primary buttons, Support slab, intro wall, menu panel |
+| ink | #15120E | Text, primary buttons, Support slab, footer, intro wall, menu panel |
 | paper | #F2EADB | Page surface, text on ink |
 | paper-deep | #E4D7BF | Secondary surfaces, secondary buttons, photo tint |
 | brass | #A9844F | Rails, drop lines, card frame, button hover fill |
@@ -77,8 +78,8 @@ Behavior:
 - Display: Fraunces. `font-weight: 900` for weight, plus `font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0` on every display style. MUST NOT set wght inside font-variation-settings.
 - Body: Bricolage Grotesque 300. Text under 16px (nav links, small UI labels) may use 400. Nothing else uses 400.
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
-- Display to body size ratio of 3x or more at every breakpoint.
-- No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it.
+- Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
+- No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
 - The middot `·` is copy and is never replaced.
 
 ## Photos
@@ -107,7 +108,7 @@ Behavior:
 - Animate transform and opacity only. Never `transition-all`.
 - Scroll-driven moments: exactly 2. The Home hall and the About torch line. The cap is 3, and the third slot stays empty unless Jackson approves one. Everything else plays once when it enters view.
 - The Legends Among Us honorees are a static hall. The wireframe's side scroll there is superseded.
-- Easing: movement uses spring-style easing or the menu curve `[0.22, 1, 0.36, 1]`. Pure opacity fades (glow, overlays, flicker) use sine.
+- Easing: movement uses spring-style easing or the menu curve `[0.22, 1, 0.36, 1]`. Pure opacity fades (glow, overlays, flicker) use sine, unless a 21st.dev Keep list names a curve.
 - Every animation has a reduced-motion state that shows final content with no movement.
 - No empty screens. At every scroll position, something with content is in view.
 
@@ -123,13 +124,13 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
    Change: no blur, no `transition-all`, real images through `astro:assets`, applied to the three alternating rows (never a card grid), Brass and Ink styling. Touch devices get no hover effect.
 3. `interactive-hover-button.tsx`, every solid button on the site.
    Keep: label slides out right and fades; a second label with an arrow slides in; 300ms.
-   Change: default state is a solid fill, never an outline. The fill grows by transform scale from a dot, never by width, height, top, or left. Renders as `<a>`. Auto width. Pressed state scales to 0.97. Focus-visible matches hover.
+   Change: default state is a solid fill, never an outline. The fill grows by transform scale from a dot, never by width, height, top, or left. Renders as `<a>`, except a form submit, which is a `<button>`. The fill's starting dot stays hidden at rest so it never counts as brass. Auto width. Pressed state scales to 0.97. Focus-visible matches hover.
    - Primary: ink fill, paper text. Hover: brass fill, ink text.
    - Secondary: paper-deep fill, ink text. Hover: ink fill, paper text.
    - On ink surfaces: paper fill, ink text. Hover: brass fill, ink text.
 4. `liquid-morph-floating-menu.tsx`, phone nav under 900px.
    Keep: easing `[0.22, 1, 0.36, 1]`; ink circle rise 0.8s after a 0.1s delay; links fade in over 0.4s starting at 0.4s + 0.08s × index; hamburger to X, each bar rotating 45° over 0.4s.
-   Change: trigger at top right, never floating at the bottom. The ink circle scales up (transform) from the trigger into a full-screen ink panel. No per-letter hover roll. Real links. A real button with `aria-expanded`. Escape closes. Focus stays inside while open. Body scroll locked while open. Tapping outside or tapping a link closes it. Fonts and colors from this file.
+   Change: trigger at top right, never floating at the bottom. The ink circle scales up (transform) from the trigger into a full-screen ink panel. No per-letter hover roll. Real links. A real button with `aria-expanded`. Escape closes. Focus stays inside while open. Body scroll locked while open. Tapping outside or tapping a link closes it. The bars stay paper on the ink trigger. Fonts and colors from this file.
 
 Mission pillars are custom gsap, not 21st.dev: each drop line grows from the rail (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot. 0.12s stagger. Plays once.
 
@@ -137,7 +138,8 @@ Mission pillars are custom gsap, not 21st.dev: each drop line grows from the rai
 
 - Nav uses the mark only. At 900px and up: mark left; About, In the Community, Legends Among Us, Contact, and Donate right. Under 900px: mark left; Donate and the menu trigger right.
 - Donate is a solid primary button, visible at every width at all times, and repeated inside the open menu.
-- Footer: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; info@everydaylegend.com; Instagram · @everydaylegendsfoundation; Privacy Policy; "Built by Anchor Digital" linking to anchordigitalco.com in a new tab. No address, no phone.
+- The nav is fixed to the top of the screen, so Donate is always visible.
+- Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; info@everydaylegend.com; Instagram · @everydaylegendsfoundation; Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
 
 ## Home section table
 
@@ -203,4 +205,5 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - Clean, unwatermarked photo files and the credit line.
 - Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line, sponsorship packages link, original headshots.
 - Newsletter provider, for the form backend.
+- Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.

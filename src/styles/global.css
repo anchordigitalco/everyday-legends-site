@@ -21,8 +21,12 @@
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --body: "Bricolage Grotesque", "Avenir Next", sans-serif;
 
-  /* Secondary text: ink at about 70% (opacity hierarchy), still 6:1 on paper and paper-deep */
+  /* Secondary text: ink at about 70% (opacity hierarchy), still 6:1 on paper and paper-deep.
+     Tertiary (marginalia): 64%, still 5:1. On ink, the same steps in paper. */
   --ink-2: color-mix(in srgb, var(--ink) 72%, transparent);
+  --ink-3: color-mix(in srgb, var(--ink) 64%, transparent);
+  --paper-2: color-mix(in srgb, var(--paper) 72%, transparent);
+  --paper-3: color-mix(in srgb, var(--paper) 60%, transparent);
 
   /* Motion. Movement: the menu curve. Pure opacity fades: sine. */
   --menu: cubic-bezier(0.22, 1, 0.36, 1);
@@ -44,13 +48,20 @@
   --s-6: 4.5rem;
   --s-7: 6rem;
   --gutter: clamp(20px, 5vw, 96px);
+  --nav-h: 84px;
   --col-gap: clamp(12px, 1.6vw, 24px);
 
   /* Paper, as a surface: never flat */
   --paper-surface:
-    radial-gradient(70% 60% at 22% 18%, rgb(255 250 240 / 0.55), transparent 70%),
-    radial-gradient(60% 70% at 88% 92%, rgb(228 215 191 / 0.55), transparent 70%),
+    radial-gradient(60% 70% at 88% 92%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
+    radial-gradient(50% 40% at 0% 0%, color-mix(in srgb, var(--paper-deep) 30%, transparent), transparent 70%),
     var(--paper);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --nav-h: 104px;
+  }
 }
 
 *,
@@ -60,6 +71,7 @@
 }
 
 html {
+  scroll-padding-top: var(--nav-h);
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -129,15 +141,21 @@ img {
 }
 
 /* ── Buttons: solid fill only ──────────────────────────────── */
-/* Hover and focus-visible swap the fill in one step (no animated color). The 21st.dev fill
-   motion arrives in Home slice 3. */
+/* From reference/21st/interactive-hover-button.tsx (see components/Button.astro). Both labels share
+   one grid cell, so the button is as wide as the wider of the two. On hover and focus-visible the
+   label slides out right and fades, the arrow label slides in, and the hover fill grows from an 8px
+   dot at left 20%, top 40% by transform scale. 300ms, on the menu curve (movement). */
 .btn {
+  --dot: 560px; /* the grown fill: covers any button up to about 300px wide from its origin */
   position: relative;
-  display: inline-flex;
+  isolation: isolate;
+  display: inline-grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
   min-height: 48px;
   padding: 0 var(--s-3);
+  overflow: hidden;
+  border: 0;
   border-radius: 2px;
   font-family: var(--body);
   font-weight: 600;
@@ -146,8 +164,63 @@ img {
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
   transition: transform 220ms var(--menu);
   -webkit-tap-highlight-color: transparent;
+}
+.btn__label,
+.btn__hover {
+  grid-area: 1 / 1;
+  transition:
+    transform 300ms var(--menu),
+    opacity 300ms var(--menu);
+}
+.btn__label {
+  transform: translateX(4px);
+}
+.btn__hover {
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateX(48px);
+}
+.btn__arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.btn__fill {
+  position: absolute;
+  z-index: 0;
+  left: 20%;
+  top: 40%;
+  width: var(--dot);
+  height: var(--dot);
+  margin: calc(var(--dot) / -2) 0 0 calc(var(--dot) / -2);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(calc(8 / 560)); /* an 8px dot */
+  transition:
+    transform 300ms var(--menu),
+    opacity 300ms var(--sine);
+  pointer-events: none;
+}
+.btn:hover .btn__label,
+.btn:focus-visible .btn__label {
+  opacity: 0;
+  transform: translateX(48px);
+}
+.btn:hover .btn__hover,
+.btn:focus-visible .btn__hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+.btn:hover .btn__fill,
+.btn:focus-visible .btn__fill {
+  opacity: 1;
+  transform: scale(1);
 }
 .btn:focus-visible {
   outline: 2px solid var(--brass-light);
@@ -155,6 +228,13 @@ img {
 }
 .btn:active {
   transform: scale(0.97);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn__label,
+  .btn__hover,
+  .btn__fill {
+    transition: none;
+  }
 }
 
 /* Primary: ink fill, paper text. Hover: brass fill, ink text. */
@@ -165,9 +245,10 @@ img {
     0 1px 1px color-mix(in srgb, var(--ink) 12%, transparent),
     0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
 }
-.btn--primary:hover,
-.btn--primary:focus-visible {
+.btn--primary .btn__fill {
   background: var(--brass);
+}
+.btn--primary .btn__hover {
   color: var(--ink);
 }
 
@@ -180,9 +261,10 @@ img {
     0 1px 1px color-mix(in srgb, var(--ink) 10%, transparent),
     0 6px 14px -8px color-mix(in srgb, var(--ink) 30%, transparent);
 }
-.btn--secondary:hover,
-.btn--secondary:focus-visible {
+.btn--secondary .btn__fill {
   background: var(--ink);
+}
+.btn--secondary .btn__hover {
   color: var(--paper);
 }
 
@@ -190,28 +272,49 @@ img {
 .btn--on-ink {
   background: var(--paper);
   color: var(--ink);
+  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--ink) 80%, transparent);
 }
-.btn--on-ink:hover,
-.btn--on-ink:focus-visible {
+.btn--on-ink .btn__fill {
   background: var(--brass);
+}
+.btn--on-ink .btn__hover {
   color: var(--ink);
 }
 
 /* ── Nav: her mark only ────────────────────────────────────── */
-/* Sits above the intro overlay. While the intro's ink wall is behind it (html.el-intro-dark),
-   each link and Donate show an on-ink face; leaving the wall is an opacity crossfade. */
+/* Sticky: fixed to the top of the screen, above the intro overlay, so Donate is always in view.
+   While the intro's ink wall is behind it (html.el-intro-dark), each link and Donate show an on-ink
+   face; leaving the wall is an opacity crossfade. Once the page scrolls (html.nav-backed, set in
+   home.ts), a paper backing fades in behind it: opacity only. */
 .nav {
-  position: absolute;
+  position: fixed;
   inset: 0 0 auto 0;
   z-index: 60;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-areas:
-    "mark . donate"
-    "links links links";
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-areas: "mark . donate menu";
   align-items: center;
-  row-gap: var(--s-1);
-  padding: var(--s-2) 20px 0;
+  column-gap: var(--s-1);
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+}
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 140% at 96% 0%, color-mix(in srgb, var(--paper-deep) 70%, transparent), transparent 72%),
+    var(--paper);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent),
+    0 10px 24px -14px color-mix(in srgb, var(--lamp-edge) 40%, transparent);
+  opacity: 0;
+  transition: opacity 300ms var(--sine);
+  pointer-events: none;
+}
+html.nav-backed .nav::before {
+  opacity: 1;
 }
 .nav__mark {
   grid-area: mark;
@@ -233,9 +336,13 @@ img {
 .nav__mark:active {
   transform: scale(0.97);
 }
-.nav nav {
+.nav > nav {
   grid-area: links;
+  display: none; /* under 900px the links live in the phone menu */
   min-width: 0;
+}
+.nav__menu {
+  grid-area: menu;
 }
 .nav__links {
   display: flex;
@@ -326,9 +433,15 @@ html.el-intro-dark .nav__link::after {
 
 @media (min-width: 900px) {
   .nav {
+    grid-template-columns: auto 1fr auto;
     grid-template-areas: "mark links donate";
     column-gap: var(--s-5);
-    padding: var(--s-3) var(--gutter) 0;
+  }
+  .nav > nav {
+    display: block;
+  }
+  .nav__menu {
+    display: none;
   }
   .nav__mark img {
     height: 64px;
@@ -337,6 +450,113 @@ html.el-intro-dark .nav__link::after {
     justify-content: flex-end;
     gap: var(--s-4);
   }
+}
+
+/* ── Phone menu (islands/PhoneMenu.tsx) ─────────────────────── */
+/* The trigger is a solid ink square; its ink circle scales up into a full-screen ink panel. */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
+}
+.menu__trigger {
+  position: relative;
+  z-index: 2; /* above the open panel */
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: var(--ink);
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
+  transition: transform 220ms var(--menu);
+  -webkit-tap-highlight-color: transparent;
+}
+.menu__trigger:hover {
+  transform: scale(1.05);
+}
+.menu__trigger:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
+}
+.menu__trigger:active {
+  transform: scale(0.97);
+}
+.menu__bar {
+  grid-area: 1 / 1;
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--paper);
+}
+.menu__panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + var(--s-3)) var(--gutter) var(--s-5);
+  overflow: hidden;
+  pointer-events: none;
+}
+.menu__panel[data-open="true"] {
+  pointer-events: auto;
+}
+.menu__circle {
+  position: fixed;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: scale(0);
+}
+.menu__nav {
+  position: relative;
+}
+.menu__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu__link {
+  position: relative;
+  display: inline-block;
+  color: var(--paper);
+  font-size: clamp(2.25rem, 10vw, 3.25rem);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.menu__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--paper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms var(--menu);
+}
+.menu__link:hover::after,
+.menu__link:focus-visible::after {
+  transform: scaleX(1);
+}
+.menu__link:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 6px;
+}
+.menu__link:active {
+  transform: translateY(1px);
+}
+.menu__donate {
+  margin-top: var(--s-3);
 }
 
 /* ── Home intro ────────────────────────────────────────────── */
@@ -447,7 +667,8 @@ html.el-intro-dark:not(.el-intro-js) .nav__link > span {
 /* ── 1 · Hero, on paper ────────────────────────────────────── */
 .hero {
   position: relative;
-  padding-top: 168px;
+  /* The sticky nav's height, then a tight step (the phone menu replaced the wrapped link row) */
+  padding-top: calc(var(--nav-h) + var(--space-tight));
   /* Depth: deeper paper pooling at the upper right and the upper left, each fading out above the hero's lower edge, over the page grain */
   background:
     radial-gradient(60% 90% at 96% 0%, color-mix(in srgb, var(--paper-deep) 80%, transparent), transparent 72%),
@@ -929,7 +1150,7 @@ html.el-intro [data-hero-item] {
 .legends__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgb(21 18 14 / 0.8) 0%, rgb(21 18 14 / 0) 55%);
+  background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 80%, transparent) 0%, transparent 55%);
 }
 .legends__tint {
   position: absolute;
@@ -950,9 +1171,9 @@ html.el-intro [data-hero-item] {
   background: var(--paper-surface);
   transform: rotate(2deg);
   box-shadow:
-    0 1px 2px rgb(21 18 14 / 0.18),
-    0 14px 28px -12px rgb(42 32 22 / 0.4),
-    0 44px 90px -30px rgb(21 18 14 / 0.55);
+    0 1px 2px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 14px 28px -12px color-mix(in srgb, var(--lamp-edge) 40%, transparent),
+    0 44px 90px -30px color-mix(in srgb, var(--ink) 55%, transparent);
 }
 .card::before,
 .card::after {
@@ -976,15 +1197,16 @@ html.el-intro [data-hero-item] {
   margin: var(--s-2) 0 0;
   font-size: 1.25rem;
   line-height: 1.4;
-  font-weight: 400;
+  text-wrap: balance;
 }
 .card__body {
   margin: var(--s-2) 0 0;
-  color: rgb(21 18 14 / 0.82);
+  color: var(--ink-2);
+  text-wrap: pretty;
 }
 .card__marg {
   margin: var(--s-3) 0 0;
-  color: rgb(21 18 14 / 0.66);
+  color: var(--ink-3);
 }
 .card .btn {
   position: relative;
@@ -1004,31 +1226,314 @@ html.el-intro [data-hero-item] {
     inset: 0;
     aspect-ratio: auto;
   }
-  /* Wider than the viewport and anchored left, so all three people sit right of the card */
+  /* Wider than the viewport and set in from the left, so all three people sit right of the card
+     (which spans cols 2 to 6). The shade stays solid ink over the strip the photo leaves bare. */
   .legends__photo img {
     position: absolute;
     top: 0;
-    left: 0;
+    left: clamp(5%, calc((100vw - 900px) * 0.25 + 5%), 12%);
     width: 121%;
     max-width: none;
     height: 100%;
     object-position: 0% 24%;
   }
   .legends__shade {
-    background: linear-gradient(90deg, rgb(21 18 14 / 0.8) 0%, rgb(21 18 14 / 0) 55%);
+    background: linear-gradient(
+      90deg,
+      var(--ink) 12%,
+      color-mix(in srgb, var(--ink) 80%, transparent) 20%,
+      transparent 62%
+    );
   }
+  /* Cols 2 to 6 of the 12-column grid */
   .card {
+    --col: calc((100% - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
     position: absolute;
     top: 0;
     bottom: 0;
-    left: var(--gutter);
+    left: calc(var(--gutter) + var(--col) + var(--col-gap));
     height: fit-content;
-    width: clamp(320px, 30vw, 460px);
+    width: calc(5 * var(--col) + 4 * var(--col-gap));
     margin: auto 0;
     padding: var(--s-6) var(--s-5) var(--s-5);
   }
 }
 
+
+/* ── 6 · Support the Foundation ────────────────────────────── */
+/* The ink slab, full bleed. No brass. Depth from two faint paper pools and grain. */
+.support {
+  position: relative;
+  margin-top: var(--space-standard);
+  padding: var(--space-standard) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(55% 90% at 100% 0%, color-mix(in srgb, var(--paper) 7%, transparent), transparent 70%),
+    radial-gradient(45% 80% at 0% 100%, color-mix(in srgb, var(--paper-deep) 5%, transparent), transparent 70%),
+    var(--ink);
+  color: var(--paper);
+}
+.support__grain,
+.footer__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.support__grid {
+  position: relative;
+  row-gap: 0;
+}
+.support__title {
+  margin: 0;
+  font-size: clamp(2.5rem, 5.2vw, 5.75rem);
+  line-height: 0.94;
+  text-wrap: balance;
+}
+.support__lede {
+  margin: var(--s-3) 0 0;
+  max-width: 24em;
+  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.support__body {
+  margin: var(--s-4) 0 0;
+  max-width: 34em;
+  color: var(--paper-2);
+  text-wrap: pretty;
+}
+.support__marg {
+  margin: var(--s-3) 0 0;
+  max-width: 46em;
+  color: var(--paper-3);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.support__cta {
+  margin-top: var(--s-4);
+}
+
+@media (min-width: 900px) {
+  .support__title,
+  .support__lede,
+  .support__cta {
+    grid-column: 1 / span 6;
+  }
+  .support__body {
+    grid-column: 7 / span 5;
+    grid-row: 1 / span 2;
+    align-self: end;
+    margin: 0;
+  }
+  .support__marg {
+    grid-column: 7 / span 5;
+    grid-row: 3;
+    align-self: start;
+  }
+  .support__cta {
+    grid-row: 3;
+  }
+}
+
+/* ── 7 · Newsletter ────────────────────────────────────────── */
+/* The shortest section. Fields on ruled lines, no boxes. */
+.newsletter {
+  margin-top: var(--space-tight);
+  padding: var(--space-tight) 0;
+}
+.newsletter__inner {
+  text-align: center;
+}
+.newsletter__title {
+  margin: 0;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.newsletter__body {
+  margin: var(--s-2) auto 0;
+  max-width: 34em;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.newsletter__form {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-4);
+  text-align: left;
+}
+.newsletter__field {
+  display: grid;
+  gap: 2px;
+}
+.newsletter__field .label {
+  color: var(--ink-3);
+}
+.newsletter__field input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 300 1rem/1.5 var(--body);
+}
+.newsletter__field input:hover {
+  border-bottom-width: 2px;
+  padding-bottom: 7px;
+}
+.newsletter__field input:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 4px;
+}
+.newsletter__submit {
+  justify-self: start;
+}
+
+@media (min-width: 600px) {
+  .newsletter__form {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: end;
+  }
+}
+@media (min-width: 900px) {
+  .newsletter__inner {
+    grid-column: 4 / span 6;
+  }
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+/* On ink so her full gold lockup reads. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-standard) 0 var(--s-4);
+  background:
+    radial-gradient(50% 90% at 0% 0%, color-mix(in srgb, var(--paper) 6%, transparent), transparent 70%),
+    var(--ink);
+  color: var(--paper);
+}
+.footer__grid {
+  position: relative;
+  row-gap: var(--s-5);
+}
+.footer__logo {
+  justify-self: start;
+  display: block;
+  border-radius: 2px;
+  transition: transform 220ms var(--menu);
+}
+.footer__logo img {
+  width: clamp(168px, 17vw, 240px);
+  height: auto;
+}
+.footer__logo:hover {
+  transform: translateY(-2px);
+}
+.footer__logo:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 8px;
+}
+.footer__logo:active {
+  transform: scale(0.98);
+}
+.footer__contact,
+.footer__legal {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer__contact {
+  display: grid;
+  gap: var(--s-1);
+  font-size: 1.0625rem;
+}
+.footer__link {
+  position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--paper);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 220ms var(--menu);
+}
+.footer__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms var(--menu);
+}
+.footer__link:hover::after,
+.footer__link:focus-visible::after {
+  transform: scaleX(1);
+}
+.footer__link:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
+}
+.footer__link:active {
+  transform: translateY(1px);
+}
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
+  font-size: 0.875rem;
+}
+.footer__copy {
+  margin: 0;
+  color: var(--paper-3);
+  font-weight: 400;
+}
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--s-4);
+}
+.footer__legal .footer__link {
+  font-weight: 400;
+}
+/* The Anchor Digital credit: its mark at text height, a credit rather than a second brand. The
+   underline runs under the words only. */
+.footer__credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer__credit-mark {
+  width: auto;
+  height: 14px;
+  flex: none;
+}
+.footer__credit::after {
+  left: calc(14px * 615 / 312 + 8px);
+}
+
+@media (min-width: 900px) {
+  .footer__logo {
+    grid-column: 1 / span 4;
+  }
+  .footer__contact {
+    grid-column: 8 / span 5;
+    align-self: end;
+    justify-items: end;
+  }
+}
 
 /* ── Hall fallback: phones and reduced motion ──────────────── */
 /* A plain vertical list: the double rail runs down the left, each name on a short drop. */

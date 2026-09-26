@@ -65,4 +65,4 @@
 - Do not copy a reference design visually.
 - Do not stop after one screenshot pass.
 - Every client site ships a privacy policy page linked from the footer.
-- Footer credit on every client site: "Built by Anchor Digital," linking to anchordigitalco.com in a new tab.
+- Footer credit on every client site: the Anchor Digital logo with 'Built by Anchor Digital', linking to anchordigitalco.com in a new tab.
