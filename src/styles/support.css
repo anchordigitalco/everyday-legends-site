@@ -100,7 +100,7 @@
 .give__body {
   margin-top: 0;
 }
-/* The EIN and the 501(c)(3) designation are each one term: neither breaks inside itself */
+/* Terms that never break inside themselves: the EIN, 501(c)(3), tax-exempt, and tax-deductible */
 .give__term {
   white-space: nowrap;
 }
