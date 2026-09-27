@@ -116,7 +116,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
     <!-- 2 · Our Story, then the page's one pull quote as a full-width inscription -->
     <section class="story" aria-labelledby="story-title">
       <div class="grid story__grid">
-        <h2 id="story-title" class="display about-title story__title">Our Story</h2>
+        <h2 id="story-title" class="display section-title story__title">Our Story</h2>
         <div class="story__body">
           <p>Everyday Legends was created to honor the pillars that shape identity and purpose: sports, scholarship, and community.</p>
           <p>Athletics provides a safe space where discipline, resilience, and character are developed. Education remains the foundation for opportunity, critical thinking, and long-term advancement. Community and leadership ensure that impact extends beyond individual success, shaping culture and creating lasting change.</p>
@@ -185,7 +185,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
     <!-- 5 · What we do: three plates hung from a brass rail -->
     <section class="what" aria-labelledby="what-title">
       <div class="grid what__grid">
-        <h2 id="what-title" class="display about-title what__title">What we do</h2>
+        <h2 id="what-title" class="display section-title what__title">What we do</h2>
         <div class="what__hang hang" data-pillars>
           <div class="hang__rail" aria-hidden="true"></div>
           <ul class="hang__pillars">
@@ -206,7 +206,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
     <!-- 6 · Leadership: portraits in arch niches, founders large, staggered -->
     <section class="lead" aria-labelledby="lead-title">
       <div class="grid lead__grid">
-        <h2 id="lead-title" class="display about-title lead__title">Leadership</h2>
+        <h2 id="lead-title" class="display section-title lead__title">Leadership</h2>
         <ul class="lead__busts">
           {leaders.map((person, i) => (
             <li class:list={['bust', `bust--${person.tier}`, tierIndex(i) % 2 ? 'bust--right' : 'bust--left']}>
@@ -242,7 +242,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
           <Cornerstone />
         </div>
         <div class="account__text">
-          <h2 id="account-title" class="display about-title">Accountability</h2>
+          <h2 id="account-title" class="display section-title">Accountability</h2>
           <p>Everyday Legends Foundation, Inc. is a <span class="account__term">tax-exempt</span> organization under Section <span class="account__term">501(c)(3)</span> of the Internal Revenue Code. EIN <span class="account__term">39-4769708.</span> Contributions are <span class="account__term">tax-deductible</span> to the extent permitted by law.</p>
           <p>Gifts go three ways. To community organizations already running their own initiatives, where we add to the work rather than duplicate it. To athletics, through football camps and high school programs. And to education, through scholarships.</p>
           <!-- Same destination as the footer's Privacy Policy link (Base.astro) -->

@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Niche from '../components/Niche.astro';
+import '../styles/legends.css';
+import { honorees } from '../data/honorees';
+import { hrefOf } from '../data/nav';
+
+// Slice 1 of 3: the honorees hall only. The invitation, the recap, and Sponsorship come in slices 2 and 3.
+// Two tiers in program order: the two people in large niches, then the three programs hung from the
+// brass rail in smaller ones (CONTEXT.md, Inner pages, Legends Among Us).
+const people = honorees.filter((h) => h.tier === 'person');
+const programs = honorees.filter((h) => h.tier === 'program');
+
+// The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
+// name, award, or body ever ends on one word alone in the narrow columns.
+const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
+---
+<Base
+  title="Legends Among Us · Everyday Legends Foundation"
+  description="An afternoon of purpose, recognition, and meaningful connection."
+  current={hrefOf('Legends Among Us')}
+>
+  <Fragment slot="head">
+    <script is:inline>
+      // Before first paint: the hall's niches and drop lines wait hidden for their entrance
+      // (legends.ts), so they never flash first. The CSS applies this only with motion allowed.
+      document.documentElement.classList.add('el-hall-wait');
+    </script>
+  </Fragment>
+
+  <main>
+    <!-- The honorees hall: static, no pin, no scroll-driven motion. Entries are not links. -->
+    <section class="lhall" aria-labelledby="honorees-title">
+      <div class="grid lhall__grid">
+        <div class="lhall__head">
+          <h2 id="honorees-title" class="display section-title">Honorees</h2>
+          <h3 class="label lhall__class">Inaugural class, 2026</h3>
+        </div>
+
+        <!-- Tier 1: the people, large niches, the second hung lower -->
+        <ol class="lhall__people" data-people>
+          {people.map((h, i) => (
+            <li class:list={['honoree', 'honoree--person', `honoree--p${i + 1}`]}>
+              <Niche class="honoree__niche" settle>
+                <Image src={h.photo} alt={h.alt} widths={[400, 600, 800, 1200]} sizes="(min-width: 900px) 30vw, 22rem" style={`--focal: ${h.focal}`} />
+              </Niche>
+              <h4 class="honoree__deck mid-broken" data-mid-line>
+                <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
+              </h4>
+              <p class="honoree__body">{pair(h.body)}</p>
+            </li>
+          ))}
+        </ol>
+
+        <!-- Tier 2: the programs, hung from Home's brass double rail on three drop lengths -->
+        <div class="lhall__programs hang" data-pillars>
+          <div class="hang__rail" aria-hidden="true"></div>
+          <ol class="hang__pillars lhall__pillars">
+            {programs.map((h, i) => (
+              <li class:list={['pillar', 'honoree', 'honoree--program', `honoree--g${i + 1}`]}>
+                <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
+                <div class="honoree__plate" data-pillar-plaque>
+                  <Niche class="honoree__niche">
+                    <Image src={h.photo} alt={h.alt} widths={[300, 450, 600, 900]} sizes="(min-width: 900px) 20vw, 16rem" style={`--focal: ${h.focal}`} />
+                  </Niche>
+                </div>
+                <h4 class="honoree__deck mid-broken" data-mid-line>
+                  <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                  <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
+                </h4>
+                <p class="honoree__body">{pair(h.body)}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { initLegends } from '../scripts/legends';
+    initLegends();
+  </script>
+</Base>

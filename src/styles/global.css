@@ -130,6 +130,25 @@ img {
   letter-spacing: -0.03em;
 }
 
+/* Section titles: one class for every inner page, sized to the About Founders title */
+.section-title {
+  margin: 0;
+  font-size: min(4.5rem, (100cqw - 2 * var(--gutter)) / 7.9);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+@media (min-width: 900px) and (max-width: 1409.98px) {
+  .section-title {
+    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
+  }
+}
+@media (min-width: 1410px) {
+  .section-title {
+    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+    font-size: min(4.5rem, (4 * var(--col) + 3 * var(--col-gap)) / 7.9);
+  }
+}
+
 /* Marginalia and labels */
 .label {
   font-family: var(--body);
@@ -179,6 +198,45 @@ img {
   padding-top: calc(50% - 1px);
   overflow: hidden;
   background: var(--paper);
+}
+/* The photo, inset inside the frame on a concentric arch */
+.niche__photo {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9999px 9999px 0 0;
+}
+.niche__plate {
+  position: absolute;
+  inset: 0;
+}
+/* Centre bottom by default: the full width shows and the top gives way, so a black and white file's
+   watermark (bottom right) is always whole inside the frame. A color file sets its own focal point
+   through --focal (CONTEXT.md, Photos). */
+.niche__plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 100%);
+}
+/* The recess: a soft shadow under the head of the arch, still while the photo settles */
+.niche__recess {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 22px 30px -22px color-mix(in srgb, var(--ink) 50%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent);
+  pointer-events: none;
+}
+/* The standard photo treatment: a paper-deep tint through multiply */
+.photo-tint {
+  position: absolute;
+  inset: 0;
+  background: var(--paper-deep);
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
 /* ── Buttons: solid fill only ──────────────────────────────── */
@@ -849,6 +907,11 @@ html.el-intro [data-hero-item] {
 }
 .hall__name:nth-child(odd) .hall__drop {
   height: var(--drop-long);
+}
+/* The last plaque tucks on its left only: nothing follows it, and a negative right margin would pull
+   the track's end in, so the pin would release before the name was fully in view. */
+.hall__name:nth-child(odd):last-child {
+  margin-right: 0;
 }
 .hall__text {
   display: block;

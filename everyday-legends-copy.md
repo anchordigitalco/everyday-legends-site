@@ -35,6 +35,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Jaylen's Leadership body (see 2.6). Researched placeholder, the wording is ours. "Team captain" is for the 2026 season and needs a yearly check.
 - Support's sponsorship pointer body and button (see 5). The wording is ours.
 - The program book confirms three scholarships were awarded in 2026. Copy that describes scholarship as something the foundation intends to fund needs her decision. Do not change it until she answers.
+- Scholarship recipients left off both honorees halls.
 
 ## Sitemap
 
@@ -240,15 +241,12 @@ The page switches between pre-event and post-event states without a rebuild. Unt
 | Title | Honorees | 1 | NEW |
 | Class heading | Inaugural class, 2026 | 3 | NEW, pending approval |
 
-Eight honorees, in program order. Deck is `Name · Award`. Body is the first sentence of each program bio, verbatim. Scholarship recipients have no bio in the program, so their deck carries the college instead and there is no body.
+Five honorees, in program order. Deck is `Name · Award`. Body is the first sentence of each program bio, verbatim. Scholarship recipients are not listed on the site.
 
 | Name | Award | Deck detail | Body | Words | Source |
 |---|---|---|---|---|---|
 | Natasha Davis-Gomez | Community Trailblazer Award | | Natasha Davis-Gomez is a real estate developer, licensed general contractor, and nationally certified construction trainer with years of experience in community development and residential construction. | 25 | REUSED, program book |
 | Nathan Bailey | Young Legend Award | | Nathan Bailey is an exceptional student-athlete at St. Joseph Regional High School, where he has distinguished himself as a leader, scholar, and elite football player. | 25 | REUSED, program book |
-| Malcolm Jackson | Scholarship | The College of New Jersey | none | 0 | REUSED, program book |
-| Safiyah Abdus-Salaam | Scholarship | Virginia State University | none | 0 | REUSED, program book |
-| Mason Geis | Scholarship | Moravian University | none | 0 | REUSED, program book |
 | Seton Hall Prep Football Program | Athletic Programs Honoree | | Seton Hall Prep Football has long stood as a model of excellence, not only in athletic achievement but in the holistic development of young men. | 25 | REUSED, program book |
 | Rahway Police Athletic League | Athletic Programs Honoree | | The Rahway Police Athletic League is a nonprofit youth development organization founded in 1995 and dedicated to strengthening the connection between young people and the law enforcement professionals who serve the City of Rahway. | 34 | REUSED, program book |
 | Brick City Lions | Athletic Programs Honoree | | Founded in 2012, the Brick City Lions is more than a youth football and cheer organization, it is a transformative community movement dedicated to developing champions both on and off the field. | 32 | REUSED, program book |
@@ -320,7 +318,6 @@ None of these block the build. Each drops into a space already designed for it.
 3. The founding year.
 4. The new Zeffy general donation form link. **Blocks launch.**
 5. The sponsorship packages link, for the Sponsorship CTA.
-6. Original headshot files for Natasha Davis-Gomez, Nathan Bailey, and the three scholarship recipients. They appear in the program.
-7. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
+6. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
 
 Received: the luncheon program (honoree names, awards, and bios), September 2026.

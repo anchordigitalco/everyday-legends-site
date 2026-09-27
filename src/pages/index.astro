@@ -8,7 +8,7 @@ import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.
 import rahwayPhoto from '../../brand_assets/ELRahwayPAL.webp';
 import salvationPhoto from '../../brand_assets/ELSalvationArmy.webp';
 import luncheonSpeechPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-137_websize.jpg';
-import { honorees } from '../data/honorees';
+import { honorees, rahwayAlt } from '../data/honorees';
 
 // Our Mission, the three decks (everyday-legends-copy.md, 1.2), hung on the rail in copy order.
 const pillars = ['Scholarship Support', 'Athletic Investment', 'Community Recognition'];
@@ -20,7 +20,7 @@ const actions = [
     title: 'Support for Youth Basketball League, Rahway PAL',
     body: "Jaylen McClain donated to his youth basketball league, Rahway PAL. He is pictured with the Police Athletic League's Dan Marchica and Darius Singletary. Also pictured, Dr. Syreeta McClain, Executive Director of Everyday Legends.",
     photo: rahwayPhoto,
-    alt: "Jaylen McClain, Dr. Syreeta McClain, and the Police Athletic League's Dan Marchica and Darius Singletary with the foundation's donation check to Rahway PAL, under the league's banner.",
+    alt: rahwayAlt,
   },
   {
     title: 'Salvation Army Toy Donation',
@@ -78,7 +78,7 @@ const actions = [
             <p class="display hall__year" aria-hidden="true">2026</p>
           </div>
           <ol class="hall__names">
-            {honorees.map((name) => (
+            {honorees.map(({ name }) => (
               <li class="hall__name">
                 <span class="hall__drop" aria-hidden="true"></span>
                 <span class="display hall__text">{name}</span>

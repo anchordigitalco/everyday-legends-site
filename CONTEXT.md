@@ -26,7 +26,7 @@ The site is a hall of honor. You enter through the arch in her mark, and inside,
 
 How it resolves on the web:
 - A building is walked through; a page is scrolled. Home is the only page that moves you: the intro takes you through the arch once, and the hall walks you along the wall.
-- Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo. Support is the exception: its header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
+- Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo, with two exceptions. Legends Among Us opens on the invitation card laid on the room photo. Support's header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
 - The dark wall exists only in the intro. After it, the paper page is the inside of the building.
 
 ## Home intro (built)
@@ -73,7 +73,7 @@ How it resolves on the web:
 - Color (`Everyday_Legends_2026_*`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work.
 - The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push.
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
-- Arch and niche slots take tall files only, so the watermark stays in frame. Wide files run full frame.
+- Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
 - Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
 - Every content photo goes through `astro:assets` with real alt text. MUST NOT set content photos as CSS backgrounds. Alt text MUST NOT name anyone the copy deck does not name.
 - Photo treatment as built in Phase 5 (paper-deep tint through `mix-blend-multiply`). One file per slot so each swaps cleanly.
@@ -84,9 +84,9 @@ How it resolves on the web:
 | Home, Legends in Action card 2 | ELSalvationArmy.webp |
 | Home, Legends in Action card 3 | -137 |
 | Home, Legends Among Us | 178 |
-| Legends Among Us recap | -53, -20, then -119 closing, centered; fourth chosen in that slice |
-| Legends Among Us honorees | 128, 123, 124, 190, 219 |
-| In the Community, luncheon entry | 177 |
+| Legends Among Us recap | -53, -20, then -119 closing, centered. Three photos. |
+| Legends Among Us honorees | 222 Natasha, 210 Nathan, 190 Seton Hall Prep, ELRahwayPAL.webp Rahway PAL, 177 Brick City Lions |
+| In the Community, luncheon entry | 219 |
 | About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
 | About, beside the torch line | -48, full frame |
 | About, Leadership | KNOW_shoot_5 (Dr. McClain), -117 (Jaylen) |
@@ -144,7 +144,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 
 Space tokens `--space-tight`, `--space-standard`, `--space-generous`, each at least 1.5x the one before. 12-column grid.
 1. Hero on paper: intro, then fade up. The hall's rail is visible in the first viewport at 1440×900 and 390×844.
-2. Hall: pinned side scroll (scroll-driven 1), 150vh max. Eight honorees in program order, names only. A vertical list under 900px and in reduced motion.
+2. Hall: pinned side scroll (scroll-driven 1), 150vh max. Five honorees in program order, names only, from `src/data/honorees.ts`. A vertical list under 900px and in reduced motion.
 3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall.
 4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home.
 5. Legends Among Us: the card settles to its angle, the only rotated element on the site. The location line breaks only at the middot.
@@ -199,14 +199,14 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls.
 
 ## Open client items that touch the build
 
 - Zeffy link, for the form embedded on `/support`.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
 - Clean, unwatermarked photo files and the credit line.
-- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link, original headshots.
+- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link.
 - Newsletter provider, for the form backend.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.

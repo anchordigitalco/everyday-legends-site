@@ -2,16 +2,6 @@
    About the Foundation. Tokens live in global.css; nothing here adds a color.
    ───────────────────────────────────────────────────────────── */
 
-/* The standard photo treatment: a paper-deep tint through multiply */
-.photo-tint {
-  position: absolute;
-  inset: 0;
-  background: var(--paper-deep);
-  opacity: 0.25;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
 /* ── 1 · Niche header: Our Vision ──────────────────────────── */
 /* On paper, centred. Her arch from the mark as one hairline ink frame, the photo set inside it.
    The niche is sized from the viewport height so the niche and the title both land in the first
@@ -26,41 +16,12 @@
     radial-gradient(50% 70% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
     radial-gradient(40% 50% at 0% 10%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
 }
-/* The niche frame itself (.niche) is shared with Support and lives in global.css, under "Niche". */
+/* The niche itself (frame, photo, tint, recess) is shared and lives in global.css, under "Niche". */
 /* The header's niche, sized from the viewport height (components/Niche.astro holds the markup) */
 .niche-hdr__niche {
   --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);
   justify-self: center;
   width: min(calc(var(--niche-h) * 0.72), 100%);
-}
-/* The photo, inset inside the frame on a concentric arch */
-.niche__photo {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 9999px 9999px 0 0;
-}
-.niche__plate {
-  position: absolute;
-  inset: 0;
-}
-/* Centre bottom: the full width shows and the top gives way, so the watermark (bottom right) is
-   always whole inside the frame */
-.niche__plate img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 100%;
-}
-/* The recess: a soft shadow under the head of the arch, still while the photo settles */
-.niche__recess {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow:
-    inset 0 22px 30px -22px color-mix(in srgb, var(--ink) 50%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent);
-  pointer-events: none;
 }
 /* The settle (about.ts): with motion allowed the head script adds html.el-settle before first paint,
    so the photo waits hidden and never flashes before it settles. */
@@ -280,31 +241,14 @@ html.el-settle:not(.el-settle-js) .niche__plate {
 }
 
 /* ── About section titles ──────────────────────────────────── */
-/* Our Story and What we do wear the Founders' title at every width: the same display style and the
-   same size formula (.founders__title), so the three titles always match. Their sections are the
-   size containers the formula reads. */
+/* Our Story, What we do, Leadership, and Accountability wear the shared .section-title (global.css),
+   the Founders' title size formula, so every title matches. Their sections are the size containers
+   the formula reads. */
 .story,
 .what,
 .lead,
 .account {
   container-type: inline-size;
-}
-.about-title {
-  margin: 0;
-  font-size: min(4.5rem, (100cqw - 2 * var(--gutter)) / 7.9);
-  line-height: 0.98;
-  text-wrap: balance;
-}
-@media (min-width: 900px) and (max-width: 1409.98px) {
-  .about-title {
-    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
-  }
-}
-@media (min-width: 1410px) {
-  .about-title {
-    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
-    font-size: min(4.5rem, (4 * var(--col) + 3 * var(--col-gap)) / 7.9);
-  }
 }
 
 /* ── 2 · Our Story ─────────────────────────────────────────── */

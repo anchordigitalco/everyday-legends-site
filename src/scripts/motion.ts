@@ -23,10 +23,11 @@ export function onceInView(el: Element, threshold: number, play: () => void) {
   return io;
 }
 
-// Plates hung from a brass rail: Home's Our Mission and About's What we do. Custom gsap, not 21st.dev
-// (CONTEXT.md): each drop line grows from the rail (scaleY 0 to 1, 0.5s), then its plaque drops from
-// y -24px to 0 with a slight overshoot. 0.12s stagger between pillars. Plays once.
-export function initPillars(hang: HTMLElement | null) {
+// Plates hung from a brass rail: Home's Our Mission, About's What we do, and the Legends Among Us
+// honorees hall. Custom gsap, not 21st.dev (CONTEXT.md): each drop line grows from the rail (scaleY 0 to
+// 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot. 0.12s stagger between
+// pillars. Plays once, when `threshold` of the hang is in view (Home and About: 0.3).
+export function initPillars(hang: HTMLElement | null, threshold = 0.3) {
   if (!hang) return;
   const drops = [...hang.querySelectorAll<HTMLElement>('[data-pillar-drop]')];
   const plaques = [...hang.querySelectorAll<HTMLElement>('[data-pillar-plaque]')];
@@ -34,7 +35,7 @@ export function initPillars(hang: HTMLElement | null) {
   gsap.matchMedia().add(ANY_MOTION, () => {
     gsap.set(drops, { scaleY: 0, transformOrigin: '50% 0%' });
     gsap.set(plaques, { opacity: 0, y: -24 });
-    const io = onceInView(hang, 0.3, () => {
+    const io = onceInView(hang, threshold, () => {
       const tl = gsap.timeline();
       drops.forEach((drop, i) => {
         const at = i * 0.12;
@@ -47,6 +48,34 @@ export function initPillars(hang: HTMLElement | null) {
     return () => {
       io.disconnect();
       gsap.set([...drops, ...plaques], { clearProps: 'all' });
+    };
+  });
+}
+
+// The niche settle, as About's header plays it on load: scale 1.06 to 1 on the menu curve and opacity 0
+// to 1 on sine, 0.9s. Here it plays once, when `threshold` of `group` is in view, each plate `stagger`
+// after the one before, and only once its photo has decoded, so it never settles an empty niche.
+export function settleInView(group: HTMLElement | null, threshold: number, stagger: number) {
+  if (!group) return;
+  const plates = [...group.querySelectorAll<HTMLElement>('[data-niche-plate]')];
+  if (!plates.length) return;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(plates, { opacity: 0, scale: 1.06 });
+    const io = onceInView(group, threshold, () => {
+      const imgs = plates.map((p) => p.querySelector('img')).filter((i): i is HTMLImageElement => !!i);
+      imgs.forEach((i) => (i.loading = 'eager'));
+      Promise.all(imgs.map((i) => i.decode().catch(() => null))).then(() => {
+        plates.forEach((plate, i) => {
+          gsap.to(plate, { scale: 1, duration: 0.9, ease: MENU, delay: i * stagger });
+          gsap.to(plate, { opacity: 1, duration: 0.9, ease: 'sine.inOut', delay: i * stagger });
+        });
+      });
+    });
+
+    return () => {
+      io.disconnect();
+      gsap.set(plates, { clearProps: 'opacity,scale,transform' });
     };
   });
 }

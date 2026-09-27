@@ -1,0 +1,185 @@
+/* ─────────────────────────────────────────────────────────────
+   Legends Among Us. Tokens live in global.css; nothing here adds a color.
+   Brass on this page: the programs' double rail, and their drop lines.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── The honorees hall ─────────────────────────────────────── */
+/* Two tiers, in program order. The people hang large, the second lower by the head of its arch; the
+   programs hang smaller from the brass rail on three drop lengths, so no two niche tops align. The
+   relationships are declared once: a person's niche is 1.4x a program's (--hall-niche), and a
+   program's name is 0.8x a person's. Under 900px: one centred column, rail and drops hidden. */
+.lhall {
+  container-type: inline-size;
+  position: relative;
+  padding: calc(var(--nav-h) + var(--space-standard)) 0 var(--space-generous);
+}
+.lhall__grid {
+  --person-name: clamp(2rem, 1.2rem + 1.8vw, 3.25rem);
+  --program-name: calc(var(--person-name) * 0.8);
+  --drop-unit: clamp(2rem, 4vw, 3.5rem);
+}
+.lhall__class {
+  margin: var(--s-3) 0 0;
+  color: var(--ink-2);
+}
+.lhall__people,
+.lhall .lhall__pillars {
+  display: grid;
+  row-gap: var(--s-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lhall__people {
+  margin-top: var(--space-tight);
+}
+.lhall__programs {
+  margin-top: var(--s-6);
+}
+
+/* One entry: niche, then the deck (name in the display face, award in the label style, one line that
+   breaks only at its middot), then the body */
+.lhall .honoree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.honoree--person {
+  --niche-w: min(100%, 22rem);
+}
+.honoree--program {
+  --niche-w: min(100%, 16rem);
+}
+.honoree__plate,
+.honoree__niche {
+  width: var(--niche-w);
+}
+.honoree__deck {
+  margin: var(--s-3) 0 0;
+  font-weight: inherit;
+  line-height: 1;
+  text-wrap: balance;
+}
+/* The name holds its own line, as About's Leadership deck does, so the deck always breaks at its middot
+   (hidden visually, still read) and every entry reads the same at every width */
+.honoree__name {
+  display: block;
+  font-size: var(--person-name);
+  line-height: 1.02;
+}
+.honoree--program .honoree__name {
+  font-size: var(--program-name);
+}
+.honoree__award {
+  color: var(--ink-2);
+}
+.mid-broken .honoree__award {
+  margin-top: var(--s-2);
+}
+.honoree__body {
+  max-width: 34em;
+  margin: var(--s-2) 0 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+/* Phones: the rail and the drop lines are hidden */
+.lhall__programs .hang__rail,
+.lhall .pillar__drop {
+  display: none;
+}
+
+/* The entrances (legends.ts): with motion allowed, the head script's html.el-hall-wait holds the people's
+   photos and the programs' drops and niches in their start state from first paint. Failsafe: if
+   legends.ts never takes over (html.el-hall-js), the CSS brings them in instead. */
+@media (prefers-reduced-motion: no-preference) {
+  html.el-hall-wait .lhall [data-niche-plate] {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  html.el-hall-wait .lhall [data-pillar-drop] {
+    transform: scaleY(0);
+  }
+  html.el-hall-wait .lhall [data-pillar-plaque] {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  html.el-hall-wait:not(.el-hall-js) .lhall :is([data-niche-plate], [data-pillar-drop], [data-pillar-plaque]) {
+    animation: lhall-in 600ms var(--sine) 2.5s both;
+  }
+}
+@keyframes lhall-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .lhall__grid {
+    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+    /* The one width token: a program's niche, two and a half columns */
+    --hall-niche: calc(2.5 * var(--col) + 1.5 * var(--col-gap));
+  }
+  .lhall__head {
+    grid-column: 1 / span 6;
+  }
+  .lhall .honoree {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .honoree--person {
+    --niche-w: calc(var(--hall-niche) * 1.4);
+  }
+  .honoree--program {
+    --niche-w: var(--hall-niche);
+  }
+
+  /* People: cols 2 to 6, then cols 9 to 12 hung lower by the head of its arch (half its width) */
+  .lhall__people {
+    grid-template-columns: subgrid;
+    align-items: start;
+    row-gap: 0;
+  }
+  .honoree--p1 {
+    grid-column: 2 / span 5;
+  }
+  .honoree--p2 {
+    grid-column: 9 / span 4;
+    padding-top: calc(var(--niche-w) / 2);
+  }
+
+  /* Programs: the rail across cols 1 to 12; cols 1 to 4, 5 to 9, and 10 to 12 on drops of one, three,
+     and two units. Each drop falls to the centre of its niche's head. */
+  .lhall__programs {
+    margin-top: var(--space-standard);
+  }
+  .lhall__programs .hang__rail,
+  .lhall .pillar__drop {
+    display: block;
+  }
+  .lhall .lhall__pillars {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    align-items: start;
+    row-gap: 0;
+  }
+  .lhall .pillar__drop {
+    height: var(--drop);
+    margin-left: calc(var(--niche-w) / 2 - 0.5px);
+  }
+  .honoree--g1 {
+    --drop: var(--drop-unit);
+    grid-column: 1 / span 4;
+  }
+  .honoree--g2 {
+    --drop: calc(var(--drop-unit) * 3);
+    grid-column: 5 / span 5;
+  }
+  .honoree--g3 {
+    --drop: calc(var(--drop-unit) * 2);
+    grid-column: 10 / span 3;
+  }
+}
