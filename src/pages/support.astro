@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Niche from '../components/Niche.astro';
 import Cornerstone from '../components/Cornerstone.astro';
+import Button from '../components/Button.astro';
+import { hrefOf } from '../data/nav';
 import '../styles/support.css';
 import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
 
@@ -28,6 +30,9 @@ const rays: number[][] = [
 // centred on that point and ends at it, wide and tall enough for every ray, so the svg's bottom centre
 // is the head's centre. support.css maps the arch's outer edge onto the frame's.
 const RAYS_VIEWBOX = '1162.1 657.1 1770.7 1050.1';
+
+// The pointer sends sponsors to the Sponsorship section on Legends Among Us (copy deck 5).
+const SPONSOR_HREF = `${hrefOf('Legends Among Us')}#sponsorship`;
 ---
 <Base
   title="Support the Foundation · Everyday Legends Foundation"
@@ -85,6 +90,17 @@ const RAYS_VIEWBOX = '1162.1 657.1 1770.7 1050.1';
               <p class="label give__placeholder" data-mid-line><span data-mid-a>Donation&nbsp;form</span><span data-mid>&nbsp;·</span> <span data-mid-b>link&nbsp;to&nbsp;be&nbsp;filled</span></p>
             </div>
           </Niche>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · The sponsorship pointer: the shortest section, centred under an ink hairline. Static. -->
+    <section class="pointer" aria-labelledby="pointer-title">
+      <div class="grid pointer__grid">
+        <div class="pointer__inner">
+          <h2 id="pointer-title" class="display pointer__title">Interested in&nbsp;sponsoring?</h2>
+          <p class="pointer__body">Sponsorship runs through the Legends&nbsp;Among&nbsp;Us&nbsp;luncheon.</p>
+          <Button label="Sponsor the luncheon" href={SPONSOR_HREF} variant="secondary" class="pointer__cta" />
         </div>
       </div>
     </section>

@@ -2,12 +2,14 @@
 // The shell every page shares: head, grain, the fixed nav, and the footer on ink.
 // Pages pass their <main> as the default slot. Home adds its intro through the "head" and
 // "overlay" slots. `current` is the nav href of the page, which gets aria-current="page".
+// Every Donate points to /support; on /support itself, the nav and menu Donate go to its form (#give).
 import '../styles/global.css';
 import PhoneMenu from '../components/islands/PhoneMenu';
 import Button from '../components/Button.astro';
 import markUrl from '../../brand_assets/everyday-legends-mark.svg?url';
 import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
 import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
+import { navLinks } from '../data/nav';
 
 type Props = { title: string; description: string; current?: string };
 const { title, description, current } = Astro.props;
@@ -19,12 +21,7 @@ const anchorMark = anchorMarkRaw
   .replace(/\s(role|aria-labelledby)="[^"]*"/g, '')
   .replace('<svg ', '<svg class="footer__credit-mark" aria-hidden="true" focusable="false" ');
 
-const navLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'In the Community', href: '/in-the-community' },
-  { label: 'Legends Among Us', href: '/legends-among-us' },
-  { label: 'Contact', href: '/contact' },
-];
+const donateHref = current === '/support' ? '#give' : '/support';
 ---
 <html lang="en">
   <head>
@@ -63,9 +60,9 @@ const navLinks = [
           ))}
         </ul>
       </nav>
-      <Button label="Donate" href="/support" class="nav__donate" data-label="Donate" />
+      <Button label="Donate" href={donateHref} class="nav__donate" data-label="Donate" />
       <div class="nav__menu">
-        <PhoneMenu client:load links={navLinks} donateHref="/support" current={current} />
+        <PhoneMenu client:load links={navLinks} donateHref={donateHref} current={current} />
       </div>
     </header>
 

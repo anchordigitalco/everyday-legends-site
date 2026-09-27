@@ -6,10 +6,11 @@
 /* ── 1 · The slab ──────────────────────────────────────────── */
 /* Ink, static, not full-screen. It starts under the nav rather than behind it, so the nav keeps its
    paper ground at the top of the page. Depth from two faint paper pools and grain, as Home's slab. */
+/* Under 900px the slab keeps more stone below the lede, so it stays taller than the pointer */
 .slab {
   position: relative;
   margin-top: var(--nav-h);
-  padding: var(--space-standard) 0;
+  padding: var(--space-standard) 0 var(--space-generous);
   overflow: hidden;
   background:
     radial-gradient(55% 90% at 100% 0%, color-mix(in srgb, var(--paper) 7%, transparent), transparent 70%),
@@ -171,7 +172,42 @@
   }
 }
 
+/* ── 3 · The sponsorship pointer ───────────────────────────── */
+/* The shortest section: centred under one ink hairline across the grid's width, no brass, no motion.
+   The title is at least 2.5x the body below 440px and 3x from 440px up, as the lede is. */
+.pointer {
+  padding-bottom: var(--space-tight);
+}
+.pointer__inner {
+  display: grid;
+  justify-items: center;
+  padding-top: var(--space-tight);
+  border-top: 1px solid var(--ink);
+  text-align: center;
+}
+.pointer__title {
+  max-width: 12em;
+  margin: 0;
+  font-size: clamp(2.75rem, 0.25rem + 10.8vw, 4.5rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.pointer__body {
+  max-width: 34em;
+  margin: var(--s-2) 0 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+.pointer__cta {
+  margin-top: var(--s-3);
+}
+
 @media (min-width: 900px) {
+  .slab {
+    padding-bottom: var(--space-standard);
+  }
   /* A gentler curve in the ten-column window, so the lede holds three lines from 900px up */
   .slab__lede {
     grid-column: 1 / span 10;
