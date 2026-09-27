@@ -138,7 +138,12 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
 
 Mission pillars are custom gsap, not 21st.dev: each drop line grows from the rail (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot. 0.12s stagger. Plays once. About's What we do reuses it with fuller plates.
 
-About adds no new 21st.dev components. Its other motion is custom gsap: the niche photo settles on load (scale 1.06 to 1 with opacity, about 0.9s, menu curve), the torch line, the inscription rising line by line out of a mask, and the We aim to stair entrance.
+About adds no new 21st.dev components. Its other motion is custom gsap: the niche photo settles on load (0.9s: scale 1.06 to 1 on the menu curve, opacity 0 to 1 on sine), the torch line, the inscription rising line by line out of a mask, and the We aim to stair entrance.
+
+## Shared shell
+
+- `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
+- Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 
 ## Nav and footer
 
@@ -174,6 +179,11 @@ Row rules:
 
 Each slice fills its own rows from its wireframe at the start of that slice. These parts are fixed now:
 - About: niche header carrying Our Vision; Our Story with the page's one pull quote set as a full-width inscription; Founders' Story as the longest section, with the torch line (scroll-driven 2) beside the torch sentence; "We aim to" as three lines stepping down and right; What we do; Leadership as portraits in arch niches, founders large, board smaller, staggered, and complete with 2 people or 4; Accountability as the cornerstone.
+  - About niche: her arch from mark path 1 (semicircle head, straight sides, flat base), 0.72 width to height, one hairline ink frame, photo on an inset inner arch, anchored center bottom. No rays, no brass.
+  - Torch marker: viewBox crop `2026 1324 216 449` of mark paths 0 and 7, brass, paper outline. It rides the fill head and locks at the torch sentence.
+  - Founders grid: from the switch width (1410px) up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900px to 1409px, the title sits full width above; line col 1, photo and copy cols 2–12 at the copy measure.
+  - Founders copy measure: 64ch max-width.
+  - About brass: 1 of 3 used (the torch line with its marker).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
 - Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
 - Support: slab header with no niche; the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's; the sponsorship pointer.

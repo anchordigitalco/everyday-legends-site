@@ -19,7 +19,6 @@ const FLAME_BASE = '2131 1619'; // centre of the flame where it meets the cup, i
 const FAILSAFE_MS = 4500;
 
 export function initHome() {
-  initNav();
   initIntro();
   initHall();
   initPillars();
@@ -27,14 +26,6 @@ export function initHome() {
   initCard();
   initFadeUps();
   initNewsletter();
-}
-
-// The sticky nav's paper backing fades in once the page leaves the top (CSS: html.nav-backed).
-function initNav() {
-  const root = document.documentElement;
-  const update = () => root.classList.toggle('nav-backed', scrollY > 8);
-  update();
-  addEventListener('scroll', update, { passive: true });
 }
 
 // Runs `play` once, the first time `el` is at least `threshold` in view.

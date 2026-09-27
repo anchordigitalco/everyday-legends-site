@@ -14,9 +14,9 @@ import { motion, useReducedMotion } from 'motion/react';
 const ease = [0.22, 1, 0.36, 1] as const;
 
 type NavLink = { label: string; href: string };
-type Props = { links: NavLink[]; donateHref: string };
+type Props = { links: NavLink[]; donateHref: string; current?: string };
 
-export default function PhoneMenu({ links, donateHref }: Props) {
+export default function PhoneMenu({ links, donateHref, current }: Props) {
   const [open, setOpen] = useState(false);
   const [circle, setCircle] = useState({ x: 0, y: 0, r: 0 });
   const reduced = useReducedMotion();
@@ -141,6 +141,7 @@ export default function PhoneMenu({ links, donateHref }: Props) {
                 <motion.a
                   className="display menu__link"
                   href={link.href}
+                  aria-current={link.href === current ? 'page' : undefined}
                   onClick={() => close()}
                   initial={false}
                   animate={{ opacity: open ? 1 : 0 }}

@@ -391,6 +391,11 @@ html.nav-backed .nav::before {
 .nav__link:focus-visible::after {
   transform: scaleX(1);
 }
+/* Current page: the hover rule stays drawn, 2px, so it reads as a state rather than a hover */
+.nav__link[aria-current="page"]::after {
+  height: 2px;
+  transform: scaleX(1);
+}
 .nav__link:focus-visible {
   outline: 2px solid var(--brass-light);
   outline-offset: 3px;
@@ -545,7 +550,8 @@ html.menu-open body {
   transition: transform 320ms var(--menu);
 }
 .menu__link:hover::after,
-.menu__link:focus-visible::after {
+.menu__link:focus-visible::after,
+.menu__link[aria-current="page"]::after {
   transform: scaleX(1);
 }
 .menu__link:focus-visible {

@@ -1,13 +1,9 @@
 ---
 import { Image } from 'astro:assets';
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
 import HomeIntro from '../components/HomeIntro.astro';
 import TextReveal from '../components/islands/TextReveal';
-import PhoneMenu from '../components/islands/PhoneMenu';
 import Button from '../components/Button.astro';
-import markUrl from '../../brand_assets/everyday-legends-mark.svg?url';
-import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
-import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import rahwayPhoto from '../../brand_assets/ELRahwayPAL.webp';
 import salvationPhoto from '../../brand_assets/ELSalvationArmy.webp';
@@ -39,28 +35,9 @@ const actions = [
     alt: 'A speaker addresses the room from the lectern at the Legends Among Us luncheon at The Highlawn, beside the welcome sign.',
   },
 ];
-
-// The Anchor Digital mark, inline so its currentColor fill takes the footer's paper text on ink.
-// The link text names it, so the drawing is decorative here: its title and label come off.
-const anchorMark = anchorMarkRaw
-  .replace(/<title[^>]*>.*?<\/title>/s, '')
-  .replace(/\s(role|aria-labelledby)="[^"]*"/g, '')
-  .replace('<svg ', '<svg class="footer__credit-mark" aria-hidden="true" focusable="false" ');
-
-const navLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'In the Community', href: '/in-the-community' },
-  { label: 'Legends Among Us', href: '/legends-among-us' },
-  { label: 'Contact', href: '/contact' },
-];
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Everyday Legends Foundation</title>
-    <meta name="description" content="Supporting scholars, athletes, and community leaders who exemplify excellence and impact." />
-    <link rel="icon" type="image/svg+xml" href={markUrl} />
+<Base title="Everyday Legends Foundation" description="Supporting scholars, athletes, and community leaders who exemplify excellence and impact.">
+  <Fragment slot="head">
     <script is:inline>
       // Decides before first paint whether the intro overlay shows: once per session, never with reduced motion.
       (function () {
@@ -73,214 +50,161 @@ const navLinks = [
       })();
     </script>
     <noscript><style>.mission__lede, .mission__lede span { opacity: 1 !important; transform: none !important; }</style></noscript>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&display=swap"
-    />
-  </head>
-  <body>
-    <svg class="sr-defs" aria-hidden="true" focusable="false">
-      <filter id="grain" x="0" y="0" width="100%" height="100%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
-        <feColorMatrix type="saturate" values="0" />
-      </filter>
-    </svg>
-    <svg class="page-grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+  </Fragment>
 
-    <HomeIntro />
+  <HomeIntro slot="overlay" />
 
-    <header class="nav">
-      <a class="nav__mark" href="/" aria-label="Everyday Legends Foundation, home">
-        <img src={markUrl} alt="" width="60" height="53" />
-      </a>
-      <nav aria-label="Main">
-        <ul class="nav__links">
-          {navLinks.map((l) => (
-            <li><a class="nav__link" href={l.href} data-label={l.label}><span>{l.label}</span></a></li>
-          ))}
-        </ul>
-      </nav>
-      <Button label="Donate" href="/support" class="nav__donate" data-label="Donate" />
-      <div class="nav__menu">
-        <PhoneMenu client:load links={navLinks} donateHref="/support" />
+  <main>
+    <!-- 1 · Hero, on paper -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="grid hero__grid">
+        <h1 id="hero-title" class="display hero__title" data-hero-item>Everyday Legends&nbsp;Foundation</h1>
+        <p class="hero__lede" data-hero-item>Supporting scholars, athletes, and community leaders who exemplify excellence and impact.</p>
+        <div class="hero__ctas" data-hero-item>
+          <Button label="Donate" href="/support" />
+          <Button label="About the foundation" href="/about" variant="secondary" />
+        </div>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <!-- 1 · Hero, on paper -->
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="grid hero__grid">
-          <h1 id="hero-title" class="display hero__title" data-hero-item>Everyday Legends&nbsp;Foundation</h1>
-          <p class="hero__lede" data-hero-item>Supporting scholars, athletes, and community leaders who exemplify excellence and impact.</p>
-          <div class="hero__ctas" data-hero-item>
-            <Button label="Donate" href="/support" />
-            <Button label="About the foundation" href="/about" variant="secondary" />
+    <!-- 2 · The hall: names hung from a brass rail -->
+    <section class="hall" aria-labelledby="class-heading" data-hall>
+      <div class="hall__stage" data-hall-stage>
+        <div class="hall__rail" aria-hidden="true"></div>
+        <div class="hall__track" data-track>
+          <div class="hall__class">
+            <h2 id="class-heading" class="label hall__heading">Inaugural class, 2026</h2>
+            <span class="hall__drop" aria-hidden="true"></span>
+            <p class="display hall__year" aria-hidden="true">2026</p>
           </div>
+          <ol class="hall__names">
+            {honorees.map((name) => (
+              <li class="hall__name">
+                <span class="hall__drop" aria-hidden="true"></span>
+                <span class="display hall__text">{name}</span>
+              </li>
+            ))}
+          </ol>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- 2 · The hall: names hung from a brass rail -->
-      <section class="hall" aria-labelledby="class-heading" data-hall>
-        <div class="hall__stage" data-hall-stage>
-          <div class="hall__rail" aria-hidden="true"></div>
-          <div class="hall__track" data-track>
-            <div class="hall__class">
-              <h2 id="class-heading" class="label hall__heading">Inaugural class, 2026</h2>
-              <span class="hall__drop" aria-hidden="true"></span>
-              <p class="display hall__year" aria-hidden="true">2026</p>
-            </div>
-            <ol class="hall__names">
-              {honorees.map((name) => (
-                <li class="hall__name">
-                  <span class="hall__drop" aria-hidden="true"></span>
-                  <span class="display hall__text">{name}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3 · Our Mission: three plaques hung from a brass rail -->
-      <section class="mission" aria-labelledby="mission-title">
-        <div class="grid mission__grid">
-          <h2 id="mission-title" class="display mission__title">Our Mission</h2>
-          <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
-          <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop well-rounded leaders, and support community initiatives that create lasting impact.</p>
-          <div class="mission__hang" data-pillars>
-            <div class="mission__rail" aria-hidden="true"></div>
-            <ul class="mission__pillars">
-              {pillars.map((name) => (
-                <li class="pillar">
-                  <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
-                  <div class="pillar__plaque" data-pillar-plaque>
-                    <h3 class="display pillar__name">{name}</h3>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="mission__cta">
-            <Button label="About the foundation" href="/about" variant="secondary" />
-          </div>
-        </div>
-      </section>
-
-      <!-- 4 · Legends in Action: three alternating rows, spotlight on hover -->
-      <section class="action" aria-labelledby="action-title">
-        <svg class="action__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
-        <div class="grid action__head">
-          <h2 id="action-title" class="display action__title">Legends in Action</h2>
-          <p class="action__deck">Recent work in the community</p>
-          <Button label="See all our work" href="/in-the-community" class="action__all" />
-        </div>
-        <ol class="action__rows">
-          {actions.map((a, i) => (
-            <li class="grid action__row" tabindex="0" aria-labelledby={`action-${i + 1}`} data-action-row>
-              <div class="action__photo">
-                <Image
-                  src={a.photo}
-                  widths={i === 2 ? [480, 720, 1066] : [600, 900, 1200]}
-                  sizes={i === 2 ? '(min-width: 900px) 30vw, 100vw' : '(min-width: 900px) 52vw, 100vw'}
-                  alt={a.alt}
-                  loading="lazy"
-                />
-                <span class="action__shade" aria-hidden="true"></span>
-                <span class="action__tint" aria-hidden="true"></span>
-              </div>
-              <div class="action__text">
-                <h3 id={`action-${i + 1}`} class="display action__name">{a.title}</h3>
-                <p class="action__body">{a.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <!-- 5 · Legends Among Us: the invitation, laid on the room -->
-      <section class="legends" id="legends" aria-labelledby="legends-title">
-        <div class="legends__photo">
-          <Image
-            src={luncheonPhoto}
-            widths={[800, 1200, 1600]}
-            sizes="(min-width: 900px) 121vw, 100vw"
-            alt="Jaylen McClain presents the Athletic & Community Impact Award to Brick City Lions at the Legends Among Us luncheon, May 30, 2026."
-            loading="lazy"
-          />
-          <div class="legends__shade" aria-hidden="true"></div>
-          <div class="legends__tint" aria-hidden="true"></div>
-        </div>
-        <article class="card" data-card>
-          <h2 id="legends-title" class="card__title">Legends Among&nbsp;Us</h2>
-          <p class="card__lede">Our signature afternoon of&nbsp;recognition.</p>
-          <p class="card__body">The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and&nbsp;leadership.</p>
-          <p class="label card__marg">The&nbsp;Highlawn&nbsp;· West&nbsp;Orange,&nbsp;New&nbsp;Jersey</p>
-          <Button label="The luncheon" href="/legends-among-us" />
-        </article>
-      </section>
-
-      <!-- 6 · Support the Foundation: the ink slab -->
-      <section class="support" aria-labelledby="support-title">
-        <svg class="support__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
-        <div class="grid support__grid" data-fade-up>
-          <h2 id="support-title" class="display support__title">Support the&nbsp;Foundation</h2>
-          <p class="support__lede">Every gift goes to education, sports, and community.</p>
-          <p class="support__body">We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships.</p>
-          <p class="label support__marg">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law.</p>
-          <div class="support__cta">
-            <Button label="Donate" href="/support" variant="on-ink" />
-          </div>
-        </div>
-      </section>
-
-      <!-- 7 · Newsletter. No backend yet: the form never shows a success state. -->
-      <section class="newsletter" aria-labelledby="newsletter-title">
-        <div class="grid">
-          <div class="newsletter__inner">
-            <h2 id="newsletter-title" class="display newsletter__title">Sign up to make a difference</h2>
-            <p class="newsletter__body">Join our movement. Hear about our events, our honorees, and the partners we support.</p>
-            <form class="newsletter__form" data-newsletter>
-              <label class="newsletter__field">
-                <span class="label">Name</span>
-                <input type="text" name="name" autocomplete="name" required />
-              </label>
-              <label class="newsletter__field">
-                <span class="label">Email</span>
-                <input type="email" name="email" autocomplete="email" required />
-              </label>
-              <Button label="Sign up" type="submit" class="newsletter__submit" />
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer, on ink so her full gold lockup reads -->
-    <footer class="footer">
-      <svg class="footer__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
-      <div class="grid footer__grid">
-        <a class="footer__logo" href="/" aria-label="Everyday Legends Foundation, home">
-          <img src={logoUrl} alt="" width="2924" height="2147" loading="lazy" />
-        </a>
-        <ul class="footer__contact">
-          <li><a class="footer__link" href="mailto:info@everydaylegend.com">info@everydaylegend.com</a></li>
-          <li><a class="footer__link" href="https://www.instagram.com/everydaylegendsfoundation/" target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
-        </ul>
-        <div class="footer__base">
-          <p class="footer__copy">© 2026 Everyday Legends Foundation, Inc. All rights&nbsp;reserved.</p>
-          <ul class="footer__legal">
-            <li><a class="footer__link" href="/privacy">Privacy Policy</a></li>
-            <li><a class="footer__link footer__credit" href="https://anchordigitalco.com" target="_blank" rel="noopener"><Fragment set:html={anchorMark} /><span>Built by Anchor Digital</span></a></li>
+    <!-- 3 · Our Mission: three plaques hung from a brass rail -->
+    <section class="mission" aria-labelledby="mission-title">
+      <div class="grid mission__grid">
+        <h2 id="mission-title" class="display mission__title">Our Mission</h2>
+        <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
+        <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop well-rounded leaders, and support community initiatives that create lasting impact.</p>
+        <div class="mission__hang" data-pillars>
+          <div class="mission__rail" aria-hidden="true"></div>
+          <ul class="mission__pillars">
+            {pillars.map((name) => (
+              <li class="pillar">
+                <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
+                <div class="pillar__plaque" data-pillar-plaque>
+                  <h3 class="display pillar__name">{name}</h3>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
+        <div class="mission__cta">
+          <Button label="About the foundation" href="/about" variant="secondary" />
+        </div>
       </div>
-    </footer>
+    </section>
 
-    <script>
-      import { initHome } from '../scripts/home';
-      initHome();
-    </script>
-  </body>
-</html>
+    <!-- 4 · Legends in Action: three alternating rows, spotlight on hover -->
+    <section class="action" aria-labelledby="action-title">
+      <svg class="action__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+      <div class="grid action__head">
+        <h2 id="action-title" class="display action__title">Legends in Action</h2>
+        <p class="action__deck">Recent work in the community</p>
+        <Button label="See all our work" href="/in-the-community" class="action__all" />
+      </div>
+      <ol class="action__rows">
+        {actions.map((a, i) => (
+          <li class="grid action__row" tabindex="0" aria-labelledby={`action-${i + 1}`} data-action-row>
+            <div class="action__photo">
+              <Image
+                src={a.photo}
+                widths={i === 2 ? [480, 720, 1066] : [600, 900, 1200]}
+                sizes={i === 2 ? '(min-width: 900px) 30vw, 100vw' : '(min-width: 900px) 52vw, 100vw'}
+                alt={a.alt}
+                loading="lazy"
+              />
+              <span class="action__shade" aria-hidden="true"></span>
+              <span class="action__tint" aria-hidden="true"></span>
+            </div>
+            <div class="action__text">
+              <h3 id={`action-${i + 1}`} class="display action__name">{a.title}</h3>
+              <p class="action__body">{a.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- 5 · Legends Among Us: the invitation, laid on the room -->
+    <section class="legends" id="legends" aria-labelledby="legends-title">
+      <div class="legends__photo">
+        <Image
+          src={luncheonPhoto}
+          widths={[800, 1200, 1600]}
+          sizes="(min-width: 900px) 121vw, 100vw"
+          alt="Jaylen McClain presents the Athletic & Community Impact Award to Brick City Lions at the Legends Among Us luncheon, May 30, 2026."
+          loading="lazy"
+        />
+        <div class="legends__shade" aria-hidden="true"></div>
+        <div class="legends__tint" aria-hidden="true"></div>
+      </div>
+      <article class="card" data-card>
+        <h2 id="legends-title" class="card__title">Legends Among&nbsp;Us</h2>
+        <p class="card__lede">Our signature afternoon of&nbsp;recognition.</p>
+        <p class="card__body">The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and&nbsp;leadership.</p>
+        <p class="label card__marg">The&nbsp;Highlawn&nbsp;· West&nbsp;Orange,&nbsp;New&nbsp;Jersey</p>
+        <Button label="The luncheon" href="/legends-among-us" />
+      </article>
+    </section>
+
+    <!-- 6 · Support the Foundation: the ink slab -->
+    <section class="support" aria-labelledby="support-title">
+      <svg class="support__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+      <div class="grid support__grid" data-fade-up>
+        <h2 id="support-title" class="display support__title">Support the&nbsp;Foundation</h2>
+        <p class="support__lede">Every gift goes to education, sports, and community.</p>
+        <p class="support__body">We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships.</p>
+        <p class="label support__marg">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law.</p>
+        <div class="support__cta">
+          <Button label="Donate" href="/support" variant="on-ink" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Newsletter. No backend yet: the form never shows a success state. -->
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <div class="grid">
+        <div class="newsletter__inner">
+          <h2 id="newsletter-title" class="display newsletter__title">Sign up to make a difference</h2>
+          <p class="newsletter__body">Join our movement. Hear about our events, our honorees, and the partners we support.</p>
+          <form class="newsletter__form" data-newsletter>
+            <label class="newsletter__field">
+              <span class="label">Name</span>
+              <input type="text" name="name" autocomplete="name" required />
+            </label>
+            <label class="newsletter__field">
+              <span class="label">Email</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <Button label="Sign up" type="submit" class="newsletter__submit" />
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { initHome } from '../scripts/home';
+    initHome();
+  </script>
+</Base>

@@ -1,0 +1,291 @@
+/* ─────────────────────────────────────────────────────────────
+   About the Foundation. Tokens live in global.css; nothing here adds a color.
+   ───────────────────────────────────────────────────────────── */
+
+/* The standard photo treatment: a paper-deep tint through multiply */
+.photo-tint {
+  position: absolute;
+  inset: 0;
+  background: var(--paper-deep);
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* ── 1 · Niche header: Our Vision ──────────────────────────── */
+/* On paper, centred. Her arch from the mark as one hairline ink frame, the photo set inside it.
+   The niche is sized from the viewport height so the niche and the title both land in the first
+   viewport; it never grows wider than the column. */
+.niche-hdr {
+  position: relative;
+  padding: calc(var(--nav-h) + var(--s-3)) 0 var(--space-standard);
+  text-align: center;
+  /* Depth: deeper paper pooling behind the niche and at the upper corners, over the page grain */
+  background:
+    radial-gradient(42% 60% at 50% 34%, color-mix(in srgb, var(--paper-deep) 70%, transparent), transparent 72%),
+    radial-gradient(50% 70% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 0% 10%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
+}
+/* Her arch (everyday-legends-mark.svg, path 1): a semicircular head whose radius is exactly half the
+   width, springing straight into vertical jambs, closed by a flat base. The frame keeps that
+   construction; only the jambs run longer, to a width to height of 0.72. border-radius 9999px on the
+   top corners resolves to exactly half the width, so the head is a true semicircle at any size. */
+.niche {
+  --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);
+  --niche-gap: clamp(8px, 0.8vw, 12px);
+  justify-self: center;
+  width: min(calc(var(--niche-h) * 0.72), 100%);
+  aspect-ratio: 0.72;
+  padding: var(--niche-gap);
+  border: 1px solid var(--ink);
+  border-radius: 9999px 9999px 0 0;
+}
+/* The photo, inset inside the frame on a concentric arch */
+.niche__photo {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9999px 9999px 0 0;
+}
+.niche__plate {
+  position: absolute;
+  inset: 0;
+}
+/* Centre bottom: the full width shows and the top gives way, so the watermark (bottom right) is
+   always whole inside the frame */
+.niche__plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+/* The recess: a soft shadow under the head of the arch, still while the photo settles */
+.niche__recess {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 22px 30px -22px color-mix(in srgb, var(--ink) 50%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent);
+  pointer-events: none;
+}
+/* The settle (about.ts): with motion allowed the head script adds html.el-settle before first paint,
+   so the photo waits hidden and never flashes before it settles. */
+html.el-settle .niche__plate {
+  opacity: 0;
+  transform: scale(1.06);
+}
+/* Failsafe: if about.ts never takes over (it adds html.el-settle-js), the CSS settles it instead */
+html.el-settle:not(.el-settle-js) .niche__plate {
+  animation:
+    niche-settle-scale 900ms var(--menu) 2.5s both,
+    niche-settle-fade 900ms var(--sine) 2.5s both;
+}
+@keyframes niche-settle-scale {
+  to {
+    transform: none;
+  }
+}
+@keyframes niche-settle-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+.niche-hdr__title {
+  margin: var(--s-4) 0 0;
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  line-height: 0.94;
+  text-wrap: balance;
+}
+.niche-hdr__lede {
+  justify-self: center;
+  max-width: 28ch;
+  margin: var(--s-3) 0 0;
+  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.niche-hdr__body {
+  justify-self: center;
+  max-width: 34em;
+  margin: var(--s-3) 0 0;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ── 3 · Founders' Story & Inspiration: the torch line ─────── */
+/* Scroll-driven moment 2. The line runs in its own grid column beside the three paragraphs: a
+   paper-deep hairline track, a brass fill over it that grows with scaleY from the top (about.ts),
+   and her torch riding the head of the fill until it reaches the torch sentence, where it stays.
+   The static state below (phones, reduced motion, before the script) is the final state: the line
+   fully filled, the torch resting beside the torch sentence. */
+.founders {
+  --torch-h: clamp(44px, 3.4vw, 56px);
+  --torch-w: calc(var(--torch-h) * 216 / 449);
+  /* Phones: the line runs down the copy's left gutter */
+  --rail-in: 40px;
+  --line-x: 12px;
+  container-type: inline-size;
+  position: relative;
+  padding: var(--space-standard) 0 var(--space-generous);
+}
+.founders__grid {
+  row-gap: var(--s-5);
+}
+.founders__side {
+  grid-row: 1;
+  container-type: inline-size;
+}
+/* "Story & Inspiration" is held together (non-breaking spaces) so the title can only break after
+   "Founders'": never an orphan. That line is 7.74em wide; the size follows the column (100cqi / 7.9)
+   so it always fits. */
+.founders__title {
+  margin: 0;
+  font-size: min(4.5rem, 100cqi / 7.9);
+  line-height: 0.98;
+}
+.founders__marg {
+  margin: var(--s-3) 0 0;
+  color: var(--ink-3);
+}
+.founders__photo {
+  position: relative;
+  grid-row: 2;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent),
+    0 18px 36px -18px color-mix(in srgb, var(--lamp-edge) 45%, transparent);
+}
+.founders__photo img {
+  width: 100%;
+  height: auto;
+}
+.founders__copy {
+  grid-row: 3;
+  padding-left: var(--rail-in);
+}
+.founders__copy p {
+  position: relative;
+  max-width: 64ch;
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.founders__copy p + p {
+  margin-top: var(--s-3);
+}
+/* The line: its grid area is exactly the paragraphs' row, so the track runs from the top of the
+   first paragraph to the bottom of the last with no measuring. */
+.founders__line {
+  grid-row: 3;
+  position: relative;
+  justify-self: start;
+  width: 2px;
+  margin-left: calc(var(--line-x) - 1px);
+  pointer-events: none;
+}
+.founders__track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0.5px;
+  width: 1px;
+  background: var(--paper-deep);
+}
+.founders__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--brass);
+  transform-origin: 50% 0;
+}
+/* Her torch, centred on the line, its middle level with the first line of the torch sentence.
+   A paper halo (four paper drop-shadows) keeps the line from running through it. */
+.torch {
+  position: absolute;
+  top: calc(0.5lh - var(--torch-h) / 2);
+  left: calc(var(--line-x) - var(--rail-in) - var(--torch-w) / 2);
+  width: var(--torch-w);
+  height: var(--torch-h);
+  pointer-events: none;
+  filter:
+    drop-shadow(3px 0 0 var(--paper)) drop-shadow(-3px 0 0 var(--paper))
+    drop-shadow(0 3px 0 var(--paper)) drop-shadow(0 -3px 0 var(--paper));
+}
+/* overflow hidden is the crop: nothing of the letters outside the viewBox is drawn */
+.torch__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  fill: var(--brass);
+}
+
+/* 900px up: the grid gets its own torch line column. The torch sits back from the paragraph's
+   left edge to the centre of the column before the copy. */
+@media (min-width: 900px) {
+  .founders {
+    /* One grid column, as the page grid draws it */
+    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+  }
+  .torch {
+    left: calc(-1 * (var(--col-gap) + var(--col) / 2) - var(--torch-w) / 2);
+  }
+  .founders__copy {
+    padding-left: 0;
+  }
+  .founders__line {
+    justify-self: center;
+    margin-left: 0;
+  }
+}
+
+/* 900px to the switch width: cols 1 to 4 are too narrow to hold "Story & Inspiration" at 3x the
+   body size, so the title and marginalia sit full width above, not sticky. Line: col 1.
+   Photo and copy: cols 2 to 12. */
+@media (min-width: 900px) and (max-width: 1409.98px) {
+  .founders__title {
+    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
+  }
+  .founders__photo,
+  .founders__copy {
+    grid-column: 2 / -1;
+  }
+  /* The photo takes the paragraphs' font size and measure, so it is exactly as wide as the text */
+  .founders__photo {
+    max-width: 64ch;
+    font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  }
+  .founders__line {
+    grid-column: 1;
+  }
+}
+
+/* The switch width, 1410px: from here cols 1 to 4 hold the title at 3x the body size or more (the
+   ratio first reaches 3 at 1393px; 1410px keeps it with a 15px classic scrollbar).
+   Side: cols 1 to 4, sticky below the nav. Line: col 5. Copy: cols 6 to 12. */
+@media (min-width: 1410px) {
+  .founders__grid {
+    grid-template-rows: auto 1fr;
+  }
+  .founders__side {
+    grid-column: 1 / span 4;
+    grid-row: 1 / span 2;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nav-h) + var(--space-tight));
+  }
+  .founders__photo {
+    grid-column: 6 / span 7;
+    grid-row: 1;
+  }
+  .founders__line {
+    grid-column: 5;
+    grid-row: 2;
+  }
+  .founders__copy {
+    grid-column: 6 / span 7;
+    grid-row: 2;
+  }
+}

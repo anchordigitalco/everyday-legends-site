@@ -1,0 +1,100 @@
+---
+// The shell every page shares: head, grain, the fixed nav, and the footer on ink.
+// Pages pass their <main> as the default slot. Home adds its intro through the "head" and
+// "overlay" slots. `current` is the nav href of the page, which gets aria-current="page".
+import '../styles/global.css';
+import PhoneMenu from '../components/islands/PhoneMenu';
+import Button from '../components/Button.astro';
+import markUrl from '../../brand_assets/everyday-legends-mark.svg?url';
+import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
+import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
+
+type Props = { title: string; description: string; current?: string };
+const { title, description, current } = Astro.props;
+
+// The Anchor Digital mark, inline so its currentColor fill takes the footer's paper text on ink.
+// The link text names it, so the drawing is decorative here: its title and label come off.
+const anchorMark = anchorMarkRaw
+  .replace(/<title[^>]*>.*?<\/title>/s, '')
+  .replace(/\s(role|aria-labelledby)="[^"]*"/g, '')
+  .replace('<svg ', '<svg class="footer__credit-mark" aria-hidden="true" focusable="false" ');
+
+const navLinks = [
+  { label: 'About', href: '/about' },
+  { label: 'In the Community', href: '/in-the-community' },
+  { label: 'Legends Among Us', href: '/legends-among-us' },
+  { label: 'Contact', href: '/contact' },
+];
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={markUrl} />
+    <slot name="head" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&display=swap"
+    />
+  </head>
+  <body>
+    <svg class="sr-defs" aria-hidden="true" focusable="false">
+      <filter id="grain" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+    </svg>
+    <svg class="page-grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+
+    <slot name="overlay" />
+
+    <header class="nav">
+      <a class="nav__mark" href="/" aria-label="Everyday Legends Foundation, home">
+        <img src={markUrl} alt="" width="60" height="53" />
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav__links">
+          {navLinks.map((l) => (
+            <li><a class="nav__link" href={l.href} data-label={l.label} aria-current={l.href === current ? 'page' : undefined}><span>{l.label}</span></a></li>
+          ))}
+        </ul>
+      </nav>
+      <Button label="Donate" href="/support" class="nav__donate" data-label="Donate" />
+      <div class="nav__menu">
+        <PhoneMenu client:load links={navLinks} donateHref="/support" current={current} />
+      </div>
+    </header>
+
+    <slot />
+
+    <!-- Footer, on ink so her full gold lockup reads -->
+    <footer class="footer">
+      <svg class="footer__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+      <div class="grid footer__grid">
+        <a class="footer__logo" href="/" aria-label="Everyday Legends Foundation, home">
+          <img src={logoUrl} alt="" width="2924" height="2147" loading="lazy" />
+        </a>
+        <ul class="footer__contact">
+          <li><a class="footer__link" href="mailto:info@everydaylegend.com">info@everydaylegend.com</a></li>
+          <li><a class="footer__link" href="https://www.instagram.com/everydaylegendsfoundation/" target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
+        </ul>
+        <div class="footer__base">
+          <p class="footer__copy">© 2026 Everyday Legends Foundation, Inc. All rights&nbsp;reserved.</p>
+          <ul class="footer__legal">
+            <li><a class="footer__link" href="/privacy">Privacy Policy</a></li>
+            <li><a class="footer__link footer__credit" href="https://anchordigitalco.com" target="_blank" rel="noopener"><Fragment set:html={anchorMark} /><span>Built by Anchor Digital</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      import { initSite } from '../scripts/site';
+      initSite();
+    </script>
+  </body>
+</html>
