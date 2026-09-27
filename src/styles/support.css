@@ -1,0 +1,204 @@
+/* ─────────────────────────────────────────────────────────────
+   Support. Tokens live in global.css; nothing here adds a color.
+   Brass on this page: the rays, and nothing else.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 1 · The slab ──────────────────────────────────────────── */
+/* Ink, static, not full-screen. It starts under the nav rather than behind it, so the nav keeps its
+   paper ground at the top of the page. Depth from two faint paper pools and grain, as Home's slab. */
+.slab {
+  position: relative;
+  margin-top: var(--nav-h);
+  padding: var(--space-standard) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(55% 90% at 100% 0%, color-mix(in srgb, var(--paper) 7%, transparent), transparent 70%),
+    radial-gradient(45% 80% at 0% 100%, color-mix(in srgb, var(--paper-deep) 5%, transparent), transparent 70%),
+    var(--ink);
+  color: var(--paper);
+}
+.slab__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.slab__grid {
+  position: relative;
+}
+/* The page's h1, in the label style on purpose: the lede carries the display scale */
+.slab__title {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1vw, 0.9375rem);
+  color: var(--paper-2);
+}
+/* At least 2.5x the body below 440px and 3x from 440px up (44.5px at 375 and 51.5px at 440, against 17px) */
+.slab__lede {
+  max-width: 12em;
+  margin: var(--s-3) 0 0;
+  font-size: clamp(2.75rem, 0.25rem + 10.8vw, 6rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* ── 2 · The gift ──────────────────────────────────────────── */
+/* The body, then her arch holding the form, the rays standing behind it as they stand behind the arch
+   in the mark. The rays are drawn at the mark's own scale against the frame: the arch's outer edge
+   (882.1 wide in the mark) is the frame's outer edge, so the ray svg (1770.7 wide) is 2.00737 arches
+   wide. Where that would carry a ray past the viewport, the whole group scales down uniformly about
+   the head's centre until the tips stop half a gutter short of the viewport edge; the frame's paper
+   hides what falls inside it. The group never reaches the body: the gap to the text column is always wider than
+   the gutter. --ray-rise is how far the rays stand above the arch's top, so the section makes room. */
+.give {
+  --give-embed-h: 44rem;
+  container-type: inline-size;
+  position: relative;
+}
+.give__grid {
+  --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+  --arch-w: calc(100cqw - 2 * var(--gutter));
+  --ray-w: min(var(--arch-w) * 2.00737, var(--arch-w) + var(--gutter));
+  --ray-rise: calc(var(--ray-w) * 0.593044 - var(--arch-w) / 2);
+  padding-block: var(--space-standard);
+}
+/* Under 900px the side column dissolves into the grid: body, arch, cornerstone, tax paragraph */
+.give__side {
+  display: contents;
+}
+/* Grandchildren of the grid here, so the .grid > * full-width rule does not reach them */
+.give__side > * {
+  grid-column: 1 / -1;
+}
+.give__body {
+  grid-row: 1;
+}
+.give__arch {
+  grid-row: 2;
+}
+/* The stone keeps to the text's measure (34em of the 17px body) rather than the full width */
+.give__stone {
+  grid-row: 3;
+  max-width: 36rem;
+  margin-top: var(--space-standard);
+}
+.give__tax {
+  grid-row: 4;
+  margin-top: var(--space-tight);
+}
+/* Body at About's body size: the display lede is measured against it */
+.give__body,
+.give__tax {
+  max-width: 34em;
+  margin-bottom: 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.give__body {
+  margin-top: 0;
+}
+/* The EIN and the 501(c)(3) designation are each one term: neither breaks inside itself */
+.give__term {
+  white-space: nowrap;
+}
+.give__arch {
+  position: relative;
+  isolation: isolate;
+  margin-top: calc(var(--ray-rise) + var(--space-tight));
+}
+/* Bottom centre of the svg on the head's centre, half the arch's width below its top */
+.give__rays {
+  position: absolute;
+  z-index: 0;
+  top: calc(var(--arch-w) / 2 - var(--ray-w) * 0.593044);
+  left: 50%;
+  width: var(--ray-w);
+  height: calc(var(--ray-w) * 0.593044);
+  margin-left: calc(var(--ray-w) / -2);
+  overflow: visible;
+  fill: var(--brass);
+  pointer-events: none;
+}
+.give__niche {
+  z-index: 1;
+}
+.give__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.07;
+  pointer-events: none;
+}
+/* The form area. Its height is the one value to change when the Zeffy embed arrives. */
+.give__embed {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--give-embed-h);
+  padding: var(--s-3);
+  background: var(--paper-deep);
+  text-align: center;
+}
+.give__placeholder {
+  margin: 0;
+  color: var(--ink-2);
+}
+.give__iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* The fade (support.ts): with motion allowed the head script's html.el-rays-wait holds the rays hidden
+   from first paint. Failsafe: if support.ts never takes over (html.el-rays-js), the CSS shows them. */
+@media (prefers-reduced-motion: no-preference) {
+  html.el-rays-wait .give__ray {
+    opacity: 0;
+  }
+  html.el-rays-wait:not(.el-rays-js) .give__ray {
+    animation: give-ray-in 600ms var(--sine) 2.5s both;
+  }
+}
+@keyframes give-ray-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 900px) {
+  /* A gentler curve in the ten-column window, so the lede holds three lines from 900px up */
+  .slab__lede {
+    grid-column: 1 / span 10;
+    font-size: clamp(4rem, 1.5rem + 6.4vw, 6rem);
+  }
+  .give__grid {
+    --arch-w: calc(6 * var(--col) + 5 * var(--col-gap));
+    padding-top: max(var(--space-standard), var(--ray-rise) + var(--space-tight));
+  }
+  /* Cols 1 to 5: body, cornerstone, tax paragraph, level with the arch's top. The group is sticky
+     below the nav, as About's Founders side column is, and releases at the end of the section (the
+     grid's content box ends with the arch). Where the group is the taller of the two, the row is its
+     own height and sticky has no room to travel, so it stays put: sticky only if shorter. */
+  .give__side {
+    display: block;
+    grid-column: 1 / span 5;
+    grid-row: 1;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nav-h) + var(--space-tight));
+  }
+  .give__stone {
+    margin-top: var(--space-tight);
+  }
+  .give__arch {
+    grid-column: 7 / span 6;
+    grid-row: 1;
+    margin-top: 0;
+  }
+}

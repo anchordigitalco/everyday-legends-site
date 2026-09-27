@@ -26,17 +26,7 @@
     radial-gradient(50% 70% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
     radial-gradient(40% 50% at 0% 10%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
 }
-/* Her arch (everyday-legends-mark.svg, path 1): a semicircular head whose radius is exactly half the
-   width, springing straight into vertical jambs, closed by a flat base. The frame keeps that
-   construction; only the jambs run longer, to a width to height of 0.72. border-radius 9999px on the
-   top corners resolves to exactly half the width, so the head is a true semicircle at any size. */
-.niche {
-  --niche-gap: clamp(8px, 0.8vw, 12px);
-  aspect-ratio: 0.72;
-  padding: var(--niche-gap);
-  border: 1px solid var(--ink);
-  border-radius: 9999px 9999px 0 0;
-}
+/* The niche frame itself (.niche) is shared with Support and lives in global.css, under "Niche". */
 /* The header's niche, sized from the viewport height (components/Niche.astro holds the markup) */
 .niche-hdr__niche {
   --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);

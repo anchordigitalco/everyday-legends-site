@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import Niche from '../components/Niche.astro';
+import Cornerstone from '../components/Cornerstone.astro';
+import '../styles/support.css';
+import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
+
+// The rays: the mark's gold ray paths, copied verbatim and filled brass by CSS. Grouped into 17 rays
+// (the dashed ones are four segments each) in HomeIntro.astro's order, center outward, right side first
+// at each step, which is also the order they fade in. Path 1 (the arch itself), the letters, the torch,
+// and the highlight paths stay out: the arch here is Niche.astro's frame.
+const paths = markRaw.match(/<path\b[^>]*\/>/g) ?? [];
+if (paths.length !== 37) throw new Error(`everyday-legends-mark.svg: expected 37 paths, found ${paths.length}`);
+const p = (...idx: number[]) => idx.map((i) => paths[i].replace(/\sfill(-opacity)?="[^"]*"/g, '')).join('');
+const rays: number[][] = [
+  [2], // vertical
+  [8], [9],
+  [20, 23, 26, 35], [19, 21, 25, 32], // steep dashed
+  [13], [11],
+  [4], [3],
+  [15], [12],
+  [22, 30, 31, 33], [24, 27, 28, 34], // shallow dashed
+  [14], [10],
+  [6], [5], // horizontal
+];
+// Measured from path 1, with the scale(1.06667) every path in the mark carries: the arch's outer edge
+// spans 882.1 units and its head is a semicircle of radius 441.1 about (2047.5, 1707.2). The viewBox is
+// centred on that point and ends at it, wide and tall enough for every ray, so the svg's bottom centre
+// is the head's centre. support.css maps the arch's outer edge onto the frame's.
+const RAYS_VIEWBOX = '1162.1 657.1 1770.7 1050.1';
+---
+<Base
+  title="Support the Foundation · Everyday Legends Foundation"
+  description="Every gift goes to education, sports, and community."
+  current="/support"
+>
+  <Fragment slot="head">
+    <script is:inline>
+      // Before first paint: the rays wait hidden for their fade (support.ts), so they never flash first.
+      // The CSS applies this only with motion allowed; reduced motion shows them at full opacity.
+      document.documentElement.classList.add('el-rays-wait');
+    </script>
+  </Fragment>
+
+  <main>
+    <!-- 1 · The slab: ink, static -->
+    <section class="slab" aria-labelledby="support-title">
+      <svg class="slab__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+      <div class="grid slab__grid">
+        <h1 id="support-title" class="label slab__title">Support the Foundation</h1>
+        <p class="display slab__lede">Every gift goes to education, sports, and&nbsp;community.</p>
+      </div>
+    </section>
+
+    <!-- 2 · The gift: her arch frames the donation form, the rays behind it -->
+    <section id="give" class="give" data-give>
+      <div class="grid give__grid">
+        <!-- The left column: body, the cornerstone (identical to About's), then the tax paragraph that
+             carries the stone's facts for screen readers. Under 900px it dissolves into the grid so
+             the arch can sit between the body and the stone. -->
+        <div class="give__side">
+          <p class="give__body">We give to people and programs already doing the work. We add to what they have started, help it go further, and show up behind it. That means community organizations running their own initiatives, football camps and school athletic programs, and scholarships for students. These are the things that built our family.</p>
+          <div class="give__stone">
+            <Cornerstone />
+          </div>
+          <p class="give__tax">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section <span class="give__term">501(c)(3)</span> of the Internal Revenue Code. EIN <span class="give__term">39-4769708.</span> Contributions are tax-deductible to the extent permitted by law. A receipt is issued for every gift.</p>
+        </div>
+        <div class="give__arch">
+          <svg class="give__rays" viewBox={RAYS_VIEWBOX} aria-hidden="true" focusable="false">
+            {rays.map((idx) => <g class="give__ray" data-ray set:html={p(...idx)} />)}
+          </svg>
+          <Niche frame class="give__niche">
+            <svg class="give__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+            <div class="give__embed">
+              <!-- The Zeffy form goes here, in place of the placeholder line, once the link arrives.
+                   Zeffy's current embed (v2) is a div their script fills:
+                     <div data-zeffy-embed data-form-url="(Zeffy form link)"></div>
+                     <script src="https://www.zeffy.com/embed/v2/zeffy-embed.js" async></script>
+                   with a fallback iframe for when the script cannot run:
+                     <iframe class="give__iframe" title="Donation form" src="(Zeffy form link)"
+                             allowpaymentrequest allowtransparency="true"></iframe>
+                   The script is expected to size the form to its content; confirm that when the real
+                   code arrives. Until then the area's height is --give-embed-h in support.css, the one
+                   value to change. The form never waits on a reveal. -->
+              <p class="label give__placeholder" data-mid-line><span data-mid-a>Donation&nbsp;form</span><span data-mid>&nbsp;·</span> <span data-mid-b>link&nbsp;to&nbsp;be&nbsp;filled</span></p>
+            </div>
+          </Niche>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { initSupport } from '../scripts/support';
+    initSupport();
+  </script>
+</Base>

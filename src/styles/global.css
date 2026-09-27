@@ -158,6 +158,29 @@ img {
   display: block;
 }
 
+/* ── Niche (components/Niche.astro) ──────────────────────────── */
+/* Her arch (everyday-legends-mark.svg, path 1): a semicircular head whose radius is exactly half the
+   width, springing straight into vertical jambs, closed by a flat base. The frame keeps that
+   construction; only the jambs run longer, to a width to height of 0.72. border-radius 9999px on the
+   top corners resolves to exactly half the width, so the head is a true semicircle at any size. */
+.niche {
+  --niche-gap: clamp(8px, 0.8vw, 12px);
+  aspect-ratio: 0.72;
+  padding: var(--niche-gap);
+  border: 1px solid var(--ink);
+  border-radius: 9999px 9999px 0 0;
+}
+/* The empty niche (Niche.astro, frame): same head, jambs, base, and hairline, paper inside, height from
+   its content. Content starts at the springline (a percentage padding resolves against the width, so
+   50% is the head's radius when the niche fills its box): nothing square ever meets the curve. */
+.niche--frame {
+  position: relative;
+  aspect-ratio: auto;
+  padding-top: calc(50% - 1px);
+  overflow: hidden;
+  background: var(--paper);
+}
+
 /* ── Buttons: solid fill only ──────────────────────────────── */
 /* From reference/21st/interactive-hover-button.tsx (see components/Button.astro). Both labels share
    one grid cell, so the button is as wide as the wider of the two. On hover and focus-visible the

@@ -165,11 +165,11 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
 - Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
-- Support: slab header with no niche; the gift section, where the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's; the sponsorship pointer. Two slices: slab and gift, then cornerstone and pointer.
+- Support: slab header with no niche; the gift section, where the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's, beside the form; the sponsorship pointer. Two slices: slab and gift, then pointer and the Donate anchor.
   - Slab: ink, static, not full-screen. Title is the h1 in label style; the lede sits at display scale.
-  - Gift (`#give`): body cols 1–5, arch cols 7–12 from 900px; stacked under 900px, body first. Arch from `Niche.astro`: About's head, sides, base, and hairline ink frame, height set by content, paper inside.
+  - Gift (`#give`): body cols 1–5, arch cols 7–12 from 900px; stacked under 900px, body first. Arch from `Niche.astro`: About's head, sides, base, and hairline ink frame, height set by content, paper inside. Left column: body, cornerstone, tax paragraph, sticky if shorter than the arch. Under 900px: body, arch, cornerstone, tax paragraph.
   - Rays: the mark's ray paths in brass, placed against the arch as in the mark, behind the frame, aria-hidden, never behind text. The page's only motion: one opacity fade, center outward, sine.
-  - The form and frame never animate or wait on a reveal. Zeffy embed: iframe with a title, loaded eagerly. Until then, a paper-deep panel holds the copy deck's placeholder line; height from `--give-embed-h` so the swap is one value.
+  - The form and frame never animate or wait on a reveal. Zeffy embed: their v2 script embed, sized by the real form. Until then, a paper-deep panel holds the copy deck's placeholder line; height from `--give-embed-h` so the swap is one value.
   - Pointer: shortest section, centered, ink hairline above, secondary button to the Legends Among Us `#sponsorship` anchor.
   - On `/support`, the nav and menu Donate point to `#give`.
   - Support brass: 1 of 3 (rays).
