@@ -33,6 +33,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Nav uses the mark only; footer uses the full lockup.
 - Home card 3 body, now filled (see 1.3). The wording is ours.
 - Jaylen's Leadership body (see 2.6). Researched placeholder, the wording is ours. "Team captain" is for the 2026 season and needs a yearly check.
+- Support's sponsorship pointer body and button (see 5). The wording is ours.
 - The program book confirms three scholarships were awarded in 2026. Copy that describes scholarship as something the foundation intends to fund needs her decision. Do not change it until she answers.
 
 ## Sitemap
@@ -274,7 +275,23 @@ The program's own pages use "Young Legend Award"; its order of program says "You
 | Body | Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code. EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law. A receipt is issued for every gift. | 38 | NEW |
 | CTA | Donate | 1 | NEW, Zeffy link to be filled |
 
-The Zeffy general donation form is embedded on this page so people give without leaving the site. No payments in our code.
+The Zeffy general donation form is embedded on this page so people give without leaving the site. No payments in our code. On this page the Donate CTA is the form's own button. No separate Donate button renders beside the form.
+
+Until the Zeffy link arrives, the form area shows only the placeholder line below. It never ships, since launch waits on the link. MUST NOT draw fake fields, amounts, or buttons.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| Marginalia | Donation form · link to be filled | 6 | NEW, placeholder |
+
+### Sponsorship pointer
+
+Closes the page and sends sponsors to the Sponsorship section on Legends Among Us.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| Title | Interested in sponsoring? | 3 | REUSED |
+| Body | Sponsorship runs through the Legends Among Us luncheon. | 7 | NEW |
+| CTA | Sponsor the luncheon | 3 | NEW, links to the Legends Among Us Sponsorship section |
 
 ---
 

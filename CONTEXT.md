@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support.
 
 ## How this file works
 
@@ -26,7 +26,7 @@ The site is a hall of honor. You enter through the arch in her mark, and inside,
 
 How it resolves on the web:
 - A building is walked through; a page is scrolled. Home is the only page that moves you: the intro takes you through the arch once, and the hall walks you along the wall.
-- Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo. Support is the exception: the arch moves down the page and frames the donation form. Contact's niche holds only the torch.
+- Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo. Support is the exception: its header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
 - The dark wall exists only in the intro. After it, the paper page is the inside of the building.
 
 ## Home intro (built)
@@ -94,7 +94,7 @@ How it resolves on the web:
 ## Motion
 
 - Animate transform and opacity only. Never `transition-all`.
-- Scroll-driven moments: exactly 2. The Home hall and the About torch line. The cap is 3, and the third slot stays empty unless Jackson approves one. Everything else plays once when it enters view.
+- Scroll-driven moments: exactly 2. The Home hall and the About torch line. The cap is 3, and the third slot stays empty unless Jackson approves one. Support does not use it. Everything else plays once when it enters view.
 - The Legends Among Us honorees are a static hall. The wireframe's side scroll there is superseded.
 - Easing: movement uses spring-style easing or the menu curve `[0.22, 1, 0.36, 1]`. Pure opacity fades (glow, overlays, flicker) use sine, unless a 21st.dev Keep list names a curve.
 - Every animation has a reduced-motion state that shows final content with no movement.
@@ -129,7 +129,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
-- `Niche.astro` is every arch (About header, portraits). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
+- `Niche.astro` is every arch (About header, portraits, Support form frame). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
 
 ## Nav and footer
 
@@ -165,7 +165,14 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
 - Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
-- Support: slab header with no niche; the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's; the sponsorship pointer.
+- Support: slab header with no niche; the gift section, where the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's; the sponsorship pointer. Two slices: slab and gift, then cornerstone and pointer.
+  - Slab: ink, static, not full-screen. Title is the h1 in label style; the lede sits at display scale.
+  - Gift (`#give`): body cols 1–5, arch cols 7–12 from 900px; stacked under 900px, body first. Arch from `Niche.astro`: About's head, sides, base, and hairline ink frame, height set by content, paper inside.
+  - Rays: the mark's ray paths in brass, placed against the arch as in the mark, behind the frame, aria-hidden, never behind text. The page's only motion: one opacity fade, center outward, sine.
+  - The form and frame never animate or wait on a reveal. Zeffy embed: iframe with a title, loaded eagerly. Until then, a paper-deep panel holds the copy deck's placeholder line; height from `--give-embed-h` so the swap is one value.
+  - Pointer: shortest section, centered, ink hairline above, secondary button to the Legends Among Us `#sponsorship` anchor.
+  - On `/support`, the nav and menu Donate point to `#give`.
+  - Support brass: 1 of 3 (rays).
 - Contact: niche holding only the torch; the register form on ruled lines with no boxes, with empty, per-field error, sending, and sent states, routing to info@everydaylegend.com; newsletter.
 - Privacy Policy: plain text page, linked from every footer.
 
@@ -191,7 +198,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button.
 
 ## Open client items that touch the build
 
