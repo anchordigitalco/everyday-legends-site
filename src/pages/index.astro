@@ -95,9 +95,9 @@ const actions = [
         <h2 id="mission-title" class="display mission__title">Our Mission</h2>
         <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
         <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop well-rounded leaders, and support community initiatives that create lasting impact.</p>
-        <div class="mission__hang" data-pillars>
-          <div class="mission__rail" aria-hidden="true"></div>
-          <ul class="mission__pillars">
+        <div class="mission__hang hang" data-pillars>
+          <div class="hang__rail" aria-hidden="true"></div>
+          <ul class="hang__pillars">
             {pillars.map((name) => (
               <li class="pillar">
                 <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>

@@ -289,3 +289,207 @@ html.el-settle:not(.el-settle-js) .niche__plate {
     grid-row: 2;
   }
 }
+
+/* ── About section titles ──────────────────────────────────── */
+/* Our Story and What we do wear the Founders' title at every width: the same display style and the
+   same size formula (.founders__title), so the three titles always match. Their sections are the
+   size containers the formula reads. */
+.story,
+.what {
+  container-type: inline-size;
+}
+.about-title {
+  margin: 0;
+  font-size: min(4.5rem, (100cqw - 2 * var(--gutter)) / 7.9);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+@media (min-width: 900px) and (max-width: 1409.98px) {
+  .about-title {
+    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
+  }
+}
+@media (min-width: 1410px) {
+  .about-title {
+    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+    font-size: min(4.5rem, (4 * var(--col) + 3 * var(--col-gap)) / 7.9);
+  }
+}
+
+/* ── 2 · Our Story ─────────────────────────────────────────── */
+/* Title and two paragraphs, still, in cols 2 to 8. Then the page's one pull quote, cut into a
+   full-bleed paper-deep band between two ink hairlines. */
+.story {
+  position: relative;
+  padding: var(--space-tight) 0 0;
+}
+.story__body {
+  margin-top: var(--s-4);
+}
+.story__body p {
+  max-width: 64ch;
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.story__body p + p {
+  margin-top: var(--s-3);
+}
+@media (min-width: 900px) {
+  .story__title,
+  .story__body {
+    grid-column: 2 / span 7;
+  }
+}
+
+.inscription {
+  position: relative;
+  margin-top: var(--space-standard);
+  padding: var(--space-standard) 0;
+  border-block: 1px solid var(--ink);
+  background:
+    radial-gradient(60% 80% at 50% 0%, color-mix(in srgb, var(--paper) 40%, transparent), transparent 70%),
+    radial-gradient(50% 60% at 100% 100%, color-mix(in srgb, var(--ink) 5%, transparent), transparent 70%),
+    var(--paper-deep);
+}
+.inscription__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.09;
+  pointer-events: none;
+}
+.inscription__grid {
+  position: relative;
+  margin: 0;
+}
+/* Two lines at 1440, balanced. Set as written: no text-transform. */
+.inscription__text {
+  display: block;
+  font-size: clamp(2.25rem, 5.9vw, 7rem);
+  line-height: 1.02;
+  text-align: center;
+  text-wrap: balance;
+}
+/* The reveal's line masks (about.ts): room above and below each line, so the mask never clips an
+   ascender or the descenders of "legacy", taken back so the lines keep their spacing. */
+.inscription__line-mask {
+  padding-block: 0.08em 0.14em;
+  margin-block: -0.08em -0.14em;
+}
+
+/* ── 4 · We aim to: the stair ──────────────────────────────── */
+/* Three lines stepping down and right, each with an ink hairline across the top of its own columns;
+   the last closes with one across its bottom. 900px up: cols 1 to 8, 3 to 10, 5 to 12. Under 900px
+   the steps shrink but stay: each line steps in by --step and ends --step short of the next. */
+.aim {
+  --step: clamp(1rem, 6vw, 3rem);
+  position: relative;
+  overflow-x: clip; /* a line waiting 24px to the left of its step never reaches past the page edge */
+  padding: 0 0 var(--space-standard);
+}
+.aim__label {
+  margin: 0 0 var(--s-4);
+}
+.aim__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.aim__step {
+  position: relative;
+  padding: var(--s-3) 0 var(--s-4);
+}
+.aim__step:nth-child(1) {
+  margin-right: calc(2 * var(--step));
+}
+.aim__step:nth-child(2) {
+  margin-inline: var(--step);
+}
+.aim__step:nth-child(3) {
+  margin-left: calc(2 * var(--step));
+}
+.aim__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink);
+  transform-origin: 0 50%;
+}
+.aim__rule--base {
+  top: auto;
+  bottom: 0;
+}
+.aim__line {
+  display: block;
+  font-size: clamp(1.375rem, 2.325vw, 2.25rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+@media (min-width: 900px) {
+  .aim__steps {
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+  .aim__step:nth-child(n) {
+    margin: 0;
+  }
+  .aim__step:nth-child(1) {
+    grid-column: 1 / span 8;
+  }
+  .aim__step:nth-child(2) {
+    grid-column: 3 / span 8;
+  }
+  .aim__step:nth-child(3) {
+    grid-column: 5 / span 8;
+  }
+}
+
+/* ── 5 · What we do: plates on the rail ────────────────────── */
+/* Home's Mission rail and plates (global.css: .hang, .pillar), with fuller plates: the deck, then
+   its one body sentence, and no empty space inside. The rail with its drop lines is About brass
+   placement 2. */
+.what {
+  position: relative;
+  padding: 0 0 var(--space-generous);
+}
+.what__hang {
+  margin-top: var(--space-tight);
+}
+/* Under 900px the plates stack, one per line, with room to spare: the sentence sets the plate at
+   18em (never wider than the column), and the deck sits inside it. */
+.what__plate {
+  max-width: 100%;
+}
+.what__body {
+  width: 18em;
+  max-width: 100%;
+  margin: var(--s-2) 0 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+@media (min-width: 900px) {
+  .what__title {
+    grid-column: 1 / span 6;
+  }
+  /* Three plates across cols 1 to 12 from 900px: the side padding eases off at the narrow end so
+     the row always fits with clear gaps between plates. */
+  .what__plate {
+    padding-inline: clamp(1.25rem, 2.2vw, 2rem);
+  }
+  /* In the row, a plate is exactly as wide as its deck; the sentence wraps inside that width and
+     adds nothing to it. */
+  .what__body {
+    width: 0;
+    min-width: 100%;
+    max-width: none;
+  }
+}

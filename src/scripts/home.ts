@@ -1,13 +1,10 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CustomEase } from 'gsap/CustomEase';
+import { MENU, ANY_MOTION, onceInView, initPillars } from './motion';
 
-gsap.registerPlugin(ScrollTrigger, CustomEase);
+gsap.registerPlugin(ScrollTrigger);
 
-// The menu curve, cubic-bezier(.22,1,.36,1). CONTEXT.md, Motion.
-const MENU = CustomEase.create('menu', 'M0,0 C0.22,1 0.36,1 1,1');
 const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
-const ANY_MOTION = '(prefers-reduced-motion: no-preference)';
 
 // Measured from her mark (viewBox 1123 616 1845 1620): the arch circle centre as a fraction of the
 // rig box, and the opening's inner radius as a fraction of its width.
@@ -21,25 +18,11 @@ const FAILSAFE_MS = 4500;
 export function initHome() {
   initIntro();
   initHall();
-  initPillars();
+  initPillars(document.querySelector<HTMLElement>('[data-pillars]'));
   initActionRows();
   initCard();
   initFadeUps();
   initNewsletter();
-}
-
-// Runs `play` once, the first time `el` is at least `threshold` in view.
-function onceInView(el: Element, threshold: number, play: () => void) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      if (!entries.some((e) => e.isIntersecting)) return;
-      io.disconnect();
-      play();
-    },
-    { threshold },
-  );
-  io.observe(el);
-  return io;
 }
 
 function initIntro() {
@@ -226,35 +209,6 @@ function initCard() {
     return () => {
       io.disconnect();
       gsap.set(card, { clearProps: 'all' });
-    };
-  });
-}
-
-// Our Mission. Custom gsap, not 21st.dev (CONTEXT.md): each drop line grows from the rail
-// (scaleY 0 to 1, 0.5s), then its plaque drops from y -24px to 0 with a slight overshoot.
-// 0.12s stagger between pillars. Plays once.
-function initPillars() {
-  const hang = document.querySelector<HTMLElement>('[data-pillars]');
-  if (!hang) return;
-  const drops = [...hang.querySelectorAll<HTMLElement>('[data-pillar-drop]')];
-  const plaques = [...hang.querySelectorAll<HTMLElement>('[data-pillar-plaque]')];
-
-  gsap.matchMedia().add(ANY_MOTION, () => {
-    gsap.set(drops, { scaleY: 0, transformOrigin: '50% 0%' });
-    gsap.set(plaques, { opacity: 0, y: -24 });
-    const io = onceInView(hang, 0.3, () => {
-      const tl = gsap.timeline();
-      drops.forEach((drop, i) => {
-        const at = i * 0.12;
-        tl.to(drop, { scaleY: 1, duration: 0.5, ease: MENU }, at);
-        tl.to(plaques[i], { y: 0, duration: 0.5, ease: 'back.out(1.6)' }, at + 0.5);
-        tl.to(plaques[i], { opacity: 1, duration: 0.2, ease: 'sine.out' }, at + 0.5);
-      });
-    });
-
-    return () => {
-      io.disconnect();
-      gsap.set([...drops, ...plaques], { clearProps: 'all' });
     };
   });
 }

@@ -1,11 +1,10 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CustomEase } from 'gsap/CustomEase';
+import { SplitText } from 'gsap/SplitText';
+import { MENU, ANY_MOTION, onceInView, initPillars } from './motion';
 
-gsap.registerPlugin(ScrollTrigger, CustomEase);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
-// The menu curve, cubic-bezier(.22,1,.36,1). CONTEXT.md, Motion.
-const MENU = CustomEase.create('menu', 'M0,0 C0.22,1 0.36,1 1,1');
 const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
 
 // Must match the CSS failsafe delay on .niche__plate (about.css). If this script arrives later than
@@ -14,7 +13,10 @@ const FAILSAFE_MS = 2500;
 
 export function initAbout() {
   initNiche();
+  initInscription();
   initTorchLine();
+  initStair();
+  initPillars(document.querySelector<HTMLElement>('[data-pillars]'));
 }
 
 // The niche photo settles once on load: scale 1.06 to 1 on the menu curve, opacity 0 to 1 on sine, 0.9s.
@@ -103,6 +105,89 @@ function initTorchLine() {
       ScrollTrigger.removeEventListener('refreshInit', measure);
       images.forEach((img) => img.removeEventListener('load', refresh));
       gsap.set([fill, marker], { clearProps: 'transform' });
+    };
+  });
+}
+
+// Our Story's inscription rises line by line out of a mask: each line from y 100% to 0, 0.8s, on the
+// menu curve, 0.12s apart. Plays once when 30% in view. autoSplit re-splits the lines on resize;
+// returning the tween from onSplit lets SplitText carry its progress over to the new lines, so a
+// finished reveal stays finished and one not yet played stays waiting. The split text is hidden from
+// screen readers; a visually hidden copy reads the quote once, whole (about.astro).
+// Reduced motion: never split, static.
+function initInscription() {
+  const text = document.querySelector<HTMLElement>('[data-inscription]');
+  if (!text) return;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    let played = false;
+    let reveal: gsap.core.Tween | undefined; // the tween for the current split
+    let split: SplitText | undefined;
+    let io: IntersectionObserver | undefined;
+    let cancelled = false;
+
+    // Split once the fonts are in, so the lines are measured in Fraunces.
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+      split = SplitText.create(text, {
+        type: 'lines',
+        mask: 'lines',
+        linesClass: 'inscription__line',
+        autoSplit: true,
+        aria: 'none',
+        onSplit: (self) => {
+          reveal = gsap.fromTo(
+            self.lines,
+            { yPercent: 100 },
+            { yPercent: 0, duration: 0.8, ease: MENU, stagger: 0.12, paused: !played },
+          );
+          return reveal;
+        },
+      });
+      io = onceInView(text, 0.3, () => {
+        played = true;
+        reveal?.play();
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      io?.disconnect();
+      split?.revert();
+    };
+  });
+}
+
+// We aim to: the stair. The steps arrive in order, top to bottom, 0.18s apart. Each rule draws from
+// the left (scaleX 0 to 1, 0.5s, menu curve), then its line slides in from x -24px to 0 as it fades
+// in (0.5s: movement on the menu curve, the fade on sine). The last step's base rule draws as its
+// line arrives. Plays once when 30% in view. Reduced motion: static.
+function initStair() {
+  const stair = document.querySelector<HTMLElement>('[data-stair]');
+  if (!stair) return;
+  const steps = [...stair.querySelectorAll<HTMLElement>('[data-step]')];
+  const rules = steps.map((s) => s.querySelector<HTMLElement>('[data-step-rule]')!);
+  const lines = steps.map((s) => s.querySelector<HTMLElement>('[data-step-line]')!);
+  const base = stair.querySelector<HTMLElement>('[data-step-base]');
+  const drawn = base ? [...rules, base] : rules;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(drawn, { scaleX: 0, transformOrigin: '0% 50%' });
+    gsap.set(lines, { opacity: 0, x: -24 });
+    const io = onceInView(stair, 0.3, () => {
+      const tl = gsap.timeline();
+      steps.forEach((_, i) => {
+        const at = i * 0.18;
+        tl.to(rules[i], { scaleX: 1, duration: 0.5, ease: MENU }, at);
+        tl.to(lines[i], { x: 0, duration: 0.5, ease: MENU }, at + 0.5);
+        tl.to(lines[i], { opacity: 1, duration: 0.5, ease: 'sine.out' }, at + 0.5);
+      });
+      if (base) tl.to(base, { scaleX: 1, duration: 0.5, ease: MENU }, (steps.length - 1) * 0.18 + 0.5);
+    });
+
+    return () => {
+      io.disconnect();
+      gsap.set([...drawn, ...lines], { clearProps: 'all' });
     };
   });
 }

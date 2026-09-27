@@ -865,17 +865,20 @@ html.el-intro [data-hero-item] {
   text-wrap: pretty;
 }
 .mission__hang {
-  --drop: clamp(2rem, 4vw, 3.5rem);
-  position: relative;
   margin-top: var(--space-standard);
 }
+/* Plates hung from a rail: shared by Home's Our Mission and About's What we do */
+.hang {
+  --drop: clamp(2rem, 4vw, 3.5rem);
+  position: relative;
+}
 /* Double rule, as in the hall: two 1px brass lines, 6px apart */
-.mission__rail {
+.hang__rail {
   height: 8px;
   border-top: 1px solid var(--brass);
   border-bottom: 1px solid var(--brass);
 }
-.mission__pillars {
+.hang__pillars {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -936,7 +939,7 @@ html.el-intro [data-hero-item] {
     grid-column: 1 / -1;
   }
   /* One row across cols 1 to 12: first plaque flush left, last flush right, drops centred */
-  .mission__pillars {
+  .hang__pillars {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;

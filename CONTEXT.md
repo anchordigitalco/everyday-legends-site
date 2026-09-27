@@ -49,7 +49,6 @@ Behavior:
 - An inline head script decides before first paint whether the overlay shows, so returning visitors never see a flash.
 - The H1 and all hero content are in the HTML from the start, under the overlay.
 - Nav and Donate sit above the overlay, legible and clickable from the first frame. Any color change on them is an opacity crossfade, never an animated color.
-- The Phase 5 scroll-driven arch walk-through is removed entirely.
 
 ## Palette (locked)
 
@@ -70,7 +69,7 @@ Behavior:
   - Brass on Home: exactly 4 placements. Hall double rail, hall drop lines, Mission rail with its drop lines, invitation card double frame.
   - Brass on each inner page: 3 placements or fewer. List them in that slice's report.
 - Materials come from palette, type, and CSS grain only. MUST NOT use AI texture art or image textures.
-- Every color comes from a token. No raw hex outside the token block. `--ink-hover` and the `#3a3228` hover are retired; button hovers follow the 21st.dev button spec.
+- Every color comes from a token. No raw hex outside the token block. Button hovers follow the 21st.dev button spec.
 - Default Tailwind colors are banned.
 
 ## Typography
@@ -144,6 +143,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 
 - `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
+- Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`.
 
 ## Nav and footer
 
@@ -183,7 +183,11 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Torch marker: viewBox crop `2026 1324 216 449` of mark paths 0 and 7, brass, paper outline. It rides the fill head and locks at the torch sentence.
   - Founders grid: from the switch width (1410px) up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900px to 1409px, the title sits full width above; line col 1, photo and copy cols 2–12 at the copy measure.
   - Founders copy measure: 64ch max-width.
-  - About brass: 1 of 3 used (the torch line with its marker).
+  - Section titles share one class, matched to the Founders title.
+  - Our Story: cols 2–8. Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
+  - We aim to: title in label style on purpose. Lines Bricolage 300 at 1.2–1.5x Home's lede, cols 1–8 / 3–10 / 5–12 under ink hairlines; step clamp(1rem, 6vw, 3rem) under 900px. Rule draws 0.5s, then line slides from -24px 0.5s, 0.18s apart.
+  - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, 18em below.
+  - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
 - Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
 - Support: slab header with no niche; the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's; the sponsorship pointer.

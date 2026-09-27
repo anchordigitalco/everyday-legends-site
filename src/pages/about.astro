@@ -17,6 +17,26 @@ const paths = markRaw.match(/<path\b[^>]*\/>/g) ?? [];
 if (paths.length !== 37) throw new Error(`everyday-legends-mark.svg: expected 37 paths, found ${paths.length}`);
 const torchPaths = [paths[0], paths[7]].map((p) => p.replace(/\sfill(-opacity)?="[^"]*"/g, '')).join('');
 const TORCH_VIEWBOX = '2026 1324 216 449';
+
+// What we do, the three decks and their bodies (everyday-legends-copy.md, 2.5), in copy order.
+const pillars = [
+  { name: 'Scholarship Support', body: 'Provide financial assistance to students who demonstrate academic excellence, leadership, and perseverance.' },
+  { name: 'Athletic Investment', body: 'Support programs that develop discipline, character, and teamwork in young athletes.' },
+  { name: 'Community Recognition', body: 'Highlight and fund organizations and culture-shapers who strengthen our communities through service and impact.' },
+];
+
+// A plate is as narrow as its deck, so each sentence keeps its last two words together (a non-breaking
+// space, the copy itself unchanged) and never ends on one word alone.
+const keepLastPair = (text: string) => text.replace(/ (\S+)$/, '\u00a0$1');
+
+// We aim to (2.4): the three lines that complete the label's sentence, stepping down the stair.
+const aims = [
+  'Provide scholarships that remove financial barriers to opportunity',
+  'Support athletic programs that cultivate leadership and character',
+  'Honor and support individuals whose impact transforms communities',
+];
+
+const QUOTE = 'At the intersection of these forces, legacy is built.';
 ---
 <Base
   title="About the Foundation · Everyday Legends Foundation"
@@ -62,6 +82,26 @@ const TORCH_VIEWBOX = '2026 1324 216 449';
       </div>
     </section>
 
+    <!-- 2 · Our Story, then the page's one pull quote as a full-width inscription -->
+    <section class="story" aria-labelledby="story-title">
+      <div class="grid story__grid">
+        <h2 id="story-title" class="display about-title story__title">Our Story</h2>
+        <div class="story__body">
+          <p>Everyday Legends was created to honor the pillars that shape identity and purpose: sports, scholarship, and community.</p>
+          <p>Athletics provides a safe space where discipline, resilience, and character are developed. Education remains the foundation for opportunity, critical thinking, and long-term advancement. Community and leadership ensure that impact extends beyond individual success, shaping culture and creating lasting change.</p>
+        </div>
+      </div>
+      <div class="inscription">
+        <svg class="inscription__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+        <p class="grid inscription__grid">
+          <!-- Read once, whole: the visible text is split into lines for the reveal, so it is hidden
+               from screen readers and this copy speaks for it. -->
+          <span class="sr-only">{QUOTE}</span>
+          <span class="display inscription__text" aria-hidden="true" data-inscription>{QUOTE}</span>
+        </p>
+      </div>
+    </section>
+
     <!-- 3 · Founders' Story & Inspiration: the torch line (scroll-driven moment 2) -->
     <section class="founders" aria-labelledby="founders-title" data-founders>
       <div class="grid founders__grid">
@@ -91,6 +131,43 @@ const TORCH_VIEWBOX = '2026 1324 216 449';
               <svg class="torch__svg" viewBox={TORCH_VIEWBOX} focusable="false" set:html={torchPaths} />
             </span>Today, the torch is being passed to our three sons, who carry forward the importance of leadership, discipline, service, and giving back.</p>
           <p>Jaylen McClain, Co-Founder of Everyday Legends, uses his athletic platform as a force for good, reinforcing to young people that success is not only measured by personal accomplishments but by how you uplift others. Jaylen demonstrates that athletic achievement and community responsibility can coexist. He, with his brothers coming behind him, represents the vision of using his platform and success responsibly. Everyday Legends exists to ensure that this spirit of service continues for years to come.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · We aim to: three lines stepping down and right, a stair of stone -->
+    <section class="aim" aria-labelledby="aim-title" data-stair>
+      <div class="grid aim__grid">
+        <h2 id="aim-title" class="label aim__label">We aim to</h2>
+        <ol class="aim__steps">
+          {aims.map((line, i) => (
+            <li class="aim__step" data-step>
+              <span class="aim__rule" aria-hidden="true" data-step-rule></span>
+              <span class="aim__line" data-step-line>{line}</span>
+              {i === aims.length - 1 && <span class="aim__rule aim__rule--base" aria-hidden="true" data-step-base></span>}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5 · What we do: three plates hung from a brass rail -->
+    <section class="what" aria-labelledby="what-title">
+      <div class="grid what__grid">
+        <h2 id="what-title" class="display about-title what__title">What we do</h2>
+        <div class="what__hang hang" data-pillars>
+          <div class="hang__rail" aria-hidden="true"></div>
+          <ul class="hang__pillars">
+            {pillars.map(({ name, body }) => (
+              <li class="pillar">
+                <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
+                <div class="pillar__plaque what__plate" data-pillar-plaque>
+                  <h3 class="display pillar__name">{name}</h3>
+                  <p class="what__body">{keepLastPair(body)}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
