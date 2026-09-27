@@ -1,0 +1,20 @@
+---
+// Her arch from everyday-legends-mark.svg (path 1) as a niche: one hairline ink frame, the photo set on
+// a concentric inset arch, the standard paper-deep tint over it, and a soft recess under the head.
+// The slot holds the photo (an astro:assets <Image>). Geometry and sizing live in about.css (.niche);
+// `class` adds the placement for each use. `settle` marks the About header's photo for its load settle.
+interface Props {
+  class?: string;
+  settle?: boolean;
+}
+const { class: className, settle = false } = Astro.props;
+---
+<div class:list={['niche', className]}>
+  <div class="niche__photo">
+    <div class="niche__plate" data-niche-plate={settle ? '' : undefined}>
+      <slot />
+      <span class="photo-tint" aria-hidden="true"></span>
+    </div>
+    <span class="niche__recess" aria-hidden="true"></span>
+  </div>
+</div>

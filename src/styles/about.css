@@ -31,14 +31,17 @@
    construction; only the jambs run longer, to a width to height of 0.72. border-radius 9999px on the
    top corners resolves to exactly half the width, so the head is a true semicircle at any size. */
 .niche {
-  --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);
   --niche-gap: clamp(8px, 0.8vw, 12px);
-  justify-self: center;
-  width: min(calc(var(--niche-h) * 0.72), 100%);
   aspect-ratio: 0.72;
   padding: var(--niche-gap);
   border: 1px solid var(--ink);
   border-radius: 9999px 9999px 0 0;
+}
+/* The header's niche, sized from the viewport height (components/Niche.astro holds the markup) */
+.niche-hdr__niche {
+  --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);
+  justify-self: center;
+  width: min(calc(var(--niche-h) * 0.72), 100%);
 }
 /* The photo, inset inside the frame on a concentric arch */
 .niche__photo {
@@ -252,11 +255,7 @@ html.el-settle:not(.el-settle-js) .niche__plate {
   .founders__copy {
     grid-column: 2 / -1;
   }
-  /* The photo takes the paragraphs' font size and measure, so it is exactly as wide as the text */
-  .founders__photo {
-    max-width: 64ch;
-    font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
-  }
+  /* The photo spans the full copy area; the paragraphs keep their 64ch measure below it */
   .founders__line {
     grid-column: 1;
   }
@@ -295,7 +294,9 @@ html.el-settle:not(.el-settle-js) .niche__plate {
    same size formula (.founders__title), so the three titles always match. Their sections are the
    size containers the formula reads. */
 .story,
-.what {
+.what,
+.lead,
+.account {
   container-type: inline-size;
 }
 .about-title {
@@ -491,5 +492,195 @@ html.el-settle:not(.el-settle-js) .niche__plate {
     width: 0;
     min-width: 100%;
     max-width: none;
+  }
+}
+
+/* ── 6 · Leadership: busts in arch niches ──────────────────── */
+/* Each person: a portrait in the About niche (same component and geometry), then the deck, then the
+   body. Founders large and equal, the second hung lower by a third of an arch height; board members
+   (when named) smaller, in a staggered row beneath. No brass. Under 900px: stacked, no stagger. */
+.lead {
+  --arch-w: min(100%, 22rem);
+  position: relative;
+  padding: 0 0 var(--space-standard);
+}
+.lead__busts {
+  display: grid;
+  row-gap: var(--s-6);
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.bust__niche {
+  width: var(--arch-w);
+}
+/* Portraits in grayscale so both founders match; the niche's paper-deep tint sits over them */
+.bust__niche img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+  filter: grayscale(1);
+}
+/* The deck: the name in the display face, then the role in the label style. Each half is held
+   whole, so the deck breaks only at the middot, which leads the role. */
+.bust__deck {
+  margin: var(--s-4) 0 0;
+  font-weight: inherit;
+}
+.bust__name {
+  display: block;
+  font-size: clamp(1.75rem, 2.3vw, 2.5rem);
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.bust__role {
+  display: block;
+  margin-top: var(--s-1);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.bust__body {
+  max-width: 34em;
+  margin: var(--s-3) 0 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Hover reveal, from reference/21st/hover-reveal-cards.tsx: the hovered portrait scales to 1.05, the
+   others to 0.97 at opacity 0.6, 500ms ease-in-out. The whole niche scales, frame and photo together,
+   so nothing inside is cropped. The busts are not links: hover only, pointer devices only, no focus
+   state. Reduced motion keeps the dimming and drops the scale. */
+.bust__niche {
+  transition:
+    transform 500ms ease-in-out,
+    opacity 500ms ease-in-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lead__busts:has(.bust:hover) .bust:not(:hover) .bust__niche {
+    transform: scale(0.97);
+    opacity: 0.6;
+  }
+  .bust:hover .bust__niche {
+    transform: scale(1.05);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lead__busts .bust .bust__niche {
+    transform: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .lead {
+    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
+    --founder-cols: 3.5;
+    --board-cols: 2.5;
+  }
+  .lead__title {
+    grid-column: 1 / span 6;
+  }
+  .lead__busts {
+    grid-template-columns: subgrid;
+    align-items: start;
+  }
+  /* Founders: cols 1 to 5 and 8 to 12. Board: cols 2 to 5 and 8 to 11, a row beneath. */
+  .bust--founder {
+    --arch-w: calc(var(--founder-cols) * var(--col) + (var(--founder-cols) - 1) * var(--col-gap));
+    grid-row: 1;
+  }
+  .bust--founder.bust--left {
+    grid-column: 1 / span 5;
+  }
+  .bust--founder.bust--right {
+    grid-column: 8 / span 5;
+  }
+  .bust--board {
+    --arch-w: calc(var(--board-cols) * var(--col) + (var(--board-cols) - 1) * var(--col-gap));
+    grid-row: 2;
+  }
+  .bust--board.bust--left {
+    grid-column: 2 / span 4;
+  }
+  .bust--board.bust--right {
+    grid-column: 8 / span 4;
+  }
+  /* The stagger: the second of each row hangs a third of its arch height lower */
+  .bust--right .bust__hang {
+    padding-top: calc(var(--arch-w) / 0.72 / 3);
+  }
+  .bust--board .bust__name {
+    font-size: clamp(1.5rem, 1.8vw, 2rem);
+  }
+}
+
+/* ── 7 · Accountability: the cornerstone ───────────────────── */
+/* The stone (components/Cornerstone.astro) in cols 1 to 5; title and body in cols 7 to 12, then the
+   privacy marginalia. No CTA, no brass. Under 900px: the stone, then the text. */
+.account {
+  position: relative;
+  padding: var(--space-tight) 0 var(--space-generous);
+}
+.account__grid {
+  row-gap: var(--space-standard);
+  align-items: center;
+}
+.account__text p {
+  max-width: 64ch;
+  margin: var(--s-3) 0 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+/* The EIN and the 501(c)(3) designation are each one term: neither breaks inside itself */
+.account__term {
+  white-space: nowrap;
+}
+.account__text h2 + p {
+  margin-top: var(--s-4);
+}
+.account__text .account__marg {
+  margin-top: var(--s-4);
+}
+/* Marginalia link on paper: ink label with a hairline underline at rest that darkens on hover */
+.marg-link {
+  position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--ink);
+  text-decoration: none;
+  transition: transform 220ms var(--menu);
+}
+.marg-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.35;
+  transition: opacity 320ms var(--sine);
+}
+.marg-link:hover::after,
+.marg-link:focus-visible::after {
+  opacity: 1;
+}
+.marg-link:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
+}
+.marg-link:active {
+  transform: translateY(1px);
+}
+@media (min-width: 900px) {
+  .account__stone {
+    grid-column: 1 / span 5;
+  }
+  .account__text {
+    grid-column: 7 / span 6;
   }
 }

@@ -1,10 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Niche from '../components/Niche.astro';
+import Cornerstone from '../components/Cornerstone.astro';
 import '../styles/about.css';
 import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
 import nichePhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-9_websize.jpg';
 import podiumPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-48_websize.jpg';
+import syreetaPhoto from '../../brand_assets/KNOW_shoot_5.jpg';
+import jaylenPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-117_websize.jpg';
 
 // The torch marker: her torch, isolated from everyday-legends-mark.svg by cropping the viewBox.
 // Path 0 is one shape holding the E, the L, and the torch (stem, cup, and the flame's outline), so the
@@ -36,6 +40,39 @@ const aims = [
   'Honor and support individuals whose impact transforms communities',
 ];
 
+// Leadership (2.6), in copy order. Founders hang large, board members smaller in a row beneath, each
+// row staggered. The board is still to be filled: add two entries with tier 'board' and the layout
+// completes itself with four. An entry without a photo shows its arch empty.
+type Leader = {
+  name: string;
+  role: string;
+  body: string;
+  tier: 'founder' | 'board';
+  photo?: ImageMetadata;
+  alt?: string;
+};
+const leaders: Leader[] = [
+  {
+    name: 'Dr. Syreeta McClain',
+    role: 'Co-Founder & Executive Director',
+    body: 'Dr. Syreeta McClain is a high school principal and an educational consultant, with more than two decades in alternative education. She is the founder of Premier Leadership, and she manages the careers of her three sons through high school and Division\u00a0I football.',
+    tier: 'founder',
+    photo: syreetaPhoto,
+    alt: 'Dr. Syreeta McClain',
+  },
+  {
+    name: 'Jaylen McClain',
+    role: 'Co-Founder',
+    // Researched placeholder, pending her approval (copy deck 2.6). Rendered as written.
+    body: 'Jaylen McClain, a Seton Hall Prep graduate, is a safety and team captain at Ohio State. He won a national championship as a freshman and founded the Jaylen McClain Youth Football Camp.',
+    tier: 'founder',
+    photo: jaylenPhoto,
+    alt: 'Jaylen McClain',
+  },
+];
+// Left or right within its row: the second of each tier hangs lower (the stagger)
+const tierIndex = (i: number) => leaders.slice(0, i).filter((l) => l.tier === leaders[i].tier).length;
+
 const QUOTE = 'At the intersection of these forces, legacy is built.';
 ---
 <Base
@@ -59,23 +96,17 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
     <!-- 1 · Niche header: Our Vision, on paper -->
     <section class="niche-hdr" aria-labelledby="vision-title">
       <div class="grid niche-hdr__grid">
-        <div class="niche">
-          <div class="niche__photo">
-            <div class="niche__plate" data-niche-plate>
-              <Image
-                src={nichePhoto}
-                widths={[400, 640, 900, 1066]}
-                sizes="(min-width: 900px) 460px, 90vw"
-                alt="Jaylen McClain and his brother at the Legends Among Us luncheon."
-                loading="eager"
-                fetchpriority="high"
-                data-niche-img
-              />
-              <span class="photo-tint" aria-hidden="true"></span>
-            </div>
-            <span class="niche__recess" aria-hidden="true"></span>
-          </div>
-        </div>
+        <Niche class="niche-hdr__niche" settle>
+          <Image
+            src={nichePhoto}
+            widths={[400, 640, 900, 1066]}
+            sizes="(min-width: 900px) 460px, 90vw"
+            alt="Jaylen McClain and his brother at the Legends Among Us luncheon."
+            loading="eager"
+            fetchpriority="high"
+            data-niche-img
+          />
+        </Niche>
         <h1 id="vision-title" class="display niche-hdr__title">Our Vision</h1>
         <p class="niche-hdr__lede">A culture where scholarship, athletics, and service are equally celebrated.</p>
         <p class="niche-hdr__body">Where young people are empowered to lead with integrity, excellence, and purpose, and where communities rally around those who shape the future.</p>
@@ -168,6 +199,54 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · Leadership: portraits in arch niches, founders large, staggered -->
+    <section class="lead" aria-labelledby="lead-title">
+      <div class="grid lead__grid">
+        <h2 id="lead-title" class="display about-title lead__title">Leadership</h2>
+        <ul class="lead__busts">
+          {leaders.map((person, i) => (
+            <li class:list={['bust', `bust--${person.tier}`, tierIndex(i) % 2 ? 'bust--right' : 'bust--left']}>
+              <div class="bust__hang">
+                <Niche class="bust__niche">
+                  {person.photo && (
+                    <Image
+                      src={person.photo}
+                      widths={[360, 540, 720, 960]}
+                      sizes="(min-width: 900px) 32vw, 90vw"
+                      alt={person.alt}
+                      loading="lazy"
+                    />
+                  )}
+                </Niche>
+                <!-- Name and role always stack, so the deck starts in its broken state (site.ts) -->
+                <h3 class="bust__deck mid-broken" data-mid-line>
+                  <span class="display bust__name" data-mid-a>{person.name}</span><span data-mid> ·</span>{' '}
+                  <span class="label bust__role" data-mid-b>{person.role}</span>
+                </h3>
+                <p class="bust__body">{person.body}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7 · Accountability: the cornerstone -->
+    <section class="account" aria-labelledby="account-title">
+      <div class="grid account__grid">
+        <div class="account__stone">
+          <Cornerstone />
+        </div>
+        <div class="account__text">
+          <h2 id="account-title" class="display about-title">Accountability</h2>
+          <p>Everyday Legends Foundation, Inc. is a tax-exempt organization under Section <span class="account__term">501(c)(3)</span> of the Internal Revenue Code. EIN <span class="account__term">39-4769708.</span> Contributions are tax-deductible to the extent permitted by law.</p>
+          <p>Gifts go three ways. To community organizations already running their own initiatives, where we add to the work rather than duplicate it. To athletics, through football camps and high school programs. And to education, through scholarships.</p>
+          <!-- Same destination as the footer's Privacy Policy link (Base.astro) -->
+          <p class="account__marg"><a class="label marg-link" href="/privacy">Privacy policy</a></p>
         </div>
       </div>
     </section>

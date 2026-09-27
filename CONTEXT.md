@@ -17,7 +17,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 - Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. No CMS; Jackson makes updates.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
-- Donations: Zeffy, link pending. No payments in our code. Until the link arrives, every Donate points to `/support`.
+- Donations: Zeffy, link pending. No payments in our code. Every Donate points to `/support`, where the Zeffy form is embedded. Until the link arrives, the form area holds an honest placeholder.
 - References, never built and never copied visually: `reference/wireframes/` (structure only), `reference/21st/` (motion only).
 
 ## Governing concept
@@ -29,26 +29,11 @@ How it resolves on the web:
 - Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo. Support is the exception: the arch moves down the page and frames the donation form. Contact's niche holds only the torch.
 - The dark wall exists only in the intro. After it, the paper page is the inside of the building.
 
-## Home intro (code, no video)
+## Home intro (built)
 
-Built inline from `brand_assets/everyday-legends-mark.svg`. A flat drawing the whole time. MUST NOT add 3D, perspective, extrusion, or any shape that is not in the SVG.
-
-Sequence, about 3.2s:
-1. 0s: the mark centered on the ink wall, rays at low opacity. This is the first painted frame. Never a blank screen.
-2. 0 to 1.2s: rays light one by one, center outward, about 40ms apart (opacity).
-3. 0.4 to 1.6s: a warm glow builds inside the arch (radial gradient layer, opacity).
-4. Throughout: the flame flickers gently (opacity plus scale under 3%, flame only).
-5. 1.6 to 2.8s: the mark scales up about the center of the arch opening. Letters and torch fade out by 2.2s. The glow fills the screen and resolves to exactly paper `#F2EADB`.
-6. 2.8 to 3.2s: overlay removed. Hero title, lede, and CTAs fade up, 80ms stagger.
-
-Behavior:
-- gsap timeline. Transform and opacity only.
-- Plays once per session (sessionStorage key `el-intro-seen`).
-- Any wheel, touch, scroll, click, or key press skips straight to step 6.
-- prefers-reduced-motion: the intro never renders.
-- An inline head script decides before first paint whether the overlay shows, so returning visitors never see a flash.
-- The H1 and all hero content are in the HTML from the start, under the overlay.
-- Nav and Donate sit above the overlay, legible and clickable from the first frame. Any color change on them is an opacity crossfade, never an animated color.
+- Built in code from `brand_assets/everyday-legends-mark.svg`, a flat drawing throughout. MUST NOT add 3D, perspective, extrusion, or any shape not in the SVG.
+- About 3.2s: rays light center outward, a glow builds in the arch, the flame flickers, the mark scales up and resolves to paper `#F2EADB`, then the hero fades up.
+- Once per session (`el-intro-seen`). Any input skips to the end. Never renders with reduced motion. A head script decides before first paint, so there is no flash. Hero content and nav are in the HTML from the start and usable from the first frame.
 
 ## Palette (locked)
 
@@ -79,7 +64,7 @@ Behavior:
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
 - No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
-- The middot `·` is copy and is never replaced.
+- The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
 ## Photos
 
@@ -143,7 +128,8 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 
 - `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
-- Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`.
+- Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
+- `Niche.astro` is every arch (About header, portraits). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
 
 ## Nav and footer
 
@@ -152,28 +138,16 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - The nav is fixed to the top of the screen, so Donate is always visible.
 - Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; info@everydaylegend.com; Instagram · @everydaylegendsfoundation; Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
 
-## Home section table
+## Home as built
 
-Space tokens: `--space-tight`, `--space-standard`, `--space-generous`, declared once in CSS, each at least 1.5x the one before. Exact values are tuned by screenshot. Grid is 12 columns.
-
-| # | Section | Entrance | Column window | Image | Space before | Margin | Height |
-|---|---|---|---|---|---|---|---|
-| 1 | Hero, on paper | Intro, then fade up | Title cols 1 to 9; lede cols 1 to 7; CTAs under the lede | None | Page top | None | Short |
-| 2 | Hall | Pinned side scroll (scroll-driven 1) | Rail full bleed | None | Tight | "INAUGURAL CLASS, 2026" label and the outline 2026 numeral | Pin covers 150vh of scroll at most |
-| 3 | Our Mission | Text reveal on the lede; plaques drop | Title and lede cols 1 to 6; body cols 8 to 12; three plaques in one row across cols 1 to 12 | None | Generous | None | Medium |
-| 4 | Legends in Action | Rows fade up once; spotlight hover | Alternating rows: photo cols 1 to 7 with text cols 8 to 12, then mirrored | Large, one per row | Standard | Title, deck, and "See all our work" in the head | Tallest on Home |
-| 5 | Legends Among Us | Card settles to its angle once | Photo full bleed; card cols 2 to 6 | Full bleed, dark gradient on the left | Standard | Marginalia on the card | Medium |
-| 6 | Support the Foundation | Fade up | Ink slab full bleed; title and lede cols 1 to 6; body cols 7 to 11; marginalia under the body | None | Standard | 501(c)(3) marginalia | Medium short |
-| 7 | Newsletter | None | Cols 4 to 9, centered | None | Tight | None | Shortest |
-
-Row rules:
-- Hero: the hall's rail MUST be visible inside the first viewport at 1440×900 and 390×844.
-- Hall: the eight honorees in program order, names only. No roles, no caption. The wireframe's "Wall of Honor", "The people we have named.", and "ROLE" are not copy and MUST NOT render. Under 900px and in reduced motion it becomes a plain vertical list.
-- Legends in Action: cards in copy deck order (1 Rahway PAL, 2 Salvation Army, 3 Legends Among Us). No dates anywhere, and no invented marginalia in their place.
-- Mission: the plaques are text only, sized to their words. No empty frames, no images. The whole section is at most 1.2 viewports tall at 1440×900.
-- Legends Among Us: the only rotated element on the site. The location line breaks only at the middot.
-- Newsletter: Name, Email, Sign up, styled in Brass and Ink. No backend exists yet, so the form MUST NOT show a success state. List it as open in the report.
-- Height spread on Home, tallest to shortest: 4:1 or more.
+Space tokens `--space-tight`, `--space-standard`, `--space-generous`, each at least 1.5x the one before. 12-column grid.
+1. Hero on paper: intro, then fade up. The hall's rail is visible in the first viewport at 1440×900 and 390×844.
+2. Hall: pinned side scroll (scroll-driven 1), 150vh max. Eight honorees in program order, names only. A vertical list under 900px and in reduced motion.
+3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall.
+4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home.
+5. Legends Among Us: the card settles to its angle, the only rotated element on the site. The location line breaks only at the middot.
+6. Support: ink slab, fade up. 7. Newsletter: shortest; no backend yet, so no success state.
+- Home height spread, tallest to shortest: 4:1 or more.
 
 ## Inner pages
 
@@ -181,12 +155,13 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - About: niche header carrying Our Vision; Our Story with the page's one pull quote set as a full-width inscription; Founders' Story as the longest section, with the torch line (scroll-driven 2) beside the torch sentence; "We aim to" as three lines stepping down and right; What we do; Leadership as portraits in arch niches, founders large, board smaller, staggered, and complete with 2 people or 4; Accountability as the cornerstone.
   - About niche: her arch from mark path 1 (semicircle head, straight sides, flat base), 0.72 width to height, one hairline ink frame, photo on an inset inner arch, anchored center bottom. No rays, no brass.
   - Torch marker: viewBox crop `2026 1324 216 449` of mark paths 0 and 7, brass, paper outline. It rides the fill head and locks at the torch sentence.
-  - Founders grid: from the switch width (1410px) up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900px to 1409px, the title sits full width above; line col 1, photo and copy cols 2–12 at the copy measure.
-  - Founders copy measure: 64ch max-width.
+  - Founders grid: from 1410px up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900 to 1409px, title full width above; line col 1, photo cols 2–12, paragraphs at 64ch.
   - Section titles share one class, matched to the Founders title.
   - Our Story: cols 2–8. Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
   - We aim to: title in label style on purpose. Lines Bricolage 300 at 1.2–1.5x Home's lede, cols 1–8 / 3–10 / 5–12 under ink hairlines; step clamp(1rem, 6vw, 3rem) under 900px. Rule draws 0.5s, then line slides from -24px 0.5s, 0.18s apart.
   - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, 18em below.
+  - Leadership: founders cols 1–5 / 8–12 (3.5-col arches), board cols 2–5 / 8–11 (2.5-col arches), each second bust lower by arch height ÷ 3. Stacked under 900px, arch max 22rem. Hover reveal is pointer only, no focus state, since busts are not links.
+  - Founders is the longest section by copy. Leadership may run taller where portraits stack. Accepted.
   - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
 - Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
@@ -220,7 +195,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Open client items that touch the build
 
-- Zeffy link. Donate points to `/support` until then.
+- Zeffy link, for the form embedded on `/support`.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
 - Clean, unwatermarked photo files and the credit line.
 - Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link, original headshots.

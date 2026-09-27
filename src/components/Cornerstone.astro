@@ -1,0 +1,89 @@
+---
+// The cornerstone: the foundation's legal facts cut into a stone block, the block every public building
+// carries for its name and founding year. Used on About (Accountability) and, identical, on Support.
+// Words from everyday-legends-copy.md only; the founding year is a visible placeholder until she sends it.
+// aria-hidden: the body copy beside it carries the same facts, so screen readers hear them once.
+// No brass. The stone's own grain sits over its fill, so the material carries through.
+---
+<div class="stone" aria-hidden="true">
+  <svg class="stone__grain" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+  <p class="label stone__name"><span>Everyday Legends</span> <span>Foundation, Inc.</span></p>
+  <span class="stone__rule"></span>
+  <p class="display stone__ein">EIN 39-4769708</p>
+  <span class="stone__rule"></span>
+  <p class="label stone__line stone__line--code">501(c)(3)</p>
+  <p class="label stone__line stone__line--pending" data-placeholder>Founded (to be filled)</p>
+</div>
+
+<style>
+  /* A paper-deep block, lit from the upper left, set in an ink double frame: a hairline border and an
+     outline standing 8px off it. The letters read as cut: ink with a paper lip under each stroke. */
+  .stone {
+    position: relative;
+    container-type: inline-size;
+    display: grid;
+    justify-items: center;
+    padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: 8px;
+    text-align: center;
+    background:
+      radial-gradient(110% 80% at 18% 0%, color-mix(in srgb, var(--paper) 50%, transparent), transparent 65%),
+      radial-gradient(70% 60% at 100% 100%, color-mix(in srgb, var(--ink) 7%, transparent), transparent 70%),
+      var(--paper-deep);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--ink) 14%, transparent),
+      0 24px 48px -28px color-mix(in srgb, var(--lamp-edge) 45%, transparent);
+  }
+  .stone__grain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .stone > p {
+    position: relative;
+    margin: 0;
+    color: var(--ink);
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--paper) 70%, transparent);
+  }
+  /* The name, cut in two lines as a stone carries it */
+  .stone__name {
+    font-size: clamp(0.8125rem, 1.1vw, 1rem);
+    letter-spacing: 0.22em;
+    line-height: 1.7;
+  }
+  .stone__name span {
+    display: block;
+  }
+  /* The EIN never breaks: its size follows the stone's width so the whole line always fits */
+  .stone__ein {
+    font-size: min(3.75rem, 100cqi / 8.4);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .stone__rule {
+    position: relative;
+    width: min(12rem, 60%);
+    height: 1px;
+    margin-block: var(--s-3);
+    background: var(--ink);
+  }
+  .stone__line {
+    font-size: 0.8125rem;
+    letter-spacing: 0.2em;
+  }
+  /* The designation is a legal code: its c stays lowercase */
+  .stone__line--code {
+    text-transform: none;
+  }
+  .stone__line + .stone__line {
+    margin-top: var(--s-1);
+  }
+  .stone > .stone__line--pending {
+    color: var(--ink-2);
+  }
+</style>
