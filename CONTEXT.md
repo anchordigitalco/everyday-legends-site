@@ -130,6 +130,8 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
 - `Niche.astro` is every arch (About header, portraits, Support form frame). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
+- Nav links live in `src/data/nav.ts`; pages take paths from there.
+- Anchors clear the fixed nav through `scroll-padding-top` on html; no per-section scroll-margin.
 
 ## Nav and footer
 
@@ -164,15 +166,14 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Founders is the longest section by copy. Leadership may run taller where portraits stack. Accepted.
   - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
-- Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship.
-- Support: slab header with no niche; the gift section, where the arch frames the Zeffy form with the rays behind it; the cornerstone, identical to About's, beside the form; the sponsorship pointer. Two slices: slab and gift, then pointer and the Donate anchor.
-  - Slab: ink, static, not full-screen. Title is the h1 in label style; the lede sits at display scale.
-  - Gift (`#give`): body cols 1–5, arch cols 7–12 from 900px; stacked under 900px, body first. Arch from `Niche.astro`: About's head, sides, base, and hairline ink frame, height set by content, paper inside. Left column: body, cornerstone, tax paragraph, sticky if shorter than the arch. Under 900px: body, arch, cornerstone, tax paragraph.
-  - Rays: the mark's ray paths in brass, placed against the arch as in the mark, behind the frame, aria-hidden, never behind text. The page's only motion: one opacity fade, center outward, sine.
-  - The form and frame never animate or wait on a reveal. Zeffy embed: their v2 script embed, sized by the real form. Until then, a paper-deep panel holds the copy deck's placeholder line; height from `--give-embed-h` so the swap is one value.
-  - Pointer: shortest section, centered, ink hairline above, secondary button to the Legends Among Us `#sponsorship` anchor.
-  - On `/support`, the nav and menu Donate point to `#give`.
-  - Support brass: 1 of 3 (rays).
+- Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship, carrying the `#sponsorship` anchor that Support links to.
+- Support: ink slab (no niche), then the gift, then the sponsorship pointer.
+  - Slab: static, not full-screen; title is the h1 in label style, lede at display scale. Under 900px, bottom padding `--space-generous`.
+  - Gift (`#give`): from 900px, cols 1–5 hold body, cornerstone, tax paragraph, sticky beside the arch in cols 7–12; under 900px, body, arch, cornerstone, tax paragraph. The arch is `Niche.astro`'s frame variant, height set by content.
+  - Rays: the mark's ray paths in brass behind the frame, placed as in the mark and scaled down only to clear the viewport; never behind text. The page's only motion: one opacity fade at 20% in view, center outward.
+  - The form and frame never animate. Zeffy: v2 script embed, sized by the real form; until then a paper-deep placeholder, height `--give-embed-h`.
+  - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
+  - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
 - Contact: niche holding only the torch; the register form on ruled lines with no boxes, with empty, per-field error, sending, and sent states, routing to info@everydaylegend.com; newsletter.
 - Privacy Policy: plain text page, linked from every footer.
 
