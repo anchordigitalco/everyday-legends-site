@@ -215,7 +215,7 @@ Form 990 and annual report lines stay off the page until those documents exist.
 | Body | One paragraph per entry, each identical to its Home card body (1.3) | 30, 34, 30 | REUSED |
 | News title | In the News | 3 | NEW, pending approval |
 | News lede | Coverage of the foundation and its work. | 7 | NEW, pending approval |
-| News item | Photo, Outlet · Date, the headline as the link, then one sentence | Sentence 25 max | Entered in Sanity |
+| News item | Outlet · Date, the headline as the link, then one sentence. No photo. | Sentence 25 max | Entered in Sanity |
 
 ### Entries, newest first
 
@@ -231,7 +231,7 @@ The deck lines for entries 2 and 3 are ours, from the wireframe. No link or butt
 
 ### In the News
 
-Sits after the entries, before the closing Support slab. MUST NOT render at all, heading included, when Sanity returns no items. Outlet names and headlines are the outlet's own words, entered in Sanity by Jackson, and each headline links out to the original article. The sentence is written by Jackson in our own words and MUST NOT be copied from the article. The photo MUST come from the foundation's own photos, never from the article.
+Sits after the entries, before the closing Support slab. MUST NOT render at all, heading included, when Sanity returns no items. Outlet names and headlines are the outlet's own words, entered in Sanity by Jackson, and each headline links out to the original article. The sentence is written by Jackson in our own words and MUST NOT be copied from the article. No news item shows a photo.
 
 ### Closing Support slab
 
