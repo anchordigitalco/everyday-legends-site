@@ -4,14 +4,17 @@
 // The slot holds the photo (an astro:assets <Image>). The frame is .niche in global.css; the photo and
 // its sizing live in about.css. `class` adds the placement for each use. `settle` marks the About
 // header's photo for its load settle.
+// `tint={false}` leaves out the paper-deep tint, for a niche that holds a drawing instead of a photo
+// (Contact's torch): the drawing sits on clean paper.
 // `frame` is the empty niche: the same frame (the .niche rule in global.css) with paper inside and its
 // height set by the slot's content instead of the 0.72 ratio. Support's gift form sits in it.
 interface Props {
   class?: string;
   settle?: boolean;
   frame?: boolean;
+  tint?: boolean;
 }
-const { class: className, settle = false, frame = false } = Astro.props;
+const { class: className, settle = false, frame = false, tint = true } = Astro.props;
 ---
 {frame ? (
   <div class:list={['niche', 'niche--frame', className]}>
@@ -22,7 +25,7 @@ const { class: className, settle = false, frame = false } = Astro.props;
     <div class="niche__photo">
       <div class="niche__plate" data-niche-plate={settle ? '' : undefined}>
         <slot />
-        <span class="photo-tint" aria-hidden="true"></span>
+        {tint && <span class="photo-tint" aria-hidden="true"></span>}
       </div>
       <span class="niche__recess" aria-hidden="true"></span>
     </div>

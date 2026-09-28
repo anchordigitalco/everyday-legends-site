@@ -7,8 +7,8 @@ export const luncheon: { state: LuncheonState; ticketsHref: string | null; spons
   state: 'post',
   ticketsHref: null, // link to be filled when tickets go on sale
   // The Sponsorship CTA, "Sponsorship packages". The packages link is still to be filled; until it
-  // arrives the button opens an email to the foundation.
-  sponsorshipUrl: 'mailto:info@everydaylegend.com?subject=Sponsorship%20packages',
+  // arrives the button goes to the Contact form, the site's only channel. Never a mailto.
+  sponsorshipUrl: '/contact',
 };
 
 // Photo 178, the room behind the invitation on Home and on Legends Among Us: one alt text for both.

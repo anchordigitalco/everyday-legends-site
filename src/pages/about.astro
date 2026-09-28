@@ -5,23 +5,11 @@ import Niche from '../components/Niche.astro';
 import Cornerstone from '../components/Cornerstone.astro';
 import SettleHead from '../components/SettleHead.astro';
 import '../styles/about.css';
-import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
+import { torchPaths, TORCH_VIEWBOX } from '../data/torch'; // the torch marker, cropped from her mark
 import nichePhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-9_websize.jpg';
 import podiumPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-48_websize.jpg';
 import syreetaPhoto from '../../brand_assets/KNOW_shoot_5.jpg';
 import jaylenPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-117_websize.jpg';
-
-// The torch marker: her torch, isolated from everyday-legends-mark.svg by cropping the viewBox.
-// Path 0 is one shape holding the E, the L, and the torch (stem, cup, and the flame's outline), so the
-// torch is not a separable group. Rasterising path 0 puts the flame tip at y 1328, the cup at x 2030
-// to 2238, and the collar that closes the grip at y 1760 to 1772; the E never reaches past x 2021, and
-// below the collar the stem becomes the L. The crop keeps x 2026 to 2242, y 1324 to 1773: flame, cup,
-// grip, and collar. Path 7 is the flame's inner tongue. Both are copied verbatim and filled brass by
-// CSS; the four low-opacity highlight paths (16, 17, 29, 36) are shading for the gold, left out.
-const paths = markRaw.match(/<path\b[^>]*\/>/g) ?? [];
-if (paths.length !== 37) throw new Error(`everyday-legends-mark.svg: expected 37 paths, found ${paths.length}`);
-const torchPaths = [paths[0], paths[7]].map((p) => p.replace(/\sfill(-opacity)?="[^"]*"/g, '')).join('');
-const TORCH_VIEWBOX = '2026 1324 216 449';
 
 // What we do, the three decks and their bodies (everyday-legends-copy.md, 2.5), in copy order.
 const pillars = [

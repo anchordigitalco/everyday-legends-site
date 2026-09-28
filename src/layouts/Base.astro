@@ -3,6 +3,12 @@
 // Pages pass their <main> as the default slot. Home adds its intro through the "head" and
 // "overlay" slots. `current` is the nav href of the page, which gets aria-current="page".
 // Every Donate points to /support; on /support itself, the nav and menu Donate go to its form (#give).
+// The two faces, self-hosted as variable woff2 (Fontsource): Fraunces with wght, opsz, SOFT, and WONK;
+// Bricolage Grotesque with wght and opsz. Imported before global.css so its tokens name them.
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
+import bricolageLatin from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
 import '../styles/global.css';
 import PhoneMenu from '../components/islands/PhoneMenu';
 import Button from '../components/Button.astro';
@@ -32,12 +38,9 @@ const donateHref = current === supportHref ? '#give' : supportHref;
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href={markUrl} />
     <slot name="head" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&display=swap"
-    />
+    <!-- The Latin files every page draws first; the other subsets load only if a character needs them -->
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bricolageLatin} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <svg class="sr-defs" aria-hidden="true" focusable="false">
@@ -77,7 +80,6 @@ const donateHref = current === supportHref ? '#give' : supportHref;
           <img src={logoUrl} alt="" width="2924" height="2147" loading="lazy" />
         </a>
         <ul class="footer__contact">
-          <li><a class="footer__link" href="mailto:info@everydaylegend.com">info@everydaylegend.com</a></li>
           <li><a class="footer__link" href={instagramUrl} target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
         </ul>
         <div class="footer__base">

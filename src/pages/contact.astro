@@ -1,16 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
 import Button from '../components/Button.astro';
+import Niche from '../components/Niche.astro';
 import '../styles/contact.css';
 import { hrefOf } from '../data/nav';
+import { torchPaths, TORCH_VIEWBOX } from '../data/torch';
 import { contactForm as f, formspreeEndpoint, formspreeSubject, instagramUrl } from '../data/contact';
 
-// Page order (everyday-legends-copy.md, section 6): the header, then the register. The quietest page on
-// the site: nothing enters, nothing moves. The header here is temporary; slice 2 sets it in the niche
-// that holds only the torch.
+// Page order (everyday-legends-copy.md, section 6): the niche header, then the register. The quietest
+// page on the site: nothing enters and nothing moves. The header is in its final state from the first
+// paint, so the niche takes no settle (no SettleHead, no `settle`).
+// The niche holds only her torch (About's torch marker crop), brass on paper, still. It is the page's
+// one brass placement.
 // The form posts to Formspree through action and method, so it works without JS; scripts/contact.ts
-// adds validation and the sending, sent, and send-failed states. With no Formspree ID yet there is no
-// endpoint, so the form carries no action (a no-JS submit stays on the page) until the ID arrives.
+// adds validation, Turnstile, and the sending, sent, and send-failed states.
+// The last two words of a line travel together (a non-breaking space, the copy itself unchanged)
+const pair = (text: string) => text.replace(/ (\S+)$/, '\u00a0$1');
+
 const fields = [
   { name: 'name', label: f.labels.name, type: 'text', autocomplete: 'name' },
   { name: 'email', label: f.labels.email, type: 'email', autocomplete: 'email' },
@@ -23,18 +29,23 @@ const fields = [
   current={hrefOf('Contact')}
 >
   <main>
-    <!-- 1 · Header (temporary, replaced by the niche in slice 2) -->
-    <header class="grid contact-hdr">
-      <h1 id="contact-title" class="display section-title">Contact</h1>
-      <p class="contact-hdr__body">For questions, partnerships, or ways to get involved, send us a note and we will be in&nbsp;touch.</p>
-    </header>
+    <!-- 1 · Niche header, on paper: About's composition, the niche holding only the torch -->
+    <section class="niche-hdr" aria-labelledby="contact-title">
+      <div class="grid niche-hdr__grid">
+        <Niche class="niche-hdr__niche contact-niche" tint={false}>
+          <svg class="contact-niche__torch" viewBox={TORCH_VIEWBOX} aria-hidden="true" focusable="false" set:html={torchPaths} />
+        </Niche>
+        <h1 id="contact-title" class="display niche-hdr__title">Contact</h1>
+        <p class="niche-hdr__lede">{pair('For questions, partnerships, or ways to get involved, send us a note and we will be in touch.')}</p>
+      </div>
+    </section>
 
     <!-- 2 · The register: each entry written on an ink hairline, the Instagram line in the margin -->
     <section class="grid register" data-register>
       <div class="register__main">
         <form
           class="register__form"
-          action={formspreeEndpoint ?? undefined}
+          action={formspreeEndpoint}
           method="POST"
           novalidate
           aria-labelledby="contact-title"
@@ -66,6 +77,10 @@ const fields = [
           <div class="register__trap" aria-hidden="true">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
           </div>
+
+          <!-- Turnstile renders here (scripts/contact.ts). Invisible, it takes no room; if it ever shows,
+               it stands above the button on the form's left edge. -->
+          <div class="register__check" data-turnstile></div>
 
           <p class="register__fail" aria-live="polite" data-fail></p>
           <Button label={f.submit} type="submit" class="register__submit" data-submit />

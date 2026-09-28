@@ -1,16 +1,27 @@
 /* ─────────────────────────────────────────────────────────────
    Contact. Tokens live in global.css; nothing here adds a color.
-   Brass on this page: none. The quietest page: no entrance, no scroll motion.
+   Brass: 1 of 3, the torch in the niche. The quietest page: nothing enters and nothing moves; the
+   header is in its final state from the first paint.
    ───────────────────────────────────────────────────────────── */
 
-/* ── 1 · Header (temporary: slice 2 sets it in the niche) ──── */
-.contact-hdr {
-  padding-top: calc(var(--nav-h) + var(--space-tight));
+/* ── 1 · Niche header ──────────────────────────────────────── */
+/* About's header (global.css, Niche header) with the niche holding only her torch: brass on clean
+   paper (no tint), centred in the inner arch at a little under half its height, so paper stands
+   generously around it. The recess still shades the head of the arch. Nothing here moves. */
+.contact-niche .niche__photo {
+  background: var(--paper);
 }
-.contact-hdr__body {
-  max-width: 34em;
-  margin: var(--s-3) 0 0;
-  text-wrap: pretty;
+.contact-niche .niche__plate {
+  display: grid;
+  place-items: center;
+}
+/* overflow hidden is the crop: nothing of the letters outside the viewBox is drawn */
+.contact-niche__torch {
+  display: block;
+  height: 44%;
+  aspect-ratio: 216 / 449;
+  overflow: hidden;
+  fill: var(--brass);
 }
 
 /* ── 2 · The register ──────────────────────────────────────── */
@@ -20,7 +31,7 @@
    written error, so the state never rests on color or weight alone. */
 .register {
   --entry-size: clamp(1.375rem, 1rem + 1.2vw, 1.75rem);
-  padding-top: var(--space-standard);
+  padding-top: 0; /* the niche header closes with --space-standard */
   padding-bottom: var(--space-generous);
   row-gap: var(--space-tight);
 }
@@ -99,6 +110,22 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* Turnstile's container. It takes no room (its frame keeps running, clipped), and its negative margin
+   cancels the form's gap, so the button stands where it would without it. Turnstile draws a full-size
+   frame even when Invisible if its challenge cannot load, so the room opens only when Turnstile says a
+   person must interact (data-shown, scripts/contact.ts): then it stands above the button on the form's
+   left edge. */
+.register__check {
+  height: 0;
+  margin-bottom: calc(var(--s-5) * -1);
+  overflow: hidden;
+}
+.register__check[data-shown] {
+  height: auto;
+  margin-bottom: 0;
+  overflow: visible;
 }
 
 /* Send failed: one line above the button, inside its live region. Empty, it takes no room. */
@@ -197,7 +224,6 @@
 }
 
 @media (min-width: 900px) {
-  .contact-hdr__body,
   .register__main {
     grid-column: 1 / span 7;
   }

@@ -7,9 +7,61 @@
 // Sent: the coda replaces the form inside a live region and takes focus; it fades in once (CSS).
 // Send failed: the deck line appears above the button inside a live region; every value stays.
 // No motion but the coda's fade, and none at all with reduced motion.
-import { contactForm as copy, formspreeEndpoint } from '../data/contact';
+// Turnstile guards the form but never blocks it: whatever it does, a valid note is sent, and Formspree
+// decides.
+import { contactForm as copy, formspreeEndpoint, turnstileSiteKey } from '../data/contact';
 
 type Field = HTMLInputElement | HTMLTextAreaElement;
+
+type Turnstile = {
+  render: (container: HTMLElement, options: Record<string, unknown>) => string | null | undefined;
+  reset: (widget?: string) => void;
+};
+declare global {
+  interface Window {
+    turnstile?: Turnstile;
+  }
+}
+
+// Loaded here, so only /contact ever fetches it. render=explicit: the widget draws into the form's
+// container, and its token goes in as the hidden field cf-turnstile-response, so it rides in the
+// FormData with every send. A blocked script, a domain Cloudflare does not allow, or no token yet each
+// leave the form sending as before. reset() gets a fresh token after a failed send.
+const TURNSTILE_API = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+function initTurnstile(container: HTMLElement) {
+  let widget: string | null | undefined;
+  const render = () => {
+    try {
+      widget = window.turnstile?.render(container, {
+        sitekey: turnstileSiteKey,
+        'response-field-name': 'cf-turnstile-response',
+        // The container holds no room (contact.css) until a person must interact; only then it opens
+        appearance: 'interaction-only',
+        'before-interactive-callback': () => container.setAttribute('data-shown', ''),
+        'after-interactive-callback': () => container.removeAttribute('data-shown'),
+        // Turnstile still logs the error; the form carries on without a token
+        'error-callback': () => {},
+      });
+    } catch {
+      widget = null;
+    }
+  };
+  const script = document.createElement('script');
+  script.src = TURNSTILE_API;
+  script.async = true;
+  script.addEventListener('load', render);
+  document.head.append(script);
+
+  return () => {
+    if (!widget) return;
+    try {
+      window.turnstile?.reset(widget);
+    } catch {
+      // nothing to reset; the next send goes without a token
+    }
+  };
+}
 
 // The last two words of a line travel together, so no message ever ends on one word alone
 const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
@@ -36,7 +88,10 @@ export function initContact() {
   const done = document.querySelector<HTMLElement>('[data-done]');
   const fail = form?.querySelector<HTMLElement>('[data-fail]');
   const submit = form?.querySelector<HTMLButtonElement>('[data-submit]');
-  if (!form || !done || !fail || !submit) return;
+  const check = form?.querySelector<HTMLElement>('[data-turnstile]');
+  if (!form || !done || !fail || !submit || !check) return;
+
+  const resetTurnstile = initTurnstile(check);
 
   const fields = ['name', 'email', 'message'].map((n) => form.elements.namedItem(n) as Field);
   const labels = submit.querySelectorAll<HTMLElement>('.btn__label, .btn__hover > span');
@@ -115,12 +170,6 @@ export function initContact() {
       return;
     }
 
-    // No Formspree ID yet: nothing is sent, and the page says so honestly
-    if (!formspreeEndpoint) {
-      showFailed();
-      return;
-    }
-
     setSending(true);
     try {
       const response = await fetch(formspreeEndpoint, {
@@ -132,6 +181,7 @@ export function initContact() {
       showSent();
     } catch {
       showFailed();
+      resetTurnstile();
     }
   });
 }

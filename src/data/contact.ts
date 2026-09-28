@@ -2,11 +2,15 @@
 // every string on the form lives here, verbatim from the deck, so each one swaps in one place.
 // The form is the site's only channel to the foundation: no email address and no email link, anywhere.
 
-// The Formspree form ID goes here once the foundation's form is set up (the part after /f/ in its
-// endpoint). While it is null, no request is sent: a submit goes straight to the send-failed line.
-export const formspreeId: string | null = null;
+// The foundation's Formspree form (the part after /f/ in its endpoint). Messages reach its inbox from
+// there; the address itself never appears in the site.
+export const formspreeId = 'mdekyelo';
 
-export const formspreeEndpoint = formspreeId ? `https://formspree.io/f/${formspreeId}` : null;
+export const formspreeEndpoint = `https://formspree.io/f/${formspreeId}`;
+
+// Cloudflare Turnstile, set to Invisible in Cloudflare. A site key is public by design; the secret key
+// never enters this repo. Its token rides in the form as cf-turnstile-response (scripts/contact.ts).
+export const turnstileSiteKey = '0x4AAAAAAFH5byucUdyIuMZn';
 
 // Formspree reads these hidden fields: the subject line of every notification, and the honeypot.
 export const formspreeSubject = 'Contact form, everydaylegend.com';

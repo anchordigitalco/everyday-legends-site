@@ -19,9 +19,9 @@
   --lamp: #f6d9a0;
   --lamp-edge: #2a2016;
 
-  /* Type */
-  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --body: "Bricolage Grotesque", "Avenir Next", sans-serif;
+  /* Type: self-hosted through Fontsource (layouts/Base.astro), every axis the site sets */
+  --display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --body: "Bricolage Grotesque Variable", "Avenir Next", sans-serif;
 
   /* Secondary text: ink at about 70% (opacity hierarchy), still 6:1 on paper and paper-deep.
      Tertiary (marginalia): 64%, still 5:1. On ink, the same steps in paper. */
