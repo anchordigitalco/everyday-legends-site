@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Niche from '../components/Niche.astro';
 import Invitation from '../components/Invitation.astro';
+import Button from '../components/Button.astro';
 import '../styles/legends.css';
 import { honorees } from '../data/honorees';
 import { hrefOf } from '../data/nav';
@@ -12,7 +13,7 @@ import recapLectern from '../../brand_assets/Everyday Legends Foundation Luncheo
 import recapTrio from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-20_websize.jpg';
 import recapGroup from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-119_websize.jpg';
 
-// Page order: the invitation on the room, the recap, the honorees hall, then Sponsorship (slice 3).
+// Page order: the invitation on the room, the recap, the honorees hall, then Sponsorship.
 
 // The recap: the May 30 luncheon in three black and white photos, each at its full native aspect so
 // the baked-in watermark stays whole (CONTEXT.md, Photos). Alt text names only who the copy deck names.
@@ -45,7 +46,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
     </script>
   </Fragment>
 
-  <main>
+  <main class="lpage">
     <!-- 1 · The invitation, laid at full size on the room (Home's card and section, on this page's copy) -->
     <section class="legends legends--page" aria-labelledby="page-title">
       <div class="legends__photo">
@@ -130,6 +131,18 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
               </li>
             ))}
           </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · Sponsorship: a paper-deep band, static, the page's last section. Support's pointer links here. -->
+    <section id="sponsorship" class="sponsor" aria-labelledby="sponsor-title">
+      <svg class="sponsor__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+      <div class="grid sponsor__grid">
+        <h2 id="sponsor-title" class="display sponsor__title">Interested in&nbsp;sponsoring?</h2>
+        <div class="sponsor__text">
+          <p class="sponsor__body">{pair('Become a Donor, Sponsor or Partner with the Everyday Legends Foundation. Together we are Everyday Legends.')}</p>
+          <Button label="Sponsorship packages" href={luncheon.sponsorshipUrl} class="sponsor__cta" />
         </div>
       </div>
     </section>

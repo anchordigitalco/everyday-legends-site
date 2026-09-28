@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us.
 
 ## How this file works
 
@@ -27,7 +27,7 @@ The site is a hall of honor. You enter through the arch in her mark, and inside,
 How it resolves on the web:
 - A building is walked through; a page is scrolled. Home is the only page that moves you: the intro takes you through the arch once, and the hall walks you along the wall.
 - Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo, with two exceptions. Legends Among Us opens on the invitation card laid on the room photo. Support's header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
-- The dark wall exists only in the intro. After it, the paper page is the inside of the building.
+- The dark wall exists only in the intro. After it, the paper page is the inside of the building. The one exception is the invitation band on Home and Legends Among Us, which sits on ink beside the room photo.
 
 ## Home intro (built)
 
@@ -84,7 +84,8 @@ How it resolves on the web:
 | Home, Legends in Action card 2 | ELSalvationArmy.webp |
 | Home, Legends in Action card 3 | -137 |
 | Home, Legends Among Us | 178 |
-| Legends Among Us recap | -53, -20, then -119 closing, centered. Three photos. |
+| Legends Among Us, invitation | 178 (same file as Home) |
+| Legends Among Us recap | -20 and -53 as a pair, then -119 closing. Three photos. |
 | Legends Among Us honorees | 222 Natasha, 210 Nathan, 190 Seton Hall Prep, ELRahwayPAL.webp Rahway PAL, 177 Brick City Lions |
 | In the Community, luncheon entry | 219 |
 | About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
@@ -129,8 +130,11 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
-- `Niche.astro` is every arch (About header, portraits, Support form frame). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
+- `Niche.astro` is every arch (About header, portraits, Support form frame, Legends honorees). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
 - Nav links live in `src/data/nav.ts`; pages take paths from there.
+- `Invitation.astro` is the one invitation card (Home, Legends Among Us), copy passed as props. `src/data/luncheon.ts` holds its pre/post state (now `post`), the 178 alt text, and `sponsorshipUrl`.
+- `src/data/honorees.ts` holds the five honorees for both halls: name, award, body, tier, photo, focal point, alt.
+- Section titles use `.section-title` in global.css, sized to About's Founders title. Niche photo styles live in global.css too.
 - Anchors clear the fixed nav through `scroll-padding-top` on html; no per-section scroll-margin.
 
 ## Nav and footer
@@ -158,7 +162,6 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - About niche: her arch from mark path 1 (semicircle head, straight sides, flat base), 0.72 width to height, one hairline ink frame, photo on an inset inner arch, anchored center bottom. No rays, no brass.
   - Torch marker: viewBox crop `2026 1324 216 449` of mark paths 0 and 7, brass, paper outline. It rides the fill head and locks at the torch sentence.
   - Founders grid: from 1410px up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900 to 1409px, title full width above; line col 1, photo cols 2–12, paragraphs at 64ch.
-  - Section titles share one class, matched to the Founders title.
   - Our Story: cols 2–8. Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
   - We aim to: title in label style on purpose. Lines Bricolage 300 at 1.2–1.5x Home's lede, cols 1–8 / 3–10 / 5–12 under ink hairlines; step clamp(1rem, 6vw, 3rem) under 900px. Rule draws 0.5s, then line slides from -24px 0.5s, 0.18s apart.
   - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, 18em below.
@@ -166,7 +169,12 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Founders is the longest section by copy. Leadership may run taller where portraits stack. Accepted.
   - About brass: 2 of 3 (torch line, What we do rail).
 - In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
-- Legends Among Us: the invitation card full size on the room, in its post-event state ("Next luncheon · date to be announced", no Buy tickets); the recap cluster; the honorees hall (static) with a portrait niche above each name; Sponsorship, carrying the `#sponsorship` anchor that Support links to.
+- Legends Among Us: invitation, recap, honorees hall, Sponsorship. Section spread at least 7:1 at every width.
+  - Invitation: `Invitation.astro` in its post state ("Next luncheon · date to be announced", no Buy tickets) on 178, full bleed, starting under the nav. The card title is the page's h1. It settles to its 2° angle once on load; the photo stays still.
+  - Recap: the Body opens it, centered on the middle axis (cols 3–10, 46ch, 1.25x body). Then -20 and -53 side by side at one height (cols 2–11, flex-grow set to each aspect ratio), then -119 closing, cols 3–10. No photo overlaps another, none is cropped. Photos rise 24px once in view, 0.12s stagger. Under 900px: Body, -53, -20 (max 28rem, centered), -119.
+  - Hall: two tiers in program order, no logos. People: Natasha cols 2–6, Nathan cols 9–12 set lower; niches 1.4x `--hall-niche`; About's niche settle, 0.15s apart. Programs hang from Home's double rail on brass drop lines: niches at `--hall-niche` (2.5 cols), cols 1–4 / 5–9 / 10–12 at drops of 1, 3 and 2 units; plate drop, 0.12s apart. Each name takes its own line above the award; program names are 0.8x people's (`--program-name`). Under 900px: one column, no rail, niches max 22rem / 16rem.
+  - Sponsorship (`#sponsorship`): full-bleed paper-deep band, static. Title h2 at `--program-name` in cols 1–6; body and primary button in cols 7–12, bottom-aligned. Button href is `sponsorshipUrl`, a mailto until the packages link arrives.
+  - Legends brass: 3 of 3 (card frame, hall rail, hall drop lines).
 - Support: ink slab (no niche), then the gift, then the sponsorship pointer.
   - Slab: static, not full-screen; title is the h1 in label style, lede at display scale. Under 900px, bottom padding `--space-generous`.
   - Gift (`#give`): from 900px, cols 1–5 hold body, cornerstone, tax paragraph, sticky beside the arch in cols 7–12; under 900px, body, arch, cornerstone, tax paragraph. The arch is `Niche.astro`'s frame variant, height set by content.
@@ -206,7 +214,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - Zeffy link, for the form embedded on `/support`.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
 - Clean, unwatermarked photo files and the credit line.
-- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link.
+- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link (goes in `luncheon.ts` `sponsorshipUrl`).
 - Newsletter provider, for the form backend.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.
