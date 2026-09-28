@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and the Contact decisions.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact.
 
 ## How this file works
 
@@ -16,6 +16,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
 - Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site.
+- Contact form: Formspree form `mdekyelo` on the foundation's own account. Cloudflare Turnstile public site key in `src/data/contact.ts`. The Turnstile secret key lives only in Formspree, never in the repo. CAPTCHA stays off in Formspree until launch.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
 - Donations: Zeffy, link pending. No payments in our code. Every Donate points to `/support`, where the Zeffy form is embedded. Until the link arrives, the form area holds an honest placeholder.
 - No email address on the site, anywhere. MUST NOT render the foundation's address as text, in a mailto, in an attribute, in a script, or in structured data, on any page. The Contact form is the only channel. Proof on every slice from Contact on: `grep -rn "@everydaylegend.com\|mailto:" dist/` returns nothing.
@@ -62,6 +63,7 @@ How it resolves on the web:
 
 - Display: Fraunces. `font-weight: 900` for weight, plus `font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0` on every display style. MUST NOT set wght inside font-variation-settings.
 - Body: Bricolage Grotesque 300. Text under 16px (nav links, small UI labels) may use 400. Nothing else uses 400.
+- Fonts are self-hosted through Fontsource, main files preloaded. No outside font requests.
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
 - No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
@@ -132,7 +134,8 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
-- `Niche.astro` is every arch (About header, portraits, Support form frame, Legends honorees). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
+- `Niche.astro` is every arch (About, In the Community and Contact headers, portraits, Support form frame, Legends honorees). `tint={false}` drops the photo tint (Contact's torch).
+- `src/data/torch.ts` holds the torch crop for About's marker and Contact's niche. `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
 - Nav links live in `src/data/nav.ts`; pages take paths from there. Its `supportHref` is every Donate's target.
 - `src/data/community.ts` holds the three community entries (title, deck, body, photo, focal point, alt). Home's Legends in Action cards read their titles and bodies from it.
 - `SupportSlab.astro` is the one Support slab (Home, In the Community). Its `brief` prop drops Body and Marginalia.
@@ -148,7 +151,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - Nav uses the mark only. At 900px and up: mark left; About, In the Community, Legends Among Us, Contact, and Donate right. Under 900px: mark left; Donate and the menu trigger right.
 - Donate is a solid primary button, visible at every width at all times, and repeated inside the open menu.
 - The nav is fixed to the top of the screen, so Donate is always visible.
-- Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; Instagram · @everydaylegendsfoundation; Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
+- Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; Instagram · @everydaylegendsfoundation (URL from `instagramUrl` in `contact.ts`); Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
 
 ## Home as built
 
@@ -193,7 +196,13 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - The form and frame never animate. Zeffy: v2 script embed, sized by the real form; until then a paper-deep placeholder, height `--give-embed-h`.
   - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
   - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
-- Contact: niche holding only the torch; the register form on ruled lines with no boxes, with empty, per-field error, send-failed, sending, and sent states, posting to Formspree with a honeypot field (Formspree's own filtering, no Turnstile); Instagram marginalia. No newsletter on Contact.
+- Contact: niche header, the register, Instagram marginalia. No newsletter. The page has no motion.
+  - Header: About's niche composition holding only the torch (`torch.ts`), brass, centered at 44% of the arch height, no tint; h1 and lede. Static from first paint: no SettleHead, no settle.
+  - Register: from 900px, form cols 1–7, marginalia cols 9–12 behind an ink hairline; under 900px, form then marginalia. Name, email, message in Bricolage 300 on ink hairline rules, no boxes. Field names `name`, `email`, `message` (reply-to comes from `email`); hidden `_gotcha` honeypot and `_subject`.
+  - States: per-field errors under the rule, which thickens 1px to 2px, with aria-invalid and aria-describedby; focus goes to the first invalid field; errors clear once valid. Sending uses aria-disabled, one request per send. Sent: the coda replaces the form and takes focus. Send failed: the deck line in a live region, values kept.
+  - Formspree through fetch; without JS the form posts through `action`. Turnstile renders explicitly on /contact only, in a zero-height container that opens only if Cloudflare asks for interaction, above the button. It never blocks a send and resets after a failed one.
+  - The Instagram middot follows the site-wide rule.
+  - Contact brass: 1 of 3 (torch).
 - Privacy Policy: plain text page, linked from every footer.
 
 ## Breakpoints
@@ -215,6 +224,8 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 7. No section shares the same entrance, column window, and height as its neighbor. The McClain build produced identical sections.
 8. This file stays under 300 lines. The McClain CONTEXT.md passed 4,000 and fell behind git.
 9. Placeholder text for pending lines matches its register and word budget.
+10. Never use the 4322 dev server after a build in this repo. Serve dist/ on 4323 with `astro preview`, and tell Jackson to restart 4322 with `--force`. A build during Contact wiped Vite's cache and stopped Home's scripts.
+11. Any change to a page's entrance gets motion-on proof, not only reduced motion. Contact's torch sat hidden for 2.5s and reduced-motion screenshots missed it.
 
 ## Pending client approval (build as written, keep swappable)
 
