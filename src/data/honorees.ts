@@ -3,14 +3,13 @@
 // and body are verbatim from the copy deck. Scholarship recipients are not listed on the site.
 // Home's hall reads the names; the Legends Among Us hall renders every field.
 // Photos per the CONTEXT.md slot table. `focal` is the photo's object-position inside its arch.
-// TODO before launch or any push: swap ELRahwayPAL.webp for the masked file (bank numbers on the check).
 import natashaPhoto from '../../brand_assets/Everyday_Legends_2026_222_websize.jpg';
 import nathanPhoto from '../../brand_assets/Everyday_Legends_2026_210_websize.jpg';
 import setonHallPhoto from '../../brand_assets/Everyday_Legends_2026_190_websize.jpg';
-import rahwayPhoto from '../../brand_assets/ELRahwayPAL.webp';
+import rahwayPhoto from '../../brand_assets/RahwayPALAward.jpg';
 import brickCityPhoto from '../../brand_assets/Everyday_Legends_2026_177_websize.jpg';
 
-// Also the alt text of Home's Legends in Action card 1 (index.astro), which shows the same photo.
+// The alt text of Home's Legends in Action card 1 (index.astro), which shows ELRahwayPAL.webp.
 export const rahwayAlt =
   "Jaylen McClain, Dr. Syreeta McClain, and the Police Athletic League's Dan Marchica and Darius Singletary with the foundation's donation check to Rahway PAL, under the league's banner.";
 
@@ -58,8 +57,8 @@ export const honorees: Honoree[] = [
     body: 'The Rahway Police Athletic League is a nonprofit youth development organization founded in 1995 and dedicated to strengthening the connection between young people and the law enforcement professionals who serve the City of Rahway.',
     tier: 'program',
     photo: rahwayPhoto,
-    focal: '46% 0',
-    alt: rahwayAlt,
+    focal: '36% 0',
+    alt: "Jaylen McClain and Dr. Syreeta McClain with Rahway Police Athletic League staff, holding the league's award plaque at the Legends Among Us luncheon.",
   },
   {
     name: 'Brick City Lions',
