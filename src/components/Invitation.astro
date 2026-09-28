@@ -1,0 +1,34 @@
+---
+// The invitation card: paper, an inner double brass frame, set at its angle. The site's one rotated
+// object (CONTEXT.md). Styles live in global.css under "5 · Legends Among Us" (.card). Every line is
+// copy from everyday-legends-copy.md, passed in by the page; a line left out does not render.
+// `marg` is the marginalia's two halves, which break only at the middot (site.ts, data-mid-line).
+// `state` gates the tickets CTA: it renders only in `pre` (src/data/luncheon.ts).
+import Button from './Button.astro';
+
+type Cta = { label: string; href: string };
+type Props = {
+  id: string;
+  title: string;
+  titleTag?: 'h1' | 'h2';
+  deck?: string;
+  lede: string;
+  body?: string;
+  marg: [string, string];
+  cta?: Cta;
+  state?: 'pre' | 'post';
+  tickets?: Cta;
+  class?: string;
+};
+const { id, title, titleTag = 'h2', deck, lede, body, marg, cta, state = 'post', tickets, class: className } = Astro.props;
+const Title = titleTag;
+---
+<article class:list={['card', className]} data-card>
+  <Title id={id} class="card__title">{title}</Title>
+  {deck && <p class="label card__deck">{deck}</p>}
+  <p class="card__lede">{lede}</p>
+  {body && <p class="card__body">{body}</p>}
+  <p class="label card__marg" data-mid-line><span data-mid-a>{marg[0]}</span><span data-mid>&nbsp;·</span> <span data-mid-b>{marg[1]}</span></p>
+  {cta && <Button label={cta.label} href={cta.href} />}
+  {state === 'pre' && tickets && <Button label={tickets.label} href={tickets.href} />}
+</article>

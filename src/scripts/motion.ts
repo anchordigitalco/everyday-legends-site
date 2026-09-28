@@ -79,3 +79,47 @@ export function settleInView(group: HTMLElement | null, threshold: number, stagg
     };
   });
 }
+
+// The invitation card settles into its angle: opacity 0, y 40, rotation -1 to opacity 1, y 0, rotation 2,
+// 0.6s on the menu curve. It plays once, under `media`: on load (`onLoad`), or when 30% in view.
+// Home plays it on entry from 900px; Legends Among Us opens on it, so there it plays on load.
+export function settleCard(card: HTMLElement | null, media: string, onLoad = false) {
+  if (!card) return;
+  gsap.matchMedia().add(media, () => {
+    gsap.set(card, { opacity: 0, y: 40, rotation: -1 });
+    const play = () => gsap.to(card, { opacity: 1, y: 0, rotation: 2, duration: 0.6, ease: MENU });
+    const io = onLoad ? null : onceInView(card, 0.3, play);
+    if (onLoad) play();
+
+    return () => {
+      io?.disconnect();
+      gsap.set(card, { clearProps: 'all' });
+    };
+  });
+}
+
+// Photos that rise into place: y 24px to 0 on the menu curve with opacity on sine, 0.6s, each once when
+// `threshold` of it is in view. Photos that come into view together go `stagger` apart.
+export function riseInView(els: HTMLElement[], threshold: number, stagger: number) {
+  if (!els.length) return;
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(els, { opacity: 0, y: 24 });
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entering = entries.filter((e) => e.isIntersecting).map((e) => e.target as HTMLElement);
+        entering.forEach((el, i) => {
+          io.unobserve(el);
+          gsap.to(el, { y: 0, duration: 0.6, ease: MENU, delay: i * stagger });
+          gsap.to(el, { opacity: 1, duration: 0.6, ease: 'sine.inOut', delay: i * stagger });
+        });
+      },
+      { threshold },
+    );
+    els.forEach((el) => io.observe(el));
+
+    return () => {
+      io.disconnect();
+      gsap.set(els, { clearProps: 'opacity,transform' });
+    };
+  });
+}

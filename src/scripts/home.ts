@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MENU, ANY_MOTION, onceInView, initPillars } from './motion';
+import { MENU, ANY_MOTION, onceInView, initPillars, settleCard } from './motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -189,28 +189,9 @@ function initHall() {
   });
 }
 
+// The invitation settles into its rotation on entry, from 900px. Not scroll-driven: it plays once.
 function initCard() {
-  const card = document.querySelector<HTMLElement>('[data-card]');
-  if (!card) return;
-
-  gsap.matchMedia().add(MOTION, () => {
-    // The invitation settles into its rotation on entry. Not scroll-driven: it plays once.
-    gsap.set(card, { opacity: 0, y: 40, rotation: -1 });
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return;
-        io.disconnect();
-        gsap.to(card, { opacity: 1, y: 0, rotation: 2, duration: 0.6, ease: MENU });
-      },
-      { threshold: 0.3 },
-    );
-    io.observe(card);
-
-    return () => {
-      io.disconnect();
-      gsap.set(card, { clearProps: 'all' });
-    };
-  });
+  settleCard(document.querySelector<HTMLElement>('[data-card]'), MOTION);
 }
 
 // Legends in Action. Each row fades up once as it enters. The spotlight hover is CSS.

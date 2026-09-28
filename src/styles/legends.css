@@ -1,7 +1,116 @@
 /* ─────────────────────────────────────────────────────────────
    Legends Among Us. Tokens live in global.css; nothing here adds a color.
-   Brass on this page: the programs' double rail, and their drop lines.
+   Brass on this page: the invitation's double frame, the programs' double rail, and their drop lines.
    ───────────────────────────────────────────────────────────── */
+
+/* ── 1 · The invitation ────────────────────────────────────── */
+/* Home's section and card (global.css, "5 · Legends Among Us") opening the page. It starts under the
+   nav, not behind it, so the nav keeps its paper ground over the dark room. From 900px it fills the
+   rest of the first viewport, so the whole card is in view on arrival; under 900px the photo sits
+   above and the card overlaps its bottom edge, as on Home. */
+.legends--page {
+  margin-top: var(--nav-h);
+}
+/* Under 900px the photo keeps Home's 4:3 on phones, but never takes more than about half the screen's
+   height, so on tablets the whole card still lands in the first viewport */
+@media (max-width: 899.98px) {
+  .legends--page .legends__photo {
+    aspect-ratio: auto;
+    height: min(75vw, 52svh);
+  }
+}
+@media (min-width: 900px) {
+  .legends--page {
+    height: clamp(560px, calc(100svh - var(--nav-h)), 1000px);
+  }
+}
+/* The card waits at its start pose from first paint (the head script's html.el-card-wait), then
+   settles on load (legends.ts). Failsafe: the CSS settles it if legends.ts never takes over. */
+@media (prefers-reduced-motion: no-preference) {
+  html.el-card-wait .legends--page .card {
+    opacity: 0;
+    transform: translateY(40px) rotate(-1deg);
+  }
+  html.el-card-wait:not(.el-card-js) .legends--page .card {
+    animation: card-settle 600ms var(--menu) 2.5s both;
+  }
+}
+@keyframes card-settle {
+  to {
+    opacity: 1;
+    transform: rotate(2deg);
+  }
+}
+
+/* ── 2 · The recap ─────────────────────────────────────────── */
+/* A calm, centred section. The body opens it on the page's middle axis; then -20 and -53 side by side
+   at one shared height; then -119 closing on the axis. No two photos ever overlap. Black and white
+   files: each at its full native aspect (height auto, never cover), so nothing is cropped and the
+   watermark stays whole. Under 900px: body, -53, -20, -119 in one column. */
+.recap {
+  position: relative;
+  padding: var(--space-standard) 0 0;
+}
+.recap__grid {
+  row-gap: var(--space-tight);
+}
+/* The opening line: Bricolage 300 at 1.25x the body size, centred, measure capped at 46ch */
+.recap__body {
+  justify-self: center;
+  max-width: 46ch;
+  margin: 0;
+  font-size: calc(1.25 * clamp(1.0625rem, 1.2vw, 1.1875rem));
+  line-height: 1.55;
+  text-align: center;
+  text-wrap: balance;
+}
+.recap__photo {
+  position: relative;
+  margin: 0;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent),
+    0 18px 36px -18px color-mix(in srgb, var(--lamp-edge) 45%, transparent);
+}
+.recap__photo img {
+  width: 100%;
+  height: auto;
+}
+.recap__pair {
+  display: grid;
+  row-gap: var(--space-tight);
+}
+/* The tall one, capped so it never runs a full screen tall, centred */
+.recap__photo--trio {
+  justify-self: center;
+  width: min(100%, 28rem);
+}
+
+@media (min-width: 900px) {
+  .recap__body {
+    grid-column: 3 / span 8;
+  }
+  /* The pair across cols 2 to 11, one grid gap between. Each photo grows by its own aspect ratio from
+     a zero basis, so both come out the same height: tops and bottoms align. -20 on the left. */
+  .recap__pair {
+    grid-column: 2 / span 10;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--col-gap);
+  }
+  .recap__photo--trio {
+    order: -1;
+    flex: 0.667 1 0;
+    width: auto;
+    min-width: 0;
+  }
+  .recap__photo--lectern {
+    flex: 1.5 1 0;
+    min-width: 0;
+  }
+  .recap__photo--group {
+    grid-column: 3 / span 8;
+  }
+}
 
 /* ── The honorees hall ─────────────────────────────────────── */
 /* Two tiers, in program order. The people hang large, the second lower by the head of its arch; the
@@ -11,7 +120,7 @@
 .lhall {
   container-type: inline-size;
   position: relative;
-  padding: calc(var(--nav-h) + var(--space-standard)) 0 var(--space-generous);
+  padding: var(--space-standard) 0 var(--space-generous);
 }
 .lhall__grid {
   --person-name: clamp(2rem, 1.2rem + 1.8vw, 3.25rem);

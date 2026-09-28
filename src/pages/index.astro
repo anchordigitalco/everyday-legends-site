@@ -4,11 +4,13 @@ import Base from '../layouts/Base.astro';
 import HomeIntro from '../components/HomeIntro.astro';
 import TextReveal from '../components/islands/TextReveal';
 import Button from '../components/Button.astro';
+import Invitation from '../components/Invitation.astro';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import rahwayPhoto from '../../brand_assets/ELRahwayPAL.webp';
 import salvationPhoto from '../../brand_assets/ELSalvationArmy.webp';
 import luncheonSpeechPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-137_websize.jpg';
 import { honorees, rahwayAlt } from '../data/honorees';
+import { luncheonPhotoAlt } from '../data/luncheon';
 
 // Our Mission, the three decks (everyday-legends-copy.md, 1.2), hung on the rail in copy order.
 const pillars = ['Scholarship Support', 'Athletic Investment', 'Community Recognition'];
@@ -152,19 +154,20 @@ const actions = [
           src={luncheonPhoto}
           widths={[800, 1200, 1600]}
           sizes="(min-width: 900px) 121vw, 100vw"
-          alt="Jaylen McClain presents the Athletic & Community Impact Award to Brick City Lions at the Legends Among Us luncheon, May 30, 2026."
+          alt={luncheonPhotoAlt}
           loading="lazy"
         />
         <div class="legends__shade" aria-hidden="true"></div>
         <div class="legends__tint" aria-hidden="true"></div>
       </div>
-      <article class="card" data-card>
-        <h2 id="legends-title" class="card__title">Legends Among&nbsp;Us</h2>
-        <p class="card__lede">Our signature afternoon of&nbsp;recognition.</p>
-        <p class="card__body">The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and&nbsp;leadership.</p>
-        <p class="label card__marg" data-mid-line><span data-mid-a>The&nbsp;Highlawn</span><span data-mid>&nbsp;·</span> <span data-mid-b>West&nbsp;Orange,&nbsp;New&nbsp;Jersey</span></p>
-        <Button label="The luncheon" href="/legends-among-us" />
-      </article>
+      <Invitation
+        id="legends-title"
+        title={'Legends Among\u00a0Us'}
+        lede={'Our signature afternoon of\u00a0recognition.'}
+        body={'The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and\u00a0leadership.'}
+        marg={['The\u00a0Highlawn', 'West\u00a0Orange,\u00a0New\u00a0Jersey']}
+        cta={{ label: 'The luncheon', href: '/legends-among-us' }}
+      />
     </section>
 
     <!-- 6 · Support the Foundation: the ink slab -->

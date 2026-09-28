@@ -2,12 +2,27 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Niche from '../components/Niche.astro';
+import Invitation from '../components/Invitation.astro';
 import '../styles/legends.css';
 import { honorees } from '../data/honorees';
 import { hrefOf } from '../data/nav';
+import { luncheon, luncheonPhotoAlt } from '../data/luncheon';
+import roomPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
+import recapLectern from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-53_websize.jpg';
+import recapTrio from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-20_websize.jpg';
+import recapGroup from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-119_websize.jpg';
 
-// Slice 1 of 3: the honorees hall only. The invitation, the recap, and Sponsorship come in slices 2 and 3.
-// Two tiers in program order: the two people in large niches, then the three programs hung from the
+// Page order: the invitation on the room, the recap, the honorees hall, then Sponsorship (slice 3).
+
+// The recap: the May 30 luncheon in three black and white photos, each at its full native aspect so
+// the baked-in watermark stays whole (CONTEXT.md, Photos). Alt text names only who the copy deck names.
+const recap = {
+  lectern: { src: recapLectern, alt: 'Jaylen McClain speaks at the lectern at the Legends Among Us luncheon.' },
+  trio: { src: recapTrio, alt: 'Three guests in suits stand together at the Legends Among Us luncheon.' },
+  group: { src: recapGroup, alt: 'A group of guests stands together at the Legends Among Us luncheon.' },
+};
+
+// The honorees hall: two tiers in program order: the two people in large niches, then the three programs hung from the
 // brass rail in smaller ones (CONTEXT.md, Inner pages, Legends Among Us).
 const people = honorees.filter((h) => h.tier === 'person');
 const programs = honorees.filter((h) => h.tier === 'program');
@@ -23,14 +38,55 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
 >
   <Fragment slot="head">
     <script is:inline>
-      // Before first paint: the hall's niches and drop lines wait hidden for their entrance
-      // (legends.ts), so they never flash first. The CSS applies this only with motion allowed.
-      document.documentElement.classList.add('el-hall-wait');
+      // Before first paint: the card waits at its start pose and the hall's niches and drop lines wait
+      // hidden, so nothing flashes before its entrance (legends.ts). The CSS applies this only with
+      // motion allowed; reduced motion shows everything in its final state.
+      document.documentElement.classList.add('el-card-wait', 'el-hall-wait');
     </script>
   </Fragment>
 
   <main>
-    <!-- The honorees hall: static, no pin, no scroll-driven motion. Entries are not links. -->
+    <!-- 1 · The invitation, laid at full size on the room (Home's card and section, on this page's copy) -->
+    <section class="legends legends--page" aria-labelledby="page-title">
+      <div class="legends__photo">
+        <Image src={roomPhoto} widths={[800, 1200, 1600]} sizes="(min-width: 900px) 121vw, 100vw" alt={luncheonPhotoAlt} loading="eager" />
+        <div class="legends__shade" aria-hidden="true"></div>
+        <div class="legends__tint" aria-hidden="true"></div>
+      </div>
+      <Invitation
+        id="page-title"
+        titleTag="h1"
+        title={pair('Legends Among Us')}
+        deck={pair('The Everyday Legends Honors Luncheon')}
+        lede={pair('An afternoon of purpose, recognition, and meaningful connection.')}
+        marg={['Next\u00a0luncheon', 'date\u00a0to\u00a0be\u00a0announced']}
+        state={luncheon.state}
+        tickets={luncheon.ticketsHref ? { label: 'Buy tickets', href: luncheon.ticketsHref } : undefined}
+      />
+    </section>
+
+    <!-- 2 · The recap: the body as the opening line, then -20 and -53 as a pair, then -119 closing -->
+    <section class="recap">
+      <div class="grid recap__grid">
+        <p class="recap__body">{pair('A celebration of scholarship, service, and community impact. Together we recognize the everyday heroes who rise through resilience, lead with integrity, and inspire the next generation.')}</p>
+        <div class="recap__pair">
+          <figure class="recap__photo recap__photo--lectern" data-rise>
+            <Image src={recap.lectern.src} alt={recap.lectern.alt} widths={[600, 900, 1200, 1600]} sizes="(min-width: 900px) 55vw, 100vw" />
+            <span class="photo-tint" aria-hidden="true"></span>
+          </figure>
+          <figure class="recap__photo recap__photo--trio" data-rise>
+            <Image src={recap.trio.src} alt={recap.trio.alt} widths={[400, 600, 800, 1066]} sizes="(min-width: 900px) 25vw, 28rem" />
+            <span class="photo-tint" aria-hidden="true"></span>
+          </figure>
+        </div>
+        <figure class="recap__photo recap__photo--group" data-rise>
+          <Image src={recap.group.src} alt={recap.group.alt} widths={[600, 900, 1200, 1600]} sizes="(min-width: 900px) 60vw, 100vw" />
+          <span class="photo-tint" aria-hidden="true"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3 · The honorees hall: static, no pin, no scroll-driven motion. Entries are not links. -->
     <section class="lhall" aria-labelledby="honorees-title">
       <div class="grid lhall__grid">
         <div class="lhall__head">

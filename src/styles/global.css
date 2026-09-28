@@ -1248,6 +1248,7 @@ html.el-intro [data-hero-item] {
 }
 
 /* ── 5 · Legends Among Us ──────────────────────────────────── */
+/* Home's invitation on the room. Legends Among Us opens on the same section (legends.css adds its modifier). */
 .legends {
   position: relative;
   background: var(--paper-surface);
@@ -1310,6 +1311,11 @@ html.el-intro [data-hero-item] {
   margin: 0;
   font-size: clamp(2.25rem, 3.4vw, 3.25rem);
   line-height: 0.98;
+}
+/* The deck, on Legends Among Us: the luncheon's name under the title, as an invitation sets it */
+.card__deck {
+  margin: var(--s-2) 0 0;
+  color: var(--ink);
 }
 .card__lede {
   margin: var(--s-2) 0 0;
