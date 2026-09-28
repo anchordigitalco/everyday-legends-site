@@ -1,0 +1,29 @@
+---
+// Support the Foundation, the ink slab (everyday-legends-copy.md, 1.5). Home carries it whole; In the
+// Community closes on it with `brief`: Title, Lede, and Donate only, Body and Marginalia left out
+// (copy deck, section 3, Closing Support slab). Styles live in global.css under "Support the
+// Foundation". Its content fades up once as it enters ([data-fade-up], motion.ts fadeUps).
+import Button from './Button.astro';
+import { supportHref } from '../data/nav';
+
+interface Props {
+  brief?: boolean;
+}
+const { brief = false } = Astro.props;
+---
+<section class:list={['support', { 'support--brief': brief }]} aria-labelledby="support-title">
+  <svg class="support__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
+  <div class="grid support__grid" data-fade-up>
+    <h2 id="support-title" class="display support__title">Support the&nbsp;Foundation</h2>
+    <p class="support__lede">Every gift goes to education, sports, and community.</p>
+    {!brief && (
+      <Fragment>
+        <p class="support__body">We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships.</p>
+        <p class="label support__marg">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law.</p>
+      </Fragment>
+    )}
+    <div class="support__cta">
+      <Button label="Donate" href={supportHref} variant="on-ink" />
+    </div>
+  </div>
+</section>

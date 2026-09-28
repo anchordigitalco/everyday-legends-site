@@ -1,54 +1,18 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { MENU, ANY_MOTION, onceInView, initPillars } from './motion';
+import { MENU, ANY_MOTION, onceInView, initPillars, settleNiche } from './motion';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
 
-// Must match the CSS failsafe delay on .niche__plate (about.css). If this script arrives later than
-// that, the CSS is already settling the photo and the script leaves it alone.
-const FAILSAFE_MS = 2500;
-
 export function initAbout() {
-  initNiche();
+  settleNiche();
   initInscription();
   initTorchLine();
   initStair();
   initPillars(document.querySelector<HTMLElement>('[data-pillars]'));
-}
-
-// The niche photo settles once on load: scale 1.06 to 1 on the menu curve, opacity 0 to 1 on sine, 0.9s.
-// Only the photo moves; the frame and the text stay still. html.el-settle is set by the head script
-// only when motion is allowed, and it holds the photo hidden until the settle begins.
-function initNiche() {
-  const root = document.documentElement;
-  const plate = document.querySelector<HTMLElement>('[data-niche-plate]');
-  const img = document.querySelector<HTMLImageElement>('[data-niche-img]');
-  if (!plate || !img || !root.classList.contains('el-settle')) return;
-  if (performance.now() > FAILSAFE_MS - 200) return;
-  root.classList.add('el-settle-js'); // hands control from the CSS failsafe to this tween
-
-  // Movement on the menu curve; the fade on sine (CONTEXT.md, Motion). Same 0.9s.
-  const settle = () => {
-    gsap.fromTo(plate, { scale: 1.06 }, { scale: 1, duration: 0.9, ease: MENU });
-    gsap.fromTo(
-      plate,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.9,
-        ease: 'sine.inOut',
-        onComplete: () => {
-          root.classList.remove('el-settle', 'el-settle-js');
-          gsap.set(plate, { clearProps: 'opacity,transform' });
-        },
-      },
-    );
-  };
-  // Wait for the pixels, so the settle never plays on an empty niche.
-  img.decode().then(settle, settle);
 }
 
 // Founders' Story: the torch line, scroll-driven moment 2. No pin, no added scroll length.

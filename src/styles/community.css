@@ -1,0 +1,105 @@
+/* ─────────────────────────────────────────────────────────────
+   In the Community. Tokens live in global.css; nothing here adds a color.
+   Brass: 1 of 3, the rail's double line. The header niche and the slab carry none.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 1 · Niche header ──────────────────────────────────────── */
+/* About's header (global.css, Niche header): the niche, the title, the lede. The title is longer than
+   About's, so it also never grows past the column: "the Community" is held together and fits whole
+   (1 / 6.6 of the column is its measured width in Fraunces 900 at opsz 144). */
+.community-hdr__title {
+  font-size: min(clamp(3.5rem, 8vw, 8rem), (100vw - 2 * var(--gutter)) / 6.6);
+}
+
+/* ── 2 · The entries on the rail ───────────────────────────── */
+/* The rail runs down the entries' left edge; each entry sits beside it at the same inset at every width:
+   the photo at 2:1, then the deck line, title, and body in one block on the photo's left edge.
+   Phones: full width. From 900px: the entry in cols 2–8, the rail in col 1 at the same inset.
+   Each entry carries its own segment of the rail, top to bottom including the space below it, so the
+   segments meet into one continuous rail. */
+.log {
+  --rail-w: 8px;
+  --rail-inset: var(--s-4); /* from the rail to the entry */
+  padding: var(--space-tight) 0 0;
+}
+.log__list {
+  margin: 0;
+  list-style: none;
+}
+.entry {
+  position: relative;
+  padding: 0 0 var(--space-standard) calc(var(--rail-w) + var(--rail-inset));
+}
+.entry:last-child {
+  padding-bottom: 0;
+}
+/* Double rule, as Home's hall rail turned upright: two 1px brass lines, 6px apart */
+.entry__rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--rail-w);
+  border-left: 1px solid var(--brass);
+  border-right: 1px solid var(--brass);
+}
+
+.entry__photo {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+.entry__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal, 50% 50%);
+}
+
+.entry__text {
+  margin-top: var(--s-4);
+}
+.entry__deck {
+  margin: 0;
+  color: var(--ink-2);
+}
+/* Partner · Place breaks only at its middot (site.ts hides the middot there): each half stays whole */
+.entry__deck [data-mid-a],
+.entry__deck [data-mid-b] {
+  white-space: nowrap;
+}
+.entry__title {
+  margin: var(--s-2) 0 0;
+  max-width: 18em;
+  font-size: clamp(2rem, 3.4vw, 3.5rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+.entry__body {
+  margin: var(--s-3) 0 0;
+  max-width: 34em;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+@media (min-width: 900px) {
+  .log {
+    padding-top: var(--space-standard);
+  }
+  .entry {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    column-gap: var(--col-gap);
+    padding-left: 0;
+  }
+  /* The rail sits the same inset before col 2 as it sits before the entry on phones */
+  .entry__rail {
+    left: calc((100% - 11 * var(--col-gap)) / 12 + var(--col-gap) - var(--rail-inset) - var(--rail-w));
+  }
+  .entry__photo,
+  .entry__text {
+    grid-column: 2 / span 7;
+  }
+}

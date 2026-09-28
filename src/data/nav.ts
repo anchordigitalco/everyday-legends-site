@@ -7,6 +7,9 @@ export const navLinks = [
   { label: 'Contact', href: '/contact' },
 ];
 
+// Every Donate on the site goes here (the Support page, where the Zeffy form is embedded).
+export const supportHref = '/support';
+
 export const hrefOf = (label: string) => {
   const link = navLinks.find((l) => l.label === label);
   if (!link) throw new Error(`nav.ts: no nav link labelled "${label}"`);

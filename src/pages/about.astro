@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Niche from '../components/Niche.astro';
 import Cornerstone from '../components/Cornerstone.astro';
+import SettleHead from '../components/SettleHead.astro';
 import '../styles/about.css';
 import markRaw from '../../brand_assets/everyday-legends-mark.svg?raw';
 import nichePhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-9_websize.jpg';
@@ -80,17 +81,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
   description="A culture where scholarship, athletics, and service are equally celebrated."
   current="/about"
 >
-  <Fragment slot="head">
-    <script is:inline>
-      // Before first paint: with motion allowed, the niche photo starts hidden so it never flashes
-      // before it settles (about.ts). Reduced motion leaves it static and visible.
-      (function () {
-        try {
-          if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('el-settle');
-        } catch (e) {}
-      })();
-    </script>
-  </Fragment>
+  <SettleHead slot="head" />
 
   <main>
     <!-- 1 · Niche header: Our Vision, on paper -->

@@ -1,0 +1,14 @@
+---
+// The niche header's head script (About, In the Community), placed in Base's "head" slot. Before first
+// paint, with motion allowed, it adds html.el-settle so the niche photo starts hidden and never flashes
+// before it settles (motion.ts settleNiche, global.css Niche header). Reduced motion leaves it static.
+---
+<script is:inline>
+  // Before first paint: with motion allowed, the niche photo starts hidden so it never flashes
+  // before it settles (motion.ts). Reduced motion leaves it static and visible.
+  (function () {
+    try {
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('el-settle');
+    } catch (e) {}
+  })();
+</script>

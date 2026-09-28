@@ -3,7 +3,7 @@ import { CustomEase } from 'gsap/CustomEase';
 
 gsap.registerPlugin(CustomEase);
 
-// Motion shared by Home and About. Page scripts import from here; nothing here runs on its own.
+// Motion shared across pages. Page scripts import from here; nothing here runs on its own.
 
 // The menu curve, cubic-bezier(.22,1,.36,1). CONTEXT.md, Motion.
 export const MENU = CustomEase.create('menu', 'M0,0 C0.22,1 0.36,1 1,1');
@@ -21,6 +21,62 @@ export function onceInView(el: Element, threshold: number, play: () => void) {
   );
   io.observe(el);
   return io;
+}
+
+// Must match the CSS failsafe delay on .niche__plate (global.css, Niche header). If this script arrives
+// later than that, the CSS is already settling the photo and the script leaves it alone.
+const SETTLE_FAILSAFE_MS = 2500;
+
+// The niche header's photo settles once on load (About, In the Community): scale 1.06 to 1 on the menu
+// curve, opacity 0 to 1 on sine, 0.9s. Only the photo moves; the frame and the text stay still.
+// html.el-settle is set by the head script (SettleHead.astro) only when motion is allowed, and it holds
+// the photo hidden until the settle begins.
+export function settleNiche() {
+  const root = document.documentElement;
+  const plate = document.querySelector<HTMLElement>('[data-niche-plate]');
+  const img = document.querySelector<HTMLImageElement>('[data-niche-img]');
+  if (!plate || !img || !root.classList.contains('el-settle')) return;
+  if (performance.now() > SETTLE_FAILSAFE_MS - 200) return;
+  root.classList.add('el-settle-js'); // hands control from the CSS failsafe to this tween
+
+  // Movement on the menu curve; the fade on sine (CONTEXT.md, Motion). Same 0.9s.
+  const settle = () => {
+    gsap.fromTo(plate, { scale: 1.06 }, { scale: 1, duration: 0.9, ease: MENU });
+    gsap.fromTo(
+      plate,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.9,
+        ease: 'sine.inOut',
+        onComplete: () => {
+          root.classList.remove('el-settle', 'el-settle-js');
+          gsap.set(plate, { clearProps: 'opacity,transform' });
+        },
+      },
+    );
+  };
+  // Wait for the pixels, so the settle never plays on an empty niche.
+  img.decode().then(settle, settle);
+}
+
+// Content that fades up once as it enters (the Support slab on Home and In the Community): y 32px to 0
+// with opacity, 0.6s on the menu curve, each [data-fade-up] once 20% in view.
+export function fadeUps() {
+  const items = document.querySelectorAll<HTMLElement>('[data-fade-up]');
+  if (!items.length) return;
+
+  gsap.matchMedia().add(ANY_MOTION, () => {
+    gsap.set(items, { opacity: 0, y: 32 });
+    const observers = [...items].map((el) =>
+      onceInView(el, 0.2, () => gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: MENU })),
+    );
+
+    return () => {
+      observers.forEach((io) => io.disconnect());
+      gsap.set(items, { clearProps: 'all' });
+    };
+  });
 }
 
 // Plates hung from a brass rail: Home's Our Mission, About's What we do, and the Legends Among Us

@@ -5,34 +5,26 @@ import HomeIntro from '../components/HomeIntro.astro';
 import TextReveal from '../components/islands/TextReveal';
 import Button from '../components/Button.astro';
 import Invitation from '../components/Invitation.astro';
+import SupportSlab from '../components/SupportSlab.astro';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
-import rahwayPhoto from '../../brand_assets/ELRahwayPAL.webp';
-import salvationPhoto from '../../brand_assets/ELSalvationArmy.webp';
 import luncheonSpeechPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-137_websize.jpg';
-import { honorees, rahwayAlt } from '../data/honorees';
+import { honorees } from '../data/honorees';
+import { entries } from '../data/community';
 import { luncheonPhotoAlt } from '../data/luncheon';
 
 // Our Mission, the three decks (everyday-legends-copy.md, 1.2), hung on the rail in copy order.
 const pillars = ['Scholarship Support', 'Athletic Investment', 'Community Recognition'];
 
 // Legends in Action, copy deck order (1.3). Photos per the CONTEXT.md photo table.
-// TODO before launch or any push: swap ELRahwayPAL.webp for the masked file (bank numbers on the check).
+// Cards 1 and 2 are In the Community's Rahway PAL and Salvation Army entries, read from community.ts
+// (title, body, photo, alt). Card 3 shares the luncheon entry's title and body; its photo is Home's.
+const [luncheonEntry, rahwayEntry, salvationEntry] = entries;
 const actions = [
+  { title: rahwayEntry.title, body: rahwayEntry.body, photo: rahwayEntry.photo, alt: rahwayEntry.alt },
+  { title: salvationEntry.title, body: salvationEntry.body, photo: salvationEntry.photo, alt: salvationEntry.alt },
   {
-    title: 'Support for Youth Basketball League, Rahway PAL',
-    body: "Jaylen McClain donated to his youth basketball league, Rahway PAL. He is pictured with the Police Athletic League's Dan Marchica and Darius Singletary. Also pictured, Dr. Syreeta McClain, Executive Director of Everyday Legends.",
-    photo: rahwayPhoto,
-    alt: rahwayAlt,
-  },
-  {
-    title: 'Salvation Army Toy Donation',
-    body: 'Jaylen is pictured with Salvation Army leadership during his toy delivery for the Angel Tree Toy Drive, an initiative dedicated to brightening the holidays for children and families in need.',
-    photo: salvationPhoto,
-    alt: 'Jaylen McClain with Salvation Army leadership during his toy delivery for the Angel Tree Toy Drive.',
-  },
-  {
-    title: 'Legends Among Us, May 30',
-    body: 'The foundation hosted its inaugural Legends Among Us luncheon at The Highlawn in West Orange, New Jersey, honoring three scholars, a Young Legend, a Community Trailblazer, and three athletic programs.',
+    title: luncheonEntry.title,
+    body: luncheonEntry.body,
     photo: luncheonSpeechPhoto,
     alt: 'A speaker addresses the room from the lectern at the Legends Among Us luncheon at The Highlawn, beside the welcome sign.',
   },
@@ -171,18 +163,7 @@ const actions = [
     </section>
 
     <!-- 6 · Support the Foundation: the ink slab -->
-    <section class="support" aria-labelledby="support-title">
-      <svg class="support__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
-      <div class="grid support__grid" data-fade-up>
-        <h2 id="support-title" class="display support__title">Support the&nbsp;Foundation</h2>
-        <p class="support__lede">Every gift goes to education, sports, and community.</p>
-        <p class="support__body">We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships.</p>
-        <p class="label support__marg">Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law.</p>
-        <div class="support__cta">
-          <Button label="Donate" href="/support" variant="on-ink" />
-        </div>
-      </div>
-    </section>
+    <SupportSlab />
 
     <!-- 7 · Newsletter. No backend yet: the form never shows a success state. -->
     <section class="newsletter" aria-labelledby="newsletter-title">

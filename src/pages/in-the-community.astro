@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Niche from '../components/Niche.astro';
+import SettleHead from '../components/SettleHead.astro';
+import SupportSlab from '../components/SupportSlab.astro';
+import '../styles/community.css';
+import { entries } from '../data/community';
+import { hrefOf } from '../data/nav';
+import nichePhoto from '../../brand_assets/Everyday_Legends_2026_219_websize.jpg';
+
+// Page order (everyday-legends-copy.md, section 3): the niche header, the entries on the rail, newest
+// first, then the closing Support slab. In the News is not built yet and renders nothing.
+
+// The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
+// title, deck half, or body ever ends on one word alone.
+const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
+---
+<Base
+  title="In the Community · Everyday Legends Foundation"
+  description="Where the work has gone so far."
+  current={hrefOf('In the Community')}
+>
+  <SettleHead slot="head" />
+
+  <main>
+    <!-- 1 · Niche header, on paper: About's composition, niche, title, and lede -->
+    <section class="niche-hdr" aria-labelledby="community-title">
+      <div class="grid niche-hdr__grid">
+        <Niche class="niche-hdr__niche" settle>
+          <Image
+            src={nichePhoto}
+            widths={[400, 640, 900, 1200]}
+            sizes="(min-width: 900px) 460px, 90vw"
+            alt="Natasha Davis-Gomez holds her Community Trailblazer Award between Dr. Syreeta McClain and Jaylen McClain at the Legends Among Us luncheon."
+            loading="eager"
+            fetchpriority="high"
+            style="--focal: 56% 0"
+            data-niche-img
+          />
+        </Niche>
+        <h1 id="community-title" class="display niche-hdr__title community-hdr__title">In the&nbsp;Community</h1>
+        <p class="niche-hdr__lede">{pair('Where the work has gone so far.')}</p>
+      </div>
+    </section>
+
+    <!-- 2 · The entries on a brass double rail, newest first. Every entry is built identically:
+         one 2:1 photo beside the rail, then the deck line, title, and body. No dates, no links inside. -->
+    <section class="log" aria-label="Entries, newest first">
+      <ol class="grid log__list">
+        {entries.map((e) => (
+          <li class="entry" data-entry>
+            <span class="entry__rail" aria-hidden="true" data-entry-rail></span>
+            <div class="entry__photo" data-entry-rise>
+              <Image
+                src={e.photo}
+                widths={[600, 900, 1200]}
+                sizes="(min-width: 900px) 56vw, 100vw"
+                alt={e.alt}
+                style={`--focal: ${e.focal}`}
+              />
+              <span class="photo-tint" aria-hidden="true"></span>
+            </div>
+            <div class="entry__text" data-entry-rise>
+              <p class="label entry__deck" data-mid-line>
+                <span data-mid-a>{pair(e.deck[0])}</span><span data-mid>&nbsp;·</span>{' '}
+                <span data-mid-b>{pair(e.deck[1])}</span>
+              </p>
+              <h2 class="display entry__title">{pair(e.title)}</h2>
+              <p class="entry__body">{pair(e.body)}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- 3 · Closing Support slab: Title, Lede, and Donate only -->
+    <SupportSlab brief />
+  </main>
+
+  <script>
+    import { initCommunity } from '../scripts/community';
+    initCommunity();
+  </script>
+</Base>

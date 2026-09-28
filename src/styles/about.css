@@ -3,63 +3,8 @@
    ───────────────────────────────────────────────────────────── */
 
 /* ── 1 · Niche header: Our Vision ──────────────────────────── */
-/* On paper, centred. Her arch from the mark as one hairline ink frame, the photo set inside it.
-   The niche is sized from the viewport height so the niche and the title both land in the first
-   viewport; it never grows wider than the column. */
-.niche-hdr {
-  position: relative;
-  padding: calc(var(--nav-h) + var(--s-3)) 0 var(--space-standard);
-  text-align: center;
-  /* Depth: deeper paper pooling behind the niche and at the upper corners, over the page grain */
-  background:
-    radial-gradient(42% 60% at 50% 34%, color-mix(in srgb, var(--paper-deep) 70%, transparent), transparent 72%),
-    radial-gradient(50% 70% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
-    radial-gradient(40% 50% at 0% 10%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
-}
-/* The niche itself (frame, photo, tint, recess) is shared and lives in global.css, under "Niche". */
-/* The header's niche, sized from the viewport height (components/Niche.astro holds the markup) */
-.niche-hdr__niche {
-  --niche-h: clamp(300px, calc(100svh - var(--nav-h) - 260px), 620px);
-  justify-self: center;
-  width: min(calc(var(--niche-h) * 0.72), 100%);
-}
-/* The settle (about.ts): with motion allowed the head script adds html.el-settle before first paint,
-   so the photo waits hidden and never flashes before it settles. */
-html.el-settle .niche__plate {
-  opacity: 0;
-  transform: scale(1.06);
-}
-/* Failsafe: if about.ts never takes over (it adds html.el-settle-js), the CSS settles it instead */
-html.el-settle:not(.el-settle-js) .niche__plate {
-  animation:
-    niche-settle-scale 900ms var(--menu) 2.5s both,
-    niche-settle-fade 900ms var(--sine) 2.5s both;
-}
-@keyframes niche-settle-scale {
-  to {
-    transform: none;
-  }
-}
-@keyframes niche-settle-fade {
-  to {
-    opacity: 1;
-  }
-}
-
-.niche-hdr__title {
-  margin: var(--s-4) 0 0;
-  font-size: clamp(3.5rem, 8vw, 8rem);
-  line-height: 0.94;
-  text-wrap: balance;
-}
-.niche-hdr__lede {
-  justify-self: center;
-  max-width: 28ch;
-  margin: var(--s-3) 0 0;
-  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
-  line-height: 1.35;
-  text-wrap: balance;
-}
+/* The header's niche, title, lede, and settle are shared with In the Community (global.css, Niche
+   header). Only About's body line is set here. */
 .niche-hdr__body {
   justify-self: center;
   max-width: 34em;

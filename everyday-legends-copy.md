@@ -38,6 +38,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Scholarship recipients left off both honorees halls.
 - In the Community's luncheon entry reuses Home card 3 body in place of the honoree list.
 - In the News as a section on In the Community, with its title and lede (see 3). The wording is ours.
+- In the Community deck lines for the Rahway PAL and Salvation Army entries (see 3). The wording is ours.
 
 ## Sitemap
 
@@ -210,23 +211,31 @@ Form 990 and annual report lines stay off the page until those documents exist.
 |---|---|---|---|
 | Title | Everyday Legends in the Community (pending: "In the Community") | 5 | REUSED |
 | Lede | Where the work has gone so far. | 7 | NEW |
-| Deck | Partner · Place · Date | 6 each | REUSED |
+| Deck | Partner · Place | 4 to 6 each | REUSED, dates dropped |
 | Body | One paragraph per entry, each identical to its Home card body (1.3) | 30, 34, 30 | REUSED |
 | News title | In the News | 3 | NEW, pending approval |
 | News lede | Coverage of the foundation and its work. | 7 | NEW, pending approval |
-| News item | Outlet · Date, then the headline as the link | Set per item | Entered in Sanity |
+| News item | Photo, Outlet · Date, the headline as the link, then one sentence | Sentence 25 max | Entered in Sanity |
 
 ### Entries, newest first
 
-The page opens with the luncheon. Every entry is built identically (see HANDOFF.md).
+The page opens with the luncheon. Every entry is built identically (see HANDOFF.md). Each entry's title and body are identical to its Home card (1.3). No entry shows a date; the luncheon's date lives in its title.
 
-1. **Legends Among Us** · The Highlawn, West Orange, New Jersey · May 30, 2026. Body identical to Home card 3 body (1.3).
-2. **Rahway PAL**, youth basketball · Date (to be filled). Body identical to Home card 1 body (1.3).
-3. **Salvation Army Angel Tree Toy Drive**, Columbus · Date (to be filled). Body identical to Home card 2 body (1.3).
+| # | Title | Deck (Partner · Place) | Body |
+|---|---|---|---|
+| 1 | Legends Among Us, May 30 | The Highlawn · West Orange, New Jersey | Home card 3 body |
+| 2 | Support for Youth Basketball League, Rahway PAL | Rahway PAL · Rahway, New Jersey | Home card 1 body |
+| 3 | Salvation Army Toy Donation | Salvation Army · Columbus, Ohio | Home card 2 body |
+
+The deck lines for entries 2 and 3 are ours, from the wireframe. No link or button renders inside any entry.
 
 ### In the News
 
-Sits after the entries, before the closing Support slab. MUST NOT render at all, heading included, when Sanity returns no items. Outlet names and headlines are the outlet's own words, entered in Sanity by Jackson, and each headline links out to the original article.
+Sits after the entries, before the closing Support slab. MUST NOT render at all, heading included, when Sanity returns no items. Outlet names and headlines are the outlet's own words, entered in Sanity by Jackson, and each headline links out to the original article. The sentence is written by Jackson in our own words and MUST NOT be copied from the article. The photo MUST come from the foundation's own photos, never from the article.
+
+### Closing Support slab
+
+Home's Support slab (1.5): Title, Lede, and the Donate CTA only. Body and Marginalia stay on Home and Support.
 
 ---
 
@@ -328,6 +337,5 @@ None of these block the build. Each drops into a space already designed for it.
 4. The new Zeffy general donation form link. **Blocks launch.**
 5. The sponsorship packages link, for the Sponsorship CTA.
 6. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
-7. Month and year for the Rahway PAL and Salvation Army entries on In the Community. The Rahway PAL check reads 12/24/25; confirm that is the donation date.
 
 Received: the luncheon program (honoree names, awards, and bios), September 2026.

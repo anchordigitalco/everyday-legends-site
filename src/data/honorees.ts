@@ -9,10 +9,6 @@ import setonHallPhoto from '../../brand_assets/Everyday_Legends_2026_190_websize
 import rahwayPhoto from '../../brand_assets/RahwayPALAward.jpg';
 import brickCityPhoto from '../../brand_assets/Everyday_Legends_2026_177_websize.jpg';
 
-// The alt text of Home's Legends in Action card 1 (index.astro), which shows ELRahwayPAL.webp.
-export const rahwayAlt =
-  "Jaylen McClain, Dr. Syreeta McClain, and the Police Athletic League's Dan Marchica and Darius Singletary with the foundation's donation check to Rahway PAL, under the league's banner.";
-
 export type Honoree = {
   name: string;
   award: string;

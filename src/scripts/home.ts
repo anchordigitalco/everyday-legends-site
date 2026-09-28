@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MENU, ANY_MOTION, onceInView, initPillars, settleCard } from './motion';
+import { MENU, ANY_MOTION, onceInView, initPillars, settleCard, fadeUps } from './motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +21,7 @@ export function initHome() {
   initPillars(document.querySelector<HTMLElement>('[data-pillars]'));
   initActionRows();
   initCard();
-  initFadeUps();
+  fadeUps();
   initNewsletter();
 }
 
@@ -208,24 +208,6 @@ function initActionRows() {
     return () => {
       observers.forEach((io) => io.disconnect());
       gsap.set(rows, { clearProps: 'all' });
-    };
-  });
-}
-
-// Support the Foundation: its content fades up once as it enters.
-function initFadeUps() {
-  const items = document.querySelectorAll<HTMLElement>('[data-fade-up]');
-  if (!items.length) return;
-
-  gsap.matchMedia().add(ANY_MOTION, () => {
-    gsap.set(items, { opacity: 0, y: 32 });
-    const observers = [...items].map((el) =>
-      onceInView(el, 0.2, () => gsap.to(el, { opacity: 1, y: 0, duration: 0.6, ease: MENU })),
-    );
-
-    return () => {
-      observers.forEach((io) => io.disconnect());
-      gsap.set(items, { clearProps: 'all' });
     };
   });
 }
