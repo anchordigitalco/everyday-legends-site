@@ -39,6 +39,9 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - In the Community's luncheon entry reuses Home card 3 body in place of the honoree list.
 - In the News as a section on In the Community, with its title and lede (see 3). The wording is ours.
 - In the Community deck lines for the Rahway PAL and Salvation Army entries (see 3). The wording is ours.
+- The email address removed from the site: Contact marginalia, footer, and every mailto. The contact form is the only channel. Our decision, to keep the address away from harvesting bots.
+- Contact form copy (see 6): field labels, button, sending, errors, and the sent line. The wording is ours.
+- The Sponsorship packages button points to Contact until the packages link arrives (see 4).
 
 ## Sitemap
 
@@ -277,7 +280,7 @@ The program's own pages use "Young Legend Award"; its order of program says "You
 |---|---|---|---|
 | Title | Interested in sponsoring? | 3 | REUSED |
 | Body | Become a Donor, Sponsor or Partner with the Everyday Legends Foundation. Together we are Everyday Legends. | 16 | REUSED, program book |
-| CTA | Sponsorship packages | 2 | REUSED, link to be filled |
+| CTA | Sponsorship packages | 2 | REUSED, link to be filled. Points to `/contact` until then, never a mailto |
 
 ---
 
@@ -317,13 +320,28 @@ Closes the page and sends sponsors to the Sponsorship section on Legends Among U
 |---|---|---|---|
 | Title | Contact | 1 | NEW |
 | Body | For questions, partnerships, or ways to get involved, send us a note and we will be in touch. | 17 | NEW |
-| Marginalia | info@everydaylegend.com | 1 | FROM YOU |
 | Marginalia | Instagram · @everydaylegendsfoundation | 2 | FROM YOU |
 | Footer | © 2026 Everyday Legends Foundation, Inc. All rights reserved. | 10 | NEW, approved |
 | Footer | Built by Anchor Digital | 4 | Standard |
 | Footer | Privacy Policy | 2 | Standard |
 
-Contact form messages go to info@everydaylegend.com. MUST NOT show a mailing address or phone number.
+### Contact form
+
+Pending client approval. Build it, keep it swappable.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| Marginalia | Name · Email · Message | 3 | NEW (form field labels) |
+| CTA | Send message | 2 | NEW |
+| CTA | Sending | 1 | NEW (button label while sending) |
+| Marginalia | Please add your name. | 4 | NEW (error, name empty) |
+| Marginalia | Please add your email. | 4 | NEW (error, email empty) |
+| Marginalia | Please check your email address. | 5 | NEW (error, email not valid) |
+| Marginalia | Please write a short message. | 5 | NEW (error, message empty) |
+| Marginalia | Your note did not send. Please try again, or reach us on Instagram. | 13 | NEW (error, send failed) |
+| Coda | Thank you. Your note is with us, and we will reply soon. | 12 | NEW (sent, replaces the form) |
+
+Contact form messages go to the foundation's inbox through Formspree. The site MUST NOT show an email address anywhere: no visible address, no mailto link, and nothing in the page source, scripts, or structured data. MUST NOT show a mailing address or phone number.
 
 ---
 

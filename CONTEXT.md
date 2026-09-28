@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and the Contact decisions.
 
 ## How this file works
 
@@ -18,6 +18,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
 - Donations: Zeffy, link pending. No payments in our code. Every Donate points to `/support`, where the Zeffy form is embedded. Until the link arrives, the form area holds an honest placeholder.
+- No email address on the site, anywhere. MUST NOT render the foundation's address as text, in a mailto, in an attribute, in a script, or in structured data, on any page. The Contact form is the only channel. Proof on every slice from Contact on: `grep -rn "@everydaylegend.com\|mailto:" dist/` returns nothing.
 - References, never built and never copied visually: `reference/wireframes/` (structure only), `reference/21st/` (motion only).
 
 ## Governing concept
@@ -147,7 +148,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - Nav uses the mark only. At 900px and up: mark left; About, In the Community, Legends Among Us, Contact, and Donate right. Under 900px: mark left; Donate and the menu trigger right.
 - Donate is a solid primary button, visible at every width at all times, and repeated inside the open menu.
 - The nav is fixed to the top of the screen, so Donate is always visible.
-- Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; info@everydaylegend.com; Instagram · @everydaylegendsfoundation; Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
+- Footer, on ink: full lockup; `© 2026 Everyday Legends Foundation, Inc. All rights reserved.`; Instagram · @everydaylegendsfoundation; Privacy Policy; the Anchor Digital logo with "Built by Anchor Digital", linking to anchordigitalco.com in a new tab. No address, no phone.
 
 ## Home as built
 
@@ -183,7 +184,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Invitation: `Invitation.astro` in its post state ("Next luncheon · date to be announced", no Buy tickets) on 178, full bleed, starting under the nav. The card title is the page's h1. It settles to its 2° angle once on load; the photo stays still.
   - Recap: the Body opens it, centered on the middle axis (cols 3–10, 46ch, 1.25x body). Then -20 and -53 side by side at one height (cols 2–11, flex-grow set to each aspect ratio), then -119 closing, cols 3–10. No photo overlaps another, none is cropped. Photos rise 24px once in view, 0.12s stagger. Under 900px: Body, -53, -20 (max 28rem, centered), -119.
   - Hall: two tiers in program order, no logos. People: Natasha cols 2–6, Nathan cols 9–12 set lower; niches 1.4x `--hall-niche`; About's niche settle, 0.15s apart. Programs hang from Home's double rail on brass drop lines: niches at `--hall-niche` (2.5 cols), cols 1–4 / 5–9 / 10–12 at drops of 1, 3 and 2 units; plate drop, 0.12s apart. Each name takes its own line above the award; program names are 0.8x people's (`--program-name`). Under 900px: one column, no rail, niches max 22rem / 16rem.
-  - Sponsorship (`#sponsorship`): full-bleed paper-deep band, static. Title h2 at `--program-name` in cols 1–6; body and primary button in cols 7–12, bottom-aligned. Button href is `sponsorshipUrl`, a mailto until the packages link arrives.
+  - Sponsorship (`#sponsorship`): full-bleed paper-deep band, static. Title h2 at `--program-name` in cols 1–6; body and primary button in cols 7–12, bottom-aligned. Button href is `sponsorshipUrl`, `/contact` until the packages link arrives. Never a mailto.
   - Legends brass: 3 of 3 (card frame, hall rail, hall drop lines).
 - Support: ink slab (no niche), then the gift, then the sponsorship pointer.
   - Slab: static, not full-screen; title is the h1 in label style, lede at display scale. Under 900px, bottom padding `--space-generous`.
@@ -192,7 +193,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - The form and frame never animate. Zeffy: v2 script embed, sized by the real form; until then a paper-deep placeholder, height `--give-embed-h`.
   - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
   - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
-- Contact: niche holding only the torch; the register form on ruled lines with no boxes, with empty, per-field error, sending, and sent states, routing to info@everydaylegend.com; newsletter.
+- Contact: niche holding only the torch; the register form on ruled lines with no boxes, with empty, per-field error, send-failed, sending, and sent states, posting to Formspree with a honeypot field (Formspree's own filtering, no Turnstile); Instagram marginalia. No newsletter on Contact.
 - Privacy Policy: plain text page, linked from every footer.
 
 ## Breakpoints
@@ -217,7 +218,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact.
 
 ## Open client items that touch the build
 
