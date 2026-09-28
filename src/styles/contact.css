@@ -1,0 +1,211 @@
+/* ─────────────────────────────────────────────────────────────
+   Contact. Tokens live in global.css; nothing here adds a color.
+   Brass on this page: none. The quietest page: no entrance, no scroll motion.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 1 · Header (temporary: slice 2 sets it in the niche) ──── */
+.contact-hdr {
+  padding-top: calc(var(--nav-h) + var(--space-tight));
+}
+.contact-hdr__body {
+  max-width: 34em;
+  margin: var(--s-3) 0 0;
+  text-wrap: pretty;
+}
+
+/* ── 2 · The register ──────────────────────────────────────── */
+/* Set like signing a register: each label in the label style, each entry written large in Bricolage
+   300 straight onto an ink hairline. No boxes, no fills, no border but the rule underneath.
+   An invalid entry's rule thickens to 2px (an inset shadow, so nothing shifts), always beside its
+   written error, so the state never rests on color or weight alone. */
+.register {
+  --entry-size: clamp(1.375rem, 1rem + 1.2vw, 1.75rem);
+  padding-top: var(--space-standard);
+  padding-bottom: var(--space-generous);
+  row-gap: var(--space-tight);
+}
+.register__form {
+  display: grid;
+  gap: var(--s-5);
+  justify-items: start;
+}
+.register__field {
+  display: grid;
+  gap: var(--s-1);
+  width: 100%;
+}
+.register__label {
+  color: var(--ink-2);
+}
+.register__field:hover .register__label {
+  color: var(--ink);
+}
+.register__entry {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  margin: 0;
+  padding: 0.2em 0 0.3em;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  caret-color: var(--ink);
+  font: 300 var(--entry-size) / 1.35 var(--body);
+  appearance: none;
+}
+.register__entry--long {
+  min-height: calc(var(--entry-size) * 1.35 * 4 + 0.5em);
+  resize: vertical;
+}
+.register__entry:focus {
+  outline: none;
+}
+.register__entry:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 4px;
+}
+.register__entry[aria-invalid="true"] {
+  box-shadow: inset 0 -1px 0 var(--ink);
+}
+/* The browser's autofill fill would box the entry: paper under the text keeps it written on the page */
+.register__entry:autofill {
+  -webkit-text-fill-color: var(--ink);
+  box-shadow: inset 0 0 0 100px var(--paper);
+}
+.register__entry[aria-invalid="true"]:autofill {
+  box-shadow:
+    inset 0 -1px 0 var(--ink),
+    inset 0 0 0 100px var(--paper);
+}
+.register__error {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* The honeypot: clipped to nothing where it stands (the hidden middot's treatment), never visible */
+.register__trap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Send failed: one line above the button, inside its live region. Empty, it takes no room. */
+.register__fail {
+  max-width: 34em;
+  margin: 0;
+  text-wrap: pretty;
+}
+.register__fail:empty {
+  display: none;
+}
+.register__submit {
+  margin-top: calc(var(--s-3) * -1);
+}
+.register__fail:not(:empty) + .register__submit {
+  margin-top: calc(var(--s-4) * -1);
+}
+/* Sending: the button holds still at rest with its label changed; it takes no second press */
+.register__submit[aria-disabled="true"] {
+  cursor: progress;
+}
+.register__submit[aria-disabled="true"] .btn__label {
+  opacity: 1;
+  transform: translateX(4px);
+}
+.register__submit[aria-disabled="true"] .btn__hover,
+.register__submit[aria-disabled="true"] .btn__fill {
+  opacity: 0;
+}
+.register__submit[aria-disabled="true"] .btn__fill {
+  transform: scale(calc(8 / 560));
+}
+.register__submit[aria-disabled="true"]:active {
+  transform: none;
+}
+
+/* Sent: the coda takes the form's place, fading in once (0.4s, sine) */
+.register__coda {
+  max-width: 14em;
+  margin: 0;
+  font-size: clamp(2rem, 1.25rem + 3vw, 3.5rem);
+  line-height: 1.02;
+  text-wrap: balance;
+  animation: register-coda 0.4s var(--sine) both;
+}
+.register__coda:focus {
+  outline: none;
+}
+@keyframes register-coda {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .register__coda {
+    animation: none;
+  }
+}
+
+/* The margin: the Instagram line under a hairline (phones), then behind one on its left (900px up).
+   The line breaks only at its middot (site.ts hides the middot there), so each half stays whole. */
+.register__marg {
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--ink);
+}
+.register__marg-line {
+  margin: 0;
+  /* 16px at 900, where the four columns are narrowest: the handle alone still clears the gutter */
+  font-size: clamp(1rem, 0.35rem + 1.15vw, 1.25rem);
+  line-height: 1.5;
+}
+.register__ig {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  transition: transform 220ms var(--menu);
+}
+.register__ig [data-mid-a],
+.register__ig [data-mid-b] {
+  white-space: nowrap;
+}
+.register__ig:hover,
+.register__ig:focus-visible {
+  text-decoration-color: var(--ink);
+}
+.register__ig:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
+}
+.register__ig:active {
+  transform: translateY(1px);
+}
+
+@media (min-width: 900px) {
+  .contact-hdr__body,
+  .register__main {
+    grid-column: 1 / span 7;
+  }
+  .register__marg {
+    grid-column: 9 / span 4;
+    align-self: start;
+    padding: var(--s-1) 0 var(--s-1) var(--s-3);
+    border-top: 0;
+    border-left: 1px solid var(--ink);
+  }
+}

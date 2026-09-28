@@ -10,6 +10,7 @@ import markUrl from '../../brand_assets/everyday-legends-mark.svg?url';
 import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
 import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
 import { navLinks, supportHref } from '../data/nav';
+import { instagramUrl } from '../data/contact';
 
 type Props = { title: string; description: string; current?: string };
 const { title, description, current } = Astro.props;
@@ -77,7 +78,7 @@ const donateHref = current === supportHref ? '#give' : supportHref;
         </a>
         <ul class="footer__contact">
           <li><a class="footer__link" href="mailto:info@everydaylegend.com">info@everydaylegend.com</a></li>
-          <li><a class="footer__link" href="https://www.instagram.com/everydaylegendsfoundation/" target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
+          <li><a class="footer__link" href={instagramUrl} target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
         </ul>
         <div class="footer__base">
           <p class="footer__copy">© 2026 Everyday Legends Foundation, Inc. All rights&nbsp;reserved.</p>

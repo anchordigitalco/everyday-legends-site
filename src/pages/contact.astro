@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import '../styles/contact.css';
+import { hrefOf } from '../data/nav';
+import { contactForm as f, formspreeEndpoint, formspreeSubject, instagramUrl } from '../data/contact';
+
+// Page order (everyday-legends-copy.md, section 6): the header, then the register. The quietest page on
+// the site: nothing enters, nothing moves. The header here is temporary; slice 2 sets it in the niche
+// that holds only the torch.
+// The form posts to Formspree through action and method, so it works without JS; scripts/contact.ts
+// adds validation and the sending, sent, and send-failed states. With no Formspree ID yet there is no
+// endpoint, so the form carries no action (a no-JS submit stays on the page) until the ID arrives.
+const fields = [
+  { name: 'name', label: f.labels.name, type: 'text', autocomplete: 'name' },
+  { name: 'email', label: f.labels.email, type: 'email', autocomplete: 'email' },
+  { name: 'message', label: f.labels.message },
+];
+---
+<Base
+  title="Contact · Everyday Legends Foundation"
+  description="For questions, partnerships, or ways to get involved, send us a note and we will be in touch."
+  current={hrefOf('Contact')}
+>
+  <main>
+    <!-- 1 · Header (temporary, replaced by the niche in slice 2) -->
+    <header class="grid contact-hdr">
+      <h1 id="contact-title" class="display section-title">Contact</h1>
+      <p class="contact-hdr__body">For questions, partnerships, or ways to get involved, send us a note and we will be in&nbsp;touch.</p>
+    </header>
+
+    <!-- 2 · The register: each entry written on an ink hairline, the Instagram line in the margin -->
+    <section class="grid register" data-register>
+      <div class="register__main">
+        <form
+          class="register__form"
+          action={formspreeEndpoint ?? undefined}
+          method="POST"
+          novalidate
+          aria-labelledby="contact-title"
+          data-register-form
+        >
+          {fields.map((field) => (
+            <div class="register__field">
+              <label class="label register__label" for={`contact-${field.name}`}>{field.label}</label>
+              {field.type ? (
+                <input
+                  class="register__entry"
+                  id={`contact-${field.name}`}
+                  name={field.name}
+                  type={field.type}
+                  autocomplete={field.autocomplete}
+                  spellcheck={field.type === 'email' ? 'false' : undefined}
+                  required
+                />
+              ) : (
+                <textarea class="register__entry register__entry--long" id={`contact-${field.name}`} name={field.name} rows="4" required></textarea>
+              )}
+              <p class="register__error" id={`contact-${field.name}-error`} data-error hidden></p>
+            </div>
+          ))}
+
+          <!-- Formspree's fields, never visible: the notification's subject, and the honeypot a person
+               never reaches (clipped to nothing, out of the tab order, hidden from assistive tech) -->
+          <input type="hidden" name="_subject" value={formspreeSubject} />
+          <div class="register__trap" aria-hidden="true">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          </div>
+
+          <p class="register__fail" aria-live="polite" data-fail></p>
+          <Button label={f.submit} type="submit" class="register__submit" data-submit />
+        </form>
+        <!-- The sent line replaces the form here -->
+        <div class="register__done" aria-live="polite" data-done></div>
+      </div>
+
+      <aside class="register__marg">
+        <p class="register__marg-line">
+          <a class="register__ig" href={instagramUrl} target="_blank" rel="noopener" data-mid-line><span data-mid-a>Instagram</span><span data-mid>&nbsp;·</span> <span data-mid-b>@everydaylegendsfoundation</span></a>
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    import { initContact } from '../scripts/contact';
+    initContact();
+  </script>
+</Base>
