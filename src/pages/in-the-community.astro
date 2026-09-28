@@ -7,10 +7,13 @@ import SupportSlab from '../components/SupportSlab.astro';
 import '../styles/community.css';
 import { entries } from '../data/community';
 import { hrefOf } from '../data/nav';
+import { getNews, formatNewsDate } from '../data/news';
 import nichePhoto from '../../brand_assets/Everyday_Legends_2026_219_websize.jpg';
 
 // Page order (everyday-legends-copy.md, section 3): the niche header, the entries on the rail, newest
-// first, then the closing Support slab. In the News is not built yet and renders nothing.
+// first, In the News, then the closing Support slab. In the News reads Sanity at build time; with no
+// items it renders nothing at all, heading included.
+const news = await getNews();
 
 // The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
 // title, deck half, or body ever ends on one word alone.
@@ -74,7 +77,35 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
       </ol>
     </section>
 
-    <!-- 3 · Closing Support slab: Title, Lede, and Donate only -->
+    <!-- 3 · In the News, from Sanity, newest first. Text only: every card is built identically, one link
+         to the original article on an ink hairline, opening in a new tab. Absent when there are no items. -->
+    {news.length > 0 && (
+      <section class="news" aria-labelledby="news-title">
+        <div class="grid news__grid">
+          <h2 id="news-title" class="display section-title">In the&nbsp;News</h2>
+          <p class="news__lede">{pair('Coverage of the foundation and its work.')}</p>
+          <ol class="news__list">
+            {news.map((item) => (
+              <li class="news__item" data-news>
+                <span class="news__rule" aria-hidden="true" data-news-rule></span>
+                <a class="news__card" href={item.url} target="_blank" rel="noopener noreferrer" data-news-card>
+                  <p class="label news__meta" data-mid-line>
+                    <span data-mid-a>{pair(item.outlet)}</span><span data-mid>&nbsp;·</span>{' '}
+                    <span data-mid-b class="news__date"><time datetime={item.date}>{formatNewsDate(item.date)}</time></span>
+                  </p>
+                  <svg class="news__out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+                  <h3 class="display news__headline">{pair(item.headline)}</h3>
+                  <p class="news__summary">{pair(item.summary)}</p>
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )}
+
+    <!-- 4 · Closing Support slab: Title, Lede, and Donate only -->
     <SupportSlab brief />
   </main>
 

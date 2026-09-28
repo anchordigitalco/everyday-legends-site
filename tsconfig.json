@@ -6,7 +6,8 @@
   ],
   "exclude": [
     "dist",
-    "reference"
+    "reference",
+    "studio"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

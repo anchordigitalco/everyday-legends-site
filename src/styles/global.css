@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* The Sanity Studio is its own app: never scanned for classes, never part of the site build */
+@source not "../../studio";
 
 /* ─────────────────────────────────────────────────────────────
    Everyday Legends Foundation · Brass and Ink
