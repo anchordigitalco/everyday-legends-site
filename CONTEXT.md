@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community.
 
 ## How this file works
 
@@ -15,7 +15,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
 - Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
-- Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. No CMS; Jackson makes updates.
+- Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
 - Donations: Zeffy, link pending. No payments in our code. Every Donate points to `/support`, where the Zeffy form is embedded. Until the link arrives, the form area holds an honest placeholder.
 - References, never built and never copied visually: `reference/wireframes/` (structure only), `reference/21st/` (motion only).
@@ -70,8 +70,8 @@ How it resolves on the web:
 
 - Black and white (Yamean Studios / McKee Place, files ending `-137`, `-119`, `-117`, `-48`, `-53`, `-20`, `-9`): the day itself. Speeches, the room, the story.
 - Studio (`KNOW_shoot_5.jpg`): Dr. McClain's portrait, color. Leadership only.
-- Color (`Everyday_Legends_2026_*`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work.
-- The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push.
+- Color (`Everyday_Legends_2026_*`, `RahwayPALAward.jpg`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work.
+- The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push. Home card 1 and In the Community entry 2 both read it from `community.ts`, so one swap fixes both.
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
 - Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
 - Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
@@ -86,8 +86,9 @@ How it resolves on the web:
 | Home, Legends Among Us | 178 |
 | Legends Among Us, invitation | 178 (same file as Home) |
 | Legends Among Us recap | -20 and -53 as a pair, then -119 closing. Three photos. |
-| Legends Among Us honorees | 222 Natasha, 210 Nathan, 190 Seton Hall Prep, ELRahwayPAL.webp Rahway PAL, 177 Brick City Lions |
-| In the Community, luncheon entry | 219 |
+| Legends Among Us honorees | 222 Natasha, 210 Nathan, 190 Seton Hall Prep, RahwayPALAward.jpg Rahway PAL (focal on the plaque), 177 Brick City Lions |
+| In the Community, niche header | 219 (focal on Natasha, 56%) |
+| In the Community entries | 148 luncheon, ELRahwayPAL.webp, ELSalvationArmy.webp (same files as Home) |
 | About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
 | About, beside the torch line | -48, full frame |
 | About, Leadership | KNOW_shoot_5 (Dr. McClain), -117 (Jaylen) |
@@ -131,7 +132,11 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
 - `Niche.astro` is every arch (About header, portraits, Support form frame, Legends honorees). `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
-- Nav links live in `src/data/nav.ts`; pages take paths from there.
+- Nav links live in `src/data/nav.ts`; pages take paths from there. Its `supportHref` is every Donate's target.
+- `src/data/community.ts` holds the three community entries (title, deck, body, photo, focal point, alt). Home's Legends in Action cards read their titles and bodies from it.
+- `SupportSlab.astro` is the one Support slab (Home, In the Community). Its `brief` prop drops Body and Marginalia.
+- `SettleHead.astro` plus `motion.ts` and `global.css` hold the niche settle and the fade-up shared by Home, About, and In the Community.
+- `src/data/sanity.ts` holds the Sanity config (no token, ever). `src/data/news.ts` fetches In the News at build time.
 - `Invitation.astro` is the one invitation card (Home, Legends Among Us), copy passed as props. `src/data/luncheon.ts` holds its pre/post state (now `post`), the 178 alt text, and `sponsorshipUrl`.
 - `src/data/honorees.ts` holds the five honorees for both halls: name, award, body, tier, photo, focal point, alt.
 - Section titles use `.section-title` in global.css, sized to About's Founders title. Niche photo styles live in global.css too.
@@ -168,7 +173,12 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Leadership: founders cols 1–5 / 8–12 (3.5-col arches), board cols 2–5 / 8–11 (2.5-col arches), each second bust lower by arch height ÷ 3. Stacked under 900px, arch max 22rem. Hover reveal is pointer only, no focus state, since busts are not links.
   - Founders is the longest section by copy. Leadership may run taller where portraits stack. Accepted.
   - About brass: 2 of 3 (torch line, What we do rail).
-- In the Community: niche header; entries on a rail, newest first, every entry built identically; closing Support slab.
+- In the Community: niche header, entries rail, In the News, closing slab.
+  - Header: About's niche treatment and composition, 219. The h1 keeps "the Community" together with a non-breaking space.
+  - Entries: three, identical, in `community.ts` order. No dates. A brass double rail runs along the entries' left edge at every width; from 900px each entry sits in cols 2–8, photo at 2:1, text block aligned to its left edge. Titles are h2. No links, buttons, or kickers. Each rail segment grows, then its content rises 24px, 0.12s apart.
+  - In the News: Sanity `newsItem` (headline, outlet, date, url, summary of 25 words max; all required; no image field). Build-time fetch, newest first, useCdn false. A fetch error fails the build; zero items renders nothing, heading included. Text-only cards on ink hairlines, cols 4–11 from 900px, each card one link to a new tab. Hairline draws, then the card fades in, 0.08s apart.
+  - Closing slab: `<SupportSlab brief />` with Home's fade up.
+  - Community brass: 1 of 3 (rail).
 - Legends Among Us: invitation, recap, honorees hall, Sponsorship. Section spread at least 7:1 at every width.
   - Invitation: `Invitation.astro` in its post state ("Next luncheon · date to be announced", no Buy tickets) on 178, full bleed, starting under the nav. The card title is the page's h1. It settles to its 2° angle once on load; the photo stays still.
   - Recap: the Body opens it, centered on the middle axis (cols 3–10, 46ch, 1.25x body). Then -20 and -53 side by side at one height (cols 2–11, flex-grow set to each aspect ratio), then -119 closing, cols 3–10. No photo overlaps another, none is cropped. Photos rise 24px once in view, 0.12s stagger. Under 900px: Body, -53, -20 (max 28rem, centered), -119.
@@ -207,7 +217,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community.
 
 ## Open client items that touch the build
 
