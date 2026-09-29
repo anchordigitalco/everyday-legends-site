@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, and for the Privacy Policy.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics.
 
 ## How this file works
 
@@ -14,7 +14,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 ## Project
 
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
-- Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
+- Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy, plus a 404 page (not in the nav).
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site. Vercel Web Analytics through `@vercel/analytics` (Astro component, last in `<head>` of `Base.astro`): cookieless, switched on in the Vercel project at launch; locally its script 404s, which is expected.
 - Contact form: Formspree form `mdekyelo` on the foundation's own account. Cloudflare Turnstile public site key in `src/data/contact.ts`. The Turnstile secret key lives only in Formspree, never in the repo. CAPTCHA stays off in Formspree until launch.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
@@ -29,7 +29,7 @@ The site is a hall of honor. You enter through the arch in her mark, and inside,
 How it resolves on the web:
 - A building is walked through; a page is scrolled. Home is the only page that moves you: the intro takes you through the arch once, and the hall walks you along the wall.
 - Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo, with two exceptions. Legends Among Us opens on the invitation card laid on the room photo. Support's header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
-- The dark wall exists only in the intro. After it, the paper page is the inside of the building. The one exception is the invitation band on Home and Legends Among Us, which sits on ink beside the room photo.
+- The dark wall exists only in the intro. After it, the paper page is the inside of the building. The one exception is the invitation band on Home and Legends Among Us: from 900px it sits on ink beside the room photo; under 900px the card sits on paper below the photo.
 
 ## Home intro (built)
 
@@ -66,7 +66,8 @@ How it resolves on the web:
 - Fonts are self-hosted through Fontsource, main files preloaded. No outside font requests.
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
-- No orphans anywhere: any text block that wraps ends with at least two words on its last line, at every width. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps. A hyphenated compound never splits across lines. "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- Every display size grows continuously with the viewport and never gets smaller as the window widens.
 - The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
 ## Photos
@@ -78,7 +79,8 @@ How it resolves on the web:
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
 - Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
 - Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
-- Every content photo goes through `astro:assets` with real alt text. MUST NOT set content photos as CSS backgrounds. Alt text MUST NOT name anyone the copy deck does not name.
+- Every content photo goes through `astro:assets` with real alt text. MUST NOT set content photos as CSS backgrounds. Alt text MUST NOT name anyone, or any award or title, that the copy deck does not name.
+- Niche photos are delivered at no fewer pixels than they display, at 1x and 2x density. `Niche.astro` works out `widths` and `sizes` from the arch height and the photo's aspect ratio, since a landscape file cropped into a tall arch displays far wider than the arch. If a source file is itself too small, report it as a clean-file request.
 - Photo treatment as built in Phase 5 (paper-deep tint through `mix-blend-multiply`). One file per slot so each swaps cleanly.
 
 | Slot | File |
@@ -144,7 +146,8 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - `src/data/sanity.ts` holds the Sanity config (no token, ever). `src/data/news.ts` fetches In the News at build time.
 - `Invitation.astro` is the one invitation card (Home, Legends Among Us), copy passed as props. `src/data/luncheon.ts` holds its pre/post state (now `post`), the 178 alt text, and `sponsorshipUrl`.
 - `src/data/honorees.ts` holds the five honorees for both halls: name, award, body, tier, photo, focal point, alt.
-- Section titles use `.section-title` in global.css, sized to About's Founders title. Niche photo styles live in global.css too.
+- Section titles use `.section-title` in global.css: one continuous size across all widths, never smaller at a wider width, and at least 1.3x every entry or card title on the same page (honoree names in the halls are exempt). Only About's Founders title keeps its 4-column formula, and it also never shrinks as the window widens. Niche photo styles live in global.css too.
+- `Base.astro` also holds the canonical link, Open Graph and Twitter tags, and the favicon set (see Launch basics).
 - Anchors clear the fixed nav through `scroll-padding-top` on html; no per-section scroll-margin.
 
 ## Nav and footer
@@ -160,7 +163,7 @@ Space tokens `--space-tight`, `--space-standard`, `--space-generous`, each at le
 1. Hero on paper: intro, then fade up. The hall's rail is visible in the first viewport at 1440×900 and 390×844.
 2. Hall: pinned side scroll (scroll-driven 1), 150vh max. Five honorees in program order, names only, from `src/data/honorees.ts`. A vertical list under 900px and in reduced motion.
 3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall. From 900px, title and lede on the left; body and the "About the foundation" button as one block in cols 8–12, the body's first line level with the title's top, the button under it at `--space-tight`. The rail follows the taller column. Nothing sits below the plaques. Under 900px: title, lede, body, button, rail.
-4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home. From 900px, row 3 (photo and text as one unit) is centered: whitespace left of the photo equals whitespace right of the text.
+4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home. From 900px, row 3 (photo and text as one unit) is centered: whitespace left of the photo equals whitespace right of the row's visible text (its longest line), not its text box.
 5. Legends Among Us: the card settles to its angle, the only rotated element on the site. The location line breaks only at the middot.
 6. Support: ink slab, full version (not `brief`), fade up. No newsletter until a provider exists; it returns only with a working backend.
 - Home height spread, tallest to shortest: 3:1 or more from 900px. Lowered from 4:1 when the Newsletter left; Jackson approved 3.48:1 at 1440 by eye.
@@ -199,7 +202,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
   - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
 - Contact: niche header, the register, Instagram marginalia. No newsletter. The page has no motion.
-  - Header: About's niche composition holding only the torch (`torch.ts`), brass, centered at 44% of the arch height, no tint; h1 and lede. Static from first paint: no SettleHead, no settle.
+  - Header: About's niche composition holding only the torch (`torch.ts`), brass, 44% of the arch height tall and centered in the arch, no tint; h1 and lede. Static from first paint: no SettleHead, no settle.
   - Register: from 900px, form cols 1–7, marginalia cols 9–12 behind an ink hairline; under 900px, form then marginalia. Name, email, message in Bricolage 300 on ink hairline rules, no boxes. Field names `name`, `email`, `message` (reply-to comes from `email`); hidden `_gotcha` honeypot and `_subject`.
   - States: per-field errors under the rule, which thickens 1px to 2px, with aria-invalid and aria-describedby; focus goes to the first invalid field; errors clear once valid. Sending uses aria-disabled, one request per send. Sent: the coda replaces the form and takes focus. Send failed: the deck line in a live region, values kept.
   - Formspree through fetch; without JS the form posts through `action`. Turnstile renders explicitly on /contact only, in a zero-height container that opens only if Cloudflare asks for interaction, above the button. It never blocks a send and resets after a failed one.
@@ -211,7 +214,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 - One structural breakpoint: 900px, matching the wireframes.
 - Under 900px: single column, collapsed nav, hall as a vertical list, every grid window collapses to full width. The invitation card MUST NOT overflow at 375px.
-- Verification widths for every slice: 375, 390, 430, 768, 899, 900, 901, 1024, 1280, 1440, 1920.
+- Verification widths for every slice: 375, 390, 430, 768, 899, 900, 901, 1024, 1280, 1409, 1410, 1440, 1920. 1409 and 1410 cover About's Founders switch.
 - Reduced motion at any width: intro skipped, hall as a vertical list, every reveal static.
 - Screenshot animated sections with reduced motion emulated or at their end state.
 
@@ -228,10 +231,23 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 9. Placeholder text for pending lines matches its register and word budget.
 10. Never use the 4322 dev server after a build in this repo. Serve dist/ on 4323 with `astro preview`, and tell Jackson to restart 4322 with `--force`. A build during Contact wiped Vite's cache and stopped Home's scripts.
 11. Any change to a page's entrance gets motion-on proof, not only reduced motion. Contact's torch sat hidden for 2.5s and reduced-motion screenshots missed it.
+12. Display sizes never shrink as the window widens. Phase 8 QA found section titles dropping from 72px to 51px at 900 and 1410.
+13. Check scripts carry no exception this file does not record. `orphans.mjs` hid an unrecorded exception that let two-word names stack.
+
+## Launch basics
+
+- Canonical domain: `https://everydaylegend.com`, the apex, set as `site` in `astro.config.mjs`. At launch, www redirects to the apex in Vercel.
+- Every page's canonical URL matches the URL the page is actually served at. Routing and `trailingSlash` stay as built.
+- `Base.astro` sets the canonical link, `og:title`, `og:description` (the page's existing meta description, verbatim), `og:url`, `og:image` with its alt, `og:type` website, `og:site_name` Everyday Legends Foundation, and `twitter:card` summary_large_image.
+- One shared OG image, `public/og.png`, 1200×630: the footer's full lockup on ink, as the footer renders it. No photos until honoree consent and clean files arrive.
+- Favicon set: the SVG, a 32px `favicon.ico`, and a 180px `apple-touch-icon.png`, all from the current crop. When the tighter crop is approved, all three swap together.
+- `@astrojs/sitemap` and `public/robots.txt` (allow all, plus the sitemap line). The 404 page is not in the sitemap.
+- 404: `src/pages/404.astro` on `Base`, copy from deck section 8. Privacy's composition: one centered column in cols 3–10, h1 at `.section-title`, lede at Home's lede scale, one primary button to `/`. No niche, photo, or motion. Brass 0 of 3.
+- None of these add an outside request, so the Privacy Policy stays true as written.
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed; photo 251 beside Our Story; the Privacy Policy text.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed; photo 251 beside Our Story; the Privacy Policy text; the 404 copy.
 
 ## Open client items that touch the build
 

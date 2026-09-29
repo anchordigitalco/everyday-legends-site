@@ -44,6 +44,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - The Sponsorship packages button points to Contact until the packages link arrives (see 4).
 - Home's Newsletter section removed until a newsletter provider exists. Our decision, so the site never collects sign-ups that go nowhere.
 - The Privacy Policy (see 7). The wording is ours. She confirms the two lines on how the foundation uses and keeps messages and donor details.
+- The 404 page (see 8). The wording is ours.
 
 ## Sitemap
 
@@ -54,6 +55,8 @@ These came out of wireframing. Build them, but treat them as swappable until app
 5. Support (a donation page that stays up all year)
 6. Contact
 7. Privacy Policy
+
+A 404 page (see 8) catches broken links. It is not in the nav or the sitemap.
 
 Scholarship stays described as something the foundation intends to fund. No scholarship page until a program exists.
 
@@ -372,7 +375,21 @@ A plain text page at `/privacy`, linked from every footer. Each Deck is a subhea
 
 ---
 
-## 8. Still to come
+## 8. Page not found (404)
+
+Shown for any address that does not exist on the site.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| Title | Page not found | 3 | NEW |
+| Lede | The page you are looking for has moved or does not exist. | 12 | NEW |
+| CTA | Back to home | 3 | NEW, links to / |
+
+MUST NOT add any other line, link, or photo to this page.
+
+---
+
+## 9. Still to come
 
 None of these block the build. Each drops into a space already designed for it.
 
