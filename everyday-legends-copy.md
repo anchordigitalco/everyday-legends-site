@@ -42,6 +42,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - The email address removed from the site: Contact marginalia, footer, and every mailto. The contact form is the only channel. Our decision, to keep the address away from harvesting bots.
 - Contact form copy (see 6): field labels, button, sending, errors, and the sent line. The wording is ours.
 - The Sponsorship packages button points to Contact until the packages link arrives (see 4).
+- Home's Newsletter section removed until a newsletter provider exists. Our decision, so the site never collects sign-ups that go nowhere.
 
 ## Sitemap
 
@@ -115,15 +116,6 @@ Card 3 uses photos from the May 30 luncheon gallery.
 | Body | We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships. | 24 | FROM CALL |
 | Marginalia | Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law. | 25 | NEW |
 | CTA | Donate | 1 | NEW, link to be filled |
-
-### 1.6 Newsletter
-
-| Register | Copy | Words | Source |
-|---|---|---|---|
-| Title | Sign up to make a difference | 5 | REUSED |
-| Body | Join our movement. Hear about our events, our honorees, and the partners we support. | 15 | REWRITTEN |
-| CTA | Sign up | 2 | REUSED |
-| Marginalia | Name · Email | 2 | REUSED (form field labels) |
 
 ---
 

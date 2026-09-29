@@ -161,7 +161,7 @@ Space tokens `--space-tight`, `--space-standard`, `--space-generous`, each at le
 3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall.
 4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home.
 5. Legends Among Us: the card settles to its angle, the only rotated element on the site. The location line breaks only at the middot.
-6. Support: ink slab, fade up. 7. Newsletter: shortest; no backend yet, so no success state.
+6. Support: ink slab, fade up. The Newsletter section is removed until a provider exists; it returns only with a working backend.
 - Home height spread, tallest to shortest: 4:1 or more.
 
 ## Inner pages
@@ -229,7 +229,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed.
 
 ## Open client items that touch the build
 
@@ -237,6 +237,6 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
 - Clean, unwatermarked photo files and the credit line.
 - Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link (goes in `luncheon.ts` `sponsorshipUrl`).
-- Newsletter provider, for the form backend.
+- Newsletter provider. Until one exists, no newsletter anywhere on the site.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.
