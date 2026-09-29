@@ -37,11 +37,14 @@
   container-type: inline-size;
 }
 /* "Story & Inspiration" is held together (non-breaking spaces) so the title can only break after
-   "Founders'": never an orphan. That line is 7.74em wide; the size follows the column (100cqi / 7.9)
-   so it always fits. */
+   "Founders'": never an orphan. That line is 7.74em wide. From 1410px the size is the 4-column
+   formula (the side column / 7.9). Below 1410px it never passes what four columns hold at 1410px
+   (--four-at-1410: gutter 5vw and gap 1.6vw there), so it never drops at the switch; on phones it
+   follows the full column (/ 7.76, the line's width with a hair to spare) up to that size. */
 .founders__title {
+  --four-at-1410: calc((1410px - 2 * 1410px * 0.05 - 2 * 1410px * 0.016) / 3);
   margin: 0;
-  font-size: min(4.5rem, 100cqi / 7.9);
+  font-size: min(100cqi / 7.76, var(--four-at-1410) / 7.9);
   line-height: 0.98;
 }
 .founders__marg {
@@ -144,9 +147,6 @@
    body size, so the title and marginalia sit full width above, not sticky. Line: col 1.
    Photo and copy: cols 2 to 12. */
 @media (min-width: 900px) and (max-width: 1409.98px) {
-  .founders__title {
-    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
-  }
   .founders__photo,
   .founders__copy {
     grid-column: 2 / -1;
@@ -178,6 +178,11 @@
     position: sticky;
     top: calc(var(--nav-h) + var(--space-tight));
   }
+  /* The 4-column formula: the side column is the container, so 100cqi is four columns. The floor
+     keeps it level with the size below the switch where a classic scrollbar narrows the page. */
+  .founders__title {
+    font-size: min(4.5rem, max(var(--four-at-1410), 100cqi) / 7.9);
+  }
   .founders__photo {
     grid-column: 6 / span 7;
     grid-row: 1;
@@ -193,9 +198,8 @@
 }
 
 /* ── About section titles ──────────────────────────────────── */
-/* Our Story, What we do, Leadership, and Accountability wear the shared .section-title (global.css),
-   the Founders' title size formula, so every title matches. Their sections are the size containers
-   the formula reads. */
+/* Our Story, What we do, Leadership, and Accountability wear the shared .section-title (global.css).
+   Their sections are the size containers the formula reads. */
 .story,
 .what,
 .lead,
@@ -399,8 +403,16 @@
   .what__plate {
     padding-inline: clamp(1.25rem, 2.2vw, 2rem);
   }
-  /* In the row, a plate is exactly as wide as its deck; the sentence wraps inside that width and
-     adds nothing to it. */
+  /* In the row the plates share cols 1 to 12 in proportion to their sentences (--len, the sentence's
+     length in characters, set in about.astro), so the sentences wrap to about the same number of lines
+     and no plate stands much taller than its neighbours. A plate is never narrower than its deck. The
+     sentence wraps inside the plate and adds nothing to its minimum width. */
+  .what__pillar {
+    flex: var(--len) 1 0;
+  }
+  .what__plate {
+    align-self: stretch;
+  }
   .what__body {
     width: 0;
     min-width: 100%;

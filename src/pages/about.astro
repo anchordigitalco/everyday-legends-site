@@ -11,6 +11,9 @@ import podiumPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon
 import syreetaPhoto from '../../brand_assets/KNOW_shoot_5.jpg';
 import jaylenPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-117_websize.jpg';
 import storyPhoto from '../../brand_assets/Everyday_Legends_2026_251_websize.jpg';
+import { headerArch } from '../data/niches';
+import { column, cols } from '../data/grid';
+import { holdCompounds } from '../data/text';
 
 // What we do, the three decks and their bodies (everyday-legends-copy.md, 2.5), in copy order.
 const pillars = [
@@ -60,6 +63,12 @@ const leaders: Leader[] = [
     alt: 'Jaylen McClain',
   },
 ];
+// The busts' arch widths (about.css, Leadership): 22rem at most in the column under 900px; from 900px
+// founders 3.5 columns wide, board members 2.5.
+const bustArch: Record<Leader['tier'], [string, string][]> = {
+  founder: [['(min-width: 900px)', cols(3.5)], ['', `min(${column}, 22rem)`]],
+  board: [['(min-width: 900px)', cols(2.5)], ['', `min(${column}, 22rem)`]],
+};
 // Left or right within its row: the second of each tier hangs lower (the stagger)
 const tierIndex = (i: number) => leaders.slice(0, i).filter((l) => l.tier === leaders[i].tier).length;
 
@@ -76,17 +85,14 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
     <!-- 1 · Niche header: Our Vision, on paper -->
     <section class="niche-hdr" aria-labelledby="vision-title">
       <div class="grid niche-hdr__grid">
-        <Niche class="niche-hdr__niche" settle>
-          <Image
-            src={nichePhoto}
-            widths={[400, 640, 900, 1066]}
-            sizes="(min-width: 900px) 460px, 90vw"
-            alt="Jaylen McClain and his brother at the Legends Among Us luncheon."
-            loading="eager"
-            fetchpriority="high"
-            data-niche-img
-          />
-        </Niche>
+        <Niche
+          class="niche-hdr__niche"
+          settle
+          photo={nichePhoto}
+          alt="Jaylen McClain and his brother at the Legends Among Us luncheon."
+          arch={headerArch}
+          img={{ loading: 'eager', fetchpriority: 'high', 'data-niche-img': true }}
+        />
         <h1 id="vision-title" class="display niche-hdr__title">Our Vision</h1>
         <p class="niche-hdr__lede">A culture where scholarship, athletics, and service are equally celebrated.</p>
         <p class="niche-hdr__body">Where young people are empowered to lead with integrity, excellence, and purpose, and where communities rally around those who shape the future.</p>
@@ -180,11 +186,11 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
           <div class="hang__rail" aria-hidden="true"></div>
           <ul class="hang__pillars">
             {pillars.map(({ name, body }) => (
-              <li class="pillar">
+              <li class="pillar what__pillar" style={`--len: ${body.length}`}>
                 <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
                 <div class="pillar__plaque what__plate" data-pillar-plaque>
                   <h3 class="display pillar__name">{name}</h3>
-                  <p class="what__body">{keepLastPair(body)}</p>
+                  <p class="what__body" set:html={holdCompounds(keepLastPair(body))} />
                 </div>
               </li>
             ))}
@@ -201,17 +207,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
           {leaders.map((person, i) => (
             <li class:list={['bust', `bust--${person.tier}`, tierIndex(i) % 2 ? 'bust--right' : 'bust--left']}>
               <div class="bust__hang">
-                <Niche class="bust__niche">
-                  {person.photo && (
-                    <Image
-                      src={person.photo}
-                      widths={[360, 540, 720, 960]}
-                      sizes="(min-width: 900px) 32vw, 90vw"
-                      alt={person.alt}
-                      loading="lazy"
-                    />
-                  )}
-                </Niche>
+                <Niche class="bust__niche" photo={person.photo} alt={person.alt} arch={bustArch[person.tier]} img={{ loading: 'lazy' }} />
                 <!-- Name and role always stack, so the deck starts in its broken state (site.ts) -->
                 <h3 class="bust__deck mid-broken" data-mid-line>
                   <span class="display bust__name" data-mid-a>{person.name}</span><span data-mid> ·</span>{' '}
@@ -233,7 +229,7 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
         </div>
         <div class="account__text">
           <h2 id="account-title" class="display section-title">Accountability</h2>
-          <p>Everyday Legends Foundation, Inc. is a <span class="account__term">tax-exempt</span> organization under Section <span class="account__term">501(c)(3)</span> of the Internal Revenue Code. EIN <span class="account__term">39-4769708.</span> Contributions are <span class="account__term">tax-deductible</span> to the extent permitted by law.</p>
+          <p>Everyday Legends Foundation, Inc. is a <span class="account__term">tax-exempt</span> organization under Section <span class="account__term">501(c)(3)</span> of the Internal Revenue Code. EIN&nbsp;<span class="account__term">39-4769708.</span> Contributions are <span class="account__term">tax-deductible</span> to the extent permitted by law.</p>
           <p>Gifts go three ways. To community organizations already running their own initiatives, where we add to the work rather than duplicate it. To athletics, through football camps and high school programs. And to education, through scholarships.</p>
           <!-- Same destination as the footer's Privacy Policy link (Base.astro) -->
           <p class="account__marg"><a class="label marg-link" href="/privacy">Privacy policy</a></p>

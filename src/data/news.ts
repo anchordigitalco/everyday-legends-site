@@ -20,7 +20,9 @@ const QUERY = `*[_type == "newsItem" && defined(headline) && defined(outlet) && 
 
 export async function getNews(): Promise<NewsItem[]> {
   try {
-    return await client.fetch<NewsItem[]>(QUERY);
+    const items = await client.fetch<NewsItem[]>(QUERY);
+    // Outlet names arrive as typed in the Studio; stray spaces would widen the label
+    return items.map((item) => ({ ...item, outlet: item.outlet.trim() }));
   } catch (err) {
     const why = err instanceof Error ? err.message : String(err);
     throw new Error(

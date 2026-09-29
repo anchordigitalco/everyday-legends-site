@@ -9,7 +9,7 @@
   <svg class="stone__grain" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
   <p class="label stone__name"><span>Everyday Legends</span> <span>Foundation, Inc.</span></p>
   <span class="stone__rule"></span>
-  <p class="display stone__ein">EIN 39-4769708</p>
+  <p class="display stone__ein">EIN&nbsp;39-4769708</p>
   <span class="stone__rule"></span>
   <p class="label stone__line stone__line--code">501(c)(3)</p>
   <p class="label stone__line stone__line--pending" data-placeholder>Founded (to be filled)</p>
@@ -17,16 +17,20 @@
 
 <style>
   /* A paper-deep block, lit from the upper left, set in an ink double frame: a hairline border and an
-     outline standing 8px off it. The letters read as cut: ink with a paper lip under each stroke. */
+     outline standing 8px off it. The letters read as cut: ink with a paper lip under each stroke.
+     An outline takes no room, so the stone keeps a margin as wide as the outer frame's reach
+     (--frame-out): the outer line is the edge of the stone's box, inside its column and the gutter. */
   .stone {
+    --frame-out: 9px; /* 8px offset + the 1px line */
     position: relative;
     container-type: inline-size;
     display: grid;
     justify-items: center;
+    margin: var(--frame-out);
     padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 3vw, 2.5rem);
     border: 1px solid var(--ink);
     outline: 1px solid var(--ink);
-    outline-offset: 8px;
+    outline-offset: calc(var(--frame-out) - 1px);
     text-align: center;
     background:
       radial-gradient(110% 80% at 18% 0%, color-mix(in srgb, var(--paper) 50%, transparent), transparent 65%),

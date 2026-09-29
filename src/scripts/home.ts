@@ -20,6 +20,7 @@ export function initHome() {
   initHall();
   initPillars(document.querySelector<HTMLElement>('[data-pillars]'));
   initActionRows();
+  fitActionText();
   initCard();
   fadeUps();
 }
@@ -186,6 +187,50 @@ function initHall() {
       gsap.set(track, { clearProps: 'all' });
     };
   });
+}
+
+// Legends in Action, row 3, from 900px: the text box takes the width of its longest line, so the row
+// (photo and text as one unit, centred by the CSS) has equal whitespace left of the photo and right of
+// the visible text. Laid out first at its full five columns, measured, then narrowed; narrowing can
+// rewrap a line shorter, so it measures again until the width holds. Layout only, so it runs with
+// reduced motion too.
+function fitActionText() {
+  const row = document.querySelector<HTMLElement>('[data-action-row]:nth-child(3)');
+  const text = row?.querySelector<HTMLElement>('.action__text');
+  if (!row || !text) return;
+  const wide = matchMedia('(min-width: 900px)');
+  const range = document.createRange();
+
+  const longestLine = () => {
+    const left = text.getBoundingClientRect().left + parseFloat(getComputedStyle(text).paddingLeft);
+    let right = left;
+    text.querySelectorAll('h3, p').forEach((el) => {
+      range.selectNodeContents(el);
+      for (const r of range.getClientRects()) if (r.width > 0) right = Math.max(right, r.right);
+    });
+    return right - left;
+  };
+
+  const fit = () => {
+    row.style.removeProperty('--line-w');
+    if (!wide.matches) return;
+    let w = Math.ceil(longestLine());
+    for (let i = 0; i < 3; i++) {
+      row.style.setProperty('--line-w', `${w}px`);
+      const next = Math.ceil(longestLine());
+      if (next === w) break;
+      w = next;
+    }
+  };
+
+  let frame = 0;
+  const refit = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(fit);
+  };
+  fit();
+  document.fonts?.ready.then(refit);
+  window.addEventListener('resize', refit);
 }
 
 // The invitation settles into its rotation on entry, from 900px. Not scroll-driven: it plays once.

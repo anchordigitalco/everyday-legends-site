@@ -9,6 +9,7 @@ import { entries } from '../data/community';
 import { hrefOf } from '../data/nav';
 import { getNews, formatNewsDate } from '../data/news';
 import nichePhoto from '../../brand_assets/Everyday_Legends_2026_219_websize.jpg';
+import { headerArch } from '../data/niches';
 
 // Page order (everyday-legends-copy.md, section 3): the niche header, the entries on the rail, newest
 // first, In the News, then the closing Support slab. In the News reads Sanity at build time; with no
@@ -30,18 +31,14 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
     <!-- 1 · Niche header, on paper: About's composition, niche, title, and lede -->
     <section class="niche-hdr" aria-labelledby="community-title">
       <div class="grid niche-hdr__grid">
-        <Niche class="niche-hdr__niche" settle>
-          <Image
-            src={nichePhoto}
-            widths={[400, 640, 900, 1200]}
-            sizes="(min-width: 900px) 460px, 90vw"
-            alt="Natasha Davis-Gomez holds her Community Trailblazer Award between Dr. Syreeta McClain and Jaylen McClain at the Legends Among Us luncheon."
-            loading="eager"
-            fetchpriority="high"
-            style="--focal: 56% 0"
-            data-niche-img
-          />
-        </Niche>
+        <Niche
+          class="niche-hdr__niche"
+          settle
+          photo={nichePhoto}
+          alt="Natasha Davis-Gomez holds her Community Trailblazer Award between Dr. Syreeta McClain and Jaylen McClain at the Legends Among Us luncheon."
+          arch={headerArch}
+          img={{ loading: 'eager', fetchpriority: 'high', style: '--focal: 56% 0', 'data-niche-img': true }}
+        />
         <h1 id="community-title" class="display niche-hdr__title community-hdr__title">In the&nbsp;Community</h1>
         <p class="niche-hdr__lede">{pair('Where the work has gone so far.')}</p>
       </div>

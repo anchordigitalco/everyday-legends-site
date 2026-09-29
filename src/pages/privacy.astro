@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import '../styles/privacy.css';
 import { hrefOf } from '../data/nav';
+import { holdCompounds } from '../data/text';
 
 // Page order (everyday-legends-copy.md, section 7): title, the effective line, lede, nine decks with
 // their bodies, then the coda. The quietest page on the site: plain text in one column, no niche, no
@@ -91,7 +92,7 @@ const sections = [
         {sections.map((s) => (
           <section class="policy__part" aria-labelledby={`privacy-${s.id}`}>
             <h2 id={`privacy-${s.id}`} class="display policy__deck">{pair(s.deck)}</h2>
-            {s.body.map((p) => <p class="policy__body">{pair(p)}</p>)}
+            {s.body.map((p) => <p class="policy__body" set:html={holdCompounds(pair(p))} />)}
           </section>
         ))}
 

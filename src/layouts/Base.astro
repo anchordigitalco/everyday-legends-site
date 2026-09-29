@@ -5,6 +5,8 @@
 // Every Donate points to /support; on /support itself, the nav and menu Donate go to its form (#give).
 // The two faces, self-hosted as variable woff2 (Fontsource): Fraunces with wght, opsz, SOFT, and WONK;
 // Bricolage Grotesque with wght and opsz. Imported before global.css so its tokens name them.
+// Fraunces stays on the full file: the opsz-only file has no WONK axis to set to 0, so at opsz 144 it
+// draws the wonky ampersand and a different h, m, and n (checked side by side, Phase 8).
 import '@fontsource-variable/fraunces/full.css';
 import '@fontsource-variable/bricolage-grotesque/opsz.css';
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
@@ -31,6 +33,13 @@ const anchorMark = anchorMarkRaw
   .replace('<svg ', '<svg class="footer__credit-mark" aria-hidden="true" focusable="false" ');
 
 const donateHref = current === supportHref ? '#give' : supportHref;
+
+// Launch basics (CONTEXT.md). The canonical URL is the address the page is served at and linked by: the
+// path without a trailing slash (the home page is /), on the site's domain (astro.config.mjs `site`).
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+const SITE_NAME = 'Everyday Legends Foundation';
 ---
 <html lang="en">
   <head>
@@ -38,7 +47,22 @@ const donateHref = current === supportHref ? '#give' : supportHref;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Everyday Legends Foundation logo on a dark ground." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Her mark: the SVG, a 32px ico for browsers without SVG icons, and the 180px home-screen icon.
+         All three come from the same crop (scripts/launch-images.mjs makes the two raster files). -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href={markUrl} />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <slot name="head" />
     <!-- The Latin files every page draws first; the other subsets load only if a character needs them -->
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />

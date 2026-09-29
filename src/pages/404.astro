@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+
+// Page not found (everyday-legends-copy.md, section 8): title, lede, and one button home, nothing else.
+// Privacy's composition (CONTEXT.md, Launch basics): one centred column inside cols 3 to 10, h1 at
+// .section-title, the lede at Home's lede scale. No niche, photo, motion, or brass. Not in the nav or
+// the sitemap (astro.config.mjs).
+const LEDE = 'The page you are looking for has moved or does not exist.';
+// The last two words of a line travel together (a non-breaking space, the copy itself unchanged)
+const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
+---
+<Base title="Page not found · Everyday Legends Foundation" description={LEDE}>
+  <main>
+    <section class="lost" aria-labelledby="lost-title">
+      <div class="grid">
+        <div class="lost__col">
+          <h1 id="lost-title" class="display section-title">Page not&nbsp;found</h1>
+          <p class="lost__lede">{pair(LEDE)}</p>
+          <Button label="Back to home" href="/" class="lost__cta" />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  /* Privacy's page (privacy.css): the same paper pooling at the upper corners, the same column. Tall
+     enough that the footer never rides up into the first screen. */
+  .lost {
+    container-type: inline-size; /* .section-title sizes from the page width: the section, not the padded grid */
+    position: relative;
+    min-height: calc(100svh - var(--space-standard));
+    padding-top: calc(var(--nav-h) + var(--space-tight));
+    padding-bottom: var(--space-generous);
+    background:
+      radial-gradient(50% 36% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
+      radial-gradient(40% 30% at 0% 6%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
+  }
+  /* Home's lede scale (global.css, .hero__lede) */
+  .lost__lede {
+    max-width: 40ch;
+    margin: var(--s-4) 0 0;
+    color: var(--ink-2);
+    font-size: clamp(1.125rem, 1.55vw, 1.5rem);
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+  .lost__col :global(.lost__cta) {
+    margin-top: var(--s-5);
+  }
+  @media (min-width: 900px) {
+    .lost__col {
+      grid-column: 3 / span 8;
+      justify-self: center;
+      width: 100%;
+      max-width: 63.4ch;
+      font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+    }
+  }
+</style>

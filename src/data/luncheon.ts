@@ -13,4 +13,4 @@ export const luncheon: { state: LuncheonState; ticketsHref: string | null; spons
 
 // Photo 178, the room behind the invitation on Home and on Legends Among Us: one alt text for both.
 export const luncheonPhotoAlt =
-  'Jaylen McClain presents the Athletic & Community Impact Award to Brick City Lions at the Legends Among Us luncheon, May 30, 2026.';
+  'Jaylen McClain presents an award to Brick City Lions at the Legends Among Us luncheon, May 30, 2026.';

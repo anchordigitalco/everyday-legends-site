@@ -20,9 +20,9 @@ export type Entry = {
 
 export const entries: Entry[] = [
   {
-    title: 'Legends Among Us, May 30',
+    title: 'Legends Among\u00a0Us, May 30',
     deck: ['The Highlawn', 'West Orange, New Jersey'],
-    body: 'The foundation hosted its inaugural Legends Among Us luncheon at The Highlawn in West Orange, New Jersey, honoring three scholars, a Young Legend, a Community Trailblazer, and three athletic programs.',
+    body: 'The foundation hosted its inaugural Legends Among\u00a0Us luncheon at The Highlawn in West Orange, New Jersey, honoring three scholars, a Young Legend, a Community Trailblazer, and three athletic programs.',
     photo: luncheonRoomPhoto,
     focal: '45% 30%',
     alt: 'Guests seated at round tables during the Legends Among Us luncheon at The Highlawn.',

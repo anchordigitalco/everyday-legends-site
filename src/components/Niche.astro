@@ -1,20 +1,48 @@
 ---
 // Her arch from everyday-legends-mark.svg (path 1) as a niche: one hairline ink frame, the photo set on
 // a concentric inset arch, the standard paper-deep tint over it, and a soft recess under the head.
-// The slot holds the photo (an astro:assets <Image>). The frame is .niche in global.css; the photo and
-// its sizing live in about.css. `class` adds the placement for each use. `settle` marks the About
-// header's photo for its load settle.
+// The frame is .niche in global.css. `class` adds the placement for each use. `settle` marks the
+// photo for its load settle.
+// `photo` and `alt` render the photo (astro:assets). `arch` is the arch's outer width as `sizes`
+// entries, [media condition, length] in order, the last with an empty condition: the same formula its
+// CSS lays the arch out with (src/data/grid.ts writes the grid's columns as lengths). The photo covers
+// the inner arch (0.72 wide to tall), so a landscape file is drawn wider than the arch: its drawn
+// width is the arch height times the photo's aspect ratio, at most arch width x aspect / 0.72. Both
+// `sizes` and the candidate widths follow that, so the photo is delivered at no fewer pixels than it
+// displays, at 1x and 2x. Candidates step about 1.25x, capped at the source file's own width.
+// `img` passes further attributes to the <img> (loading, fetchpriority, style, data-*).
 // `tint={false}` leaves out the paper-deep tint, for a niche that holds a drawing instead of a photo
-// (Contact's torch): the drawing sits on clean paper.
+// (Contact's torch, passed in the slot): the drawing sits on clean paper.
 // `frame` is the empty niche: the same frame (the .niche rule in global.css) with paper inside and its
 // height set by the slot's content instead of the 0.72 ratio. Support's gift form sits in it.
+import { Image } from 'astro:assets';
+
 interface Props {
   class?: string;
   settle?: boolean;
   frame?: boolean;
   tint?: boolean;
+  photo?: ImageMetadata;
+  alt?: string;
+  arch?: [media: string, length: string][];
+  img?: Record<string, unknown>;
 }
-const { class: className, settle = false, frame = false, tint = true } = Astro.props;
+const { class: className, settle = false, frame = false, tint = true, photo, alt = '', arch = [], img = {} } = Astro.props;
+
+const NICHE_RATIO = 0.72; // width to height, .niche in global.css
+const LADDER = [300, 400, 500, 640, 800, 1000, 1200, 1400, 1600, 2000, 2400];
+
+let widths: number[] = [];
+let sizes = '';
+let fallback = 0;
+if (photo) {
+  const k = Math.max(1, photo.width / photo.height / NICHE_RATIO);
+  sizes = arch
+    .map(([media, length]) => `${media} calc(${length} * ${k.toFixed(4)})`.trim())
+    .join(', ');
+  widths = [...LADDER.filter((w) => w < photo.width), photo.width];
+  fallback = widths.find((w) => w >= 800) ?? photo.width;
+}
 ---
 {frame ? (
   <div class:list={['niche', 'niche--frame', className]}>
@@ -24,6 +52,7 @@ const { class: className, settle = false, frame = false, tint = true } = Astro.p
   <div class:list={['niche', className]}>
     <div class="niche__photo">
       <div class="niche__plate" data-niche-plate={settle ? '' : undefined}>
+        {photo && <Image src={photo} alt={alt} widths={widths} sizes={sizes} width={fallback} {...img} />}
         <slot />
         {tint && <span class="photo-tint" aria-hidden="true"></span>}
       </div>

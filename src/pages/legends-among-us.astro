@@ -7,6 +7,8 @@ import Button from '../components/Button.astro';
 import '../styles/legends.css';
 import { honorees } from '../data/honorees';
 import { hrefOf } from '../data/nav';
+import { column, GAP } from '../data/grid';
+import { holdCompounds } from '../data/text';
 import { luncheon, luncheonPhotoAlt } from '../data/luncheon';
 import roomPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import recapLectern from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-53_websize.jpg';
@@ -27,6 +29,12 @@ const recap = {
 // brass rail in smaller ones (CONTEXT.md, Inner pages, Legends Among Us).
 const people = honorees.filter((h) => h.tier === 'person');
 const programs = honorees.filter((h) => h.tier === 'program');
+
+// The hall's arch widths (legends.css): under 900px 22rem (people) and 16rem (programs) at most in the
+// column; from 900px a program's niche is 2.5 columns (--hall-niche) and a person's 1.4 times that.
+const hallNiche = `(2.5 * (${column} - 11 * ${GAP}) / 12 + 1.5 * ${GAP})`;
+const personArch: [string, string][] = [['(min-width: 900px)', `1.4 * ${hallNiche}`], ['', `min(${column}, 22rem)`]];
+const programArch: [string, string][] = [['(min-width: 900px)', hallNiche], ['', `min(${column}, 16rem)`]];
 
 // The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
 // name, award, or body ever ends on one word alone in the narrow columns.
@@ -81,7 +89,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
           </figure>
         </div>
         <figure class="recap__photo recap__photo--group" data-rise>
-          <Image src={recap.group.src} alt={recap.group.alt} widths={[600, 900, 1200, 1600]} sizes="(min-width: 900px) 60vw, 100vw" />
+          <Image src={recap.group.src} alt={recap.group.alt} widths={[600, 900, 1200, 1600]} width={1200} sizes="(min-width: 900px) 60vw, 100vw" />
           <span class="photo-tint" aria-hidden="true"></span>
         </figure>
       </div>
@@ -99,14 +107,12 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
         <ol class="lhall__people" data-people>
           {people.map((h, i) => (
             <li class:list={['honoree', 'honoree--person', `honoree--p${i + 1}`]}>
-              <Niche class="honoree__niche" settle>
-                <Image src={h.photo} alt={h.alt} widths={[400, 600, 800, 1200]} sizes="(min-width: 900px) 30vw, 22rem" style={`--focal: ${h.focal}`} />
-              </Niche>
+              <Niche class="honoree__niche" settle photo={h.photo} alt={h.alt} arch={personArch} img={{ style: `--focal: ${h.focal}` }} />
               <h4 class="honoree__deck mid-broken" data-mid-line>
                 <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
                 <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
               </h4>
-              <p class="honoree__body">{pair(h.body)}</p>
+              <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />
             </li>
           ))}
         </ol>
@@ -117,17 +123,17 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
           <ol class="hang__pillars lhall__pillars">
             {programs.map((h, i) => (
               <li class:list={['pillar', 'honoree', 'honoree--program', `honoree--g${i + 1}`]}>
-                <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
-                <div class="honoree__plate" data-pillar-plaque>
-                  <Niche class="honoree__niche">
-                    <Image src={h.photo} alt={h.alt} widths={[300, 450, 600, 900]} sizes="(min-width: 900px) 20vw, 16rem" style={`--focal: ${h.focal}`} />
-                  </Niche>
+                <div class="honoree__hang">
+                  <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
+                  <div class="honoree__plate" data-pillar-plaque>
+                    <Niche class="honoree__niche" photo={h.photo} alt={h.alt} arch={programArch} img={{ style: `--focal: ${h.focal}` }} />
+                  </div>
+                  <h4 class="honoree__deck mid-broken" data-mid-line>
+                    <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                    <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
+                  </h4>
                 </div>
-                <h4 class="honoree__deck mid-broken" data-mid-line>
-                  <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
-                  <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
-                </h4>
-                <p class="honoree__body">{pair(h.body)}</p>
+                <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />
               </li>
             ))}
           </ol>

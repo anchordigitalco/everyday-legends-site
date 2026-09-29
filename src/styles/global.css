@@ -50,6 +50,11 @@
   --s-6: 4.5rem;
   --s-7: 6rem;
   --gutter: clamp(20px, 5vw, 96px);
+  /* The longest honoree names, in em of the display face: every name renders on one line, so a name
+     size that must fit a window is declared against these. Program: "Seton Hall Prep Football Program"
+     (13.73em); person: "Natasha Davis-Gomez" (8.76em). */
+  --longest-name: 13.75;
+  --longest-person: 8.8;
   --nav-h: 84px;
   --col-gap: clamp(12px, 1.6vw, 24px);
 
@@ -102,9 +107,14 @@ img {
   overflow: hidden;
 }
 
-/* Grain for the whole paper page, behind every section that has no surface of its own */
+/* Grain for the whole paper page, behind every section that has no surface of its own. It spans the
+   whole document (body is its containing block), not the viewport: a viewport-sized layer ends at one
+   screen height wherever the page is drawn whole (a full-page capture, print), a hard step in tone. */
+body {
+  position: relative;
+}
 .page-grain {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -1;
   width: 100%;
@@ -132,23 +142,30 @@ img {
   letter-spacing: -0.03em;
 }
 
-/* Section titles: one class for every inner page, sized to the About Founders title */
+/* Section titles: one class for every inner page, one continuous size that never gets smaller as the
+   window widens. Declared against the longest line a title must hold whole ("Accountability", 5.88em,
+   so 1 / 6.1 of its window leaves room) and the narrowest window a title sits in: the full column under
+   900px, six columns from 900px (About's Accountability, What we do, Leadership; Legends' Honorees).
+   Under 900px the size follows the full column until it reaches what six columns hold at 900px
+   (--six-at-900: gutter 5vw and gap 1.6vw at 900px), then holds there, so it never drops at the
+   switch. From 900px it follows the six columns (cols of the page's 12-column grid) up to 72px.
+   The sections holding a title are size containers, so 100cqw is the page's width without scrollbar. */
 .section-title {
+  --title-fit: 6.1;
+  --six-at-900: calc((900px - 2 * 900px * 0.05 - 900px * 0.016) / 2);
   margin: 0;
-  font-size: min(4.5rem, (100cqw - 2 * var(--gutter)) / 7.9);
+  font-size: min(
+    4.5rem,
+    (100cqw - 2 * var(--gutter)) / var(--title-fit),
+    max(var(--six-at-900), (100cqw - 2 * var(--gutter) - var(--col-gap)) / 2) / var(--title-fit)
+  );
   line-height: 0.98;
   text-wrap: balance;
 }
-@media (min-width: 900px) and (max-width: 1409.98px) {
-  .section-title {
-    font-size: clamp(3.1875rem, 5.2vw, 4.5rem);
-  }
-}
-@media (min-width: 1410px) {
-  .section-title {
-    --col: calc((100cqw - 2 * var(--gutter) - 11 * var(--col-gap)) / 12);
-    font-size: min(4.5rem, (4 * var(--col) + 3 * var(--col-gap)) / 7.9);
-  }
+
+/* A term that never breaks inside itself (a hyphenated compound, the EIN, 501(c)(3)) */
+.nowrap {
+  white-space: nowrap;
 }
 
 /* Marginalia and labels */
@@ -884,6 +901,7 @@ html.el-intro [data-hero-item] {
 /* A stage that pins centred in the viewport. The double rail stays put, full bleed; the track
    of names slides beneath it. Pin length is set in home.ts: 150vh at most. */
 .hall {
+  container-type: inline-size;
   --rail-top: 3rem;
   --name-size: clamp(2.75rem, 4.6vw, 5.5rem);
   --drop-short: clamp(1.5rem, 4svh, 2.5rem);
@@ -973,14 +991,14 @@ html.el-intro [data-hero-item] {
 .hall__name:nth-child(odd):last-child {
   margin-right: 0;
 }
+/* Every name on one line, as a plaque carries it */
 .hall__text {
   display: block;
-  max-width: 7.4em;
   margin-top: var(--s-2);
   font-size: var(--name-size);
   line-height: 0.95;
   text-align: center;
-  text-wrap: balance;
+  white-space: nowrap;
 }
 
 /* ── 3 · Our Mission ───────────────────────────────────────── */
@@ -1304,25 +1322,39 @@ html.el-intro [data-hero-item] {
     grid-column: 1 / span 5;
     padding: 0 var(--s-4) 0 0;
   }
-  /* Row 3: the portrait stays whole (watermark intact), set inside the photo window against the text */
-  /* The whole row moves left by one and a half columns as one unit, so the space from the viewport's
-     left edge to the photo equals the space from the text block's right edge to the viewport's right
-     (both gutter + 1.5 columns). Percentages resolve against the list, the page's full width. */
+  /* Row 3: the portrait stays whole (watermark intact), four columns wide, with its text beside it.
+     Photo, gap, and text are one unit centred in the row, so the whitespace left of the photo equals
+     the whitespace right of the text's longest line. A wrapped paragraph's box is as wide as its
+     measure, not its longest line, so home.ts (fitActionText) measures the longest line and sets
+     --line-w; the text box is then exactly that wide (never wider than five columns). Without the
+     script it is five columns wide. Percentages resolve against the row's content box. */
   .action__row:nth-child(3) {
-    --shift: calc(1.5 * ((100% - 2 * var(--gutter) - 11 * var(--col-gap)) / 12 + var(--col-gap)));
-    align-items: end;
-    margin-inline: calc(-1 * var(--shift)) var(--shift);
+    --row-col: calc((100% - 11 * var(--col-gap)) / 12);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    column-gap: var(--col-gap);
   }
   .action__row:nth-child(3) .action__photo {
-    grid-column: 4 / span 4;
+    flex: none;
+    width: calc(4 * var(--row-col) + 3 * var(--col-gap));
+  }
+  .action__row:nth-child(3) .action__text {
+    flex: none;
+    width: min(
+      calc(5 * var(--row-col) + 4 * var(--col-gap)),
+      calc(var(--line-w, 100vw) + var(--s-4))
+    );
   }
 }
 
 /* ── 5 · Legends Among Us ──────────────────────────────────── */
-/* Home's invitation on the room. Legends Among Us opens on the same section (legends.css adds its modifier). */
+/* Home's invitation on the room. Legends Among Us opens on the same section (legends.css adds its modifier).
+   Under 900px the card sits on the page's own paper below the photo. The section carries no surface of
+   its own there: the card's shadow reaches about 104px below it, past the section's end, and any
+   surface ending at that edge would cut the shadow off in a hard line. */
 .legends {
   position: relative;
-  background: var(--paper-surface);
   padding-bottom: var(--s-6);
 }
 .legends__photo {
@@ -1664,8 +1696,13 @@ html.el-intro [data-hero-item] {
 /* ── Hall fallback: phones and reduced motion ──────────────── */
 /* A plain vertical list: the double rail runs down the left, each name on a short drop. */
 @media (max-width: 899.98px), (prefers-reduced-motion: reduce) {
+  /* The names share one size, and the longest must fit on one line beside its drop: the column less
+     the rail (8px), the drop, and the gap before the name */
   .hall {
-    --name-size: clamp(2.25rem, 7.4vw, 4rem);
+    --name-size: min(
+      clamp(2.25rem, 7.4vw, 4rem),
+      (100cqw - 2 * var(--gutter) - 8px - var(--drop-short) - var(--s-2)) / var(--longest-name)
+    );
     --drop-short: 28px;
     height: auto !important;
   }
