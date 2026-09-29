@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, and for the Privacy Policy.
 
 ## How this file works
 
@@ -15,7 +15,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
 - Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy.
-- Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site.
+- Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site. Vercel Web Analytics through `@vercel/analytics` (Astro component, last in `<head>` of `Base.astro`): cookieless, switched on in the Vercel project at launch; locally its script 404s, which is expected.
 - Contact form: Formspree form `mdekyelo` on the foundation's own account. Cloudflare Turnstile public site key in `src/data/contact.ts`. The Turnstile secret key lives only in Formspree, never in the repo. CAPTCHA stays off in Formspree until launch.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
 - Donations: Zeffy, link pending. No payments in our code. Every Donate points to `/support`, where the Zeffy form is embedded. Until the link arrives, the form area holds an honest placeholder.
@@ -205,7 +205,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Formspree through fetch; without JS the form posts through `action`. Turnstile renders explicitly on /contact only, in a zero-height container that opens only if Cloudflare asks for interaction, above the button. It never blocks a send and resets after a failed one.
   - The Instagram middot follows the site-wide rule.
   - Contact brass: 1 of 3 (torch).
-- Privacy Policy: plain text page, linked from every footer.
+- Privacy Policy: plain text page at `/privacy`, linked from every footer. The quietest page: no niche, photo, motion, or button; brass 0 of 3. From 900px one column inside cols 3–10, centered, at most 63.4ch (the longest body line fills it, so its whitespace matches both sides), text left-aligned; full width below. h1 at `.section-title`, effective line in label style, lede at Home's lede scale, Decks as Fraunces h2 with `word-spacing: 0.12em`, Coda after an ink hairline. The only link in the text is "contact form" in the Coda. The policy's claims MUST stay true: the site sets no cookies, and the only outside requests are Cloudflare on `/contact` and Zeffy on `/support`. Any new service goes into the policy first.
 
 ## Breakpoints
 
