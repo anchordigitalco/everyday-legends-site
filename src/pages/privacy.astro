@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/privacy.css';
+import { hrefOf } from '../data/nav';
+
+// Page order (everyday-legends-copy.md, section 7): title, the effective line, lede, nine decks with
+// their bodies, then the coda. The quietest page on the site: plain text in one column, no niche, no
+// photo, no brass, nothing that moves. The only link in the text is "contact form" in the coda.
+// The last two words of a line travel together (a non-breaking space, the copy itself unchanged)
+const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
+
+const sections = [
+  {
+    id: 'who',
+    deck: 'Who we are',
+    body: [
+      'Everyday Legends Foundation, Inc. is a tax-exempt nonprofit organization. This policy covers our website, everydaylegend.com.',
+    ],
+  },
+  {
+    id: 'contact',
+    deck: 'When you contact us',
+    body: [
+      'Our contact form asks for your name, your email address, and your message. The form is run by Formspree, which delivers your message to our inbox and keeps a copy for 30 days. We use what you send only to reply to you, and we keep messages only as long as we need them for that and for our records.',
+      'To keep out automated spam, the form uses Cloudflare Turnstile, which reviews technical signals from your browser and device. Cloudflare handles that information under its own privacy policy.',
+    ],
+  },
+  {
+    id: 'donate',
+    deck: 'When you donate',
+    body: [
+      "Donations are processed by Zeffy through the form on our Support page. Your name, contact details, and payment information go to Zeffy under Zeffy's own privacy policy, and your payment details never pass through our website. Zeffy shares your name, contact details, and gift with us so we can thank you and issue your receipt. We use them only for that and for our own records.",
+    ],
+  },
+  {
+    id: 'browse',
+    deck: 'When you browse',
+    body: [
+      'Our website is hosted by Vercel, which keeps standard server logs, such as your IP address and browser type, to run the site and keep it secure. We also use Vercel Web Analytics to count visits. It uses no cookies, does not identify you, and shows us only totals, such as which pages are read and which countries visitors come from.',
+    ],
+  },
+  {
+    id: 'not',
+    deck: 'What we do not do',
+    body: [
+      "We do not set cookies of our own, run advertising, or sell, rent, or trade your personal information. The donation form and the spam check come from Zeffy and Cloudflare and follow their policies. Our Instagram link takes you to Instagram, where Instagram's policy applies.",
+    ],
+  },
+  {
+    id: 'dnt',
+    deck: 'Do Not Track',
+    body: [
+      'Some browsers send a Do Not Track signal. Because we do not track visitors across other websites, our site works the same way whether or not that signal is on.',
+    ],
+  },
+  {
+    id: 'children',
+    deck: 'Children',
+    body: [
+      'Our website is not directed at children under 13, and we do not knowingly collect personal information from them. If you believe a child has sent us information, contact us and we will delete it.',
+    ],
+  },
+  {
+    id: 'choices',
+    deck: 'Your choices',
+    body: [
+      'You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Send your request through our contact form.',
+    ],
+  },
+  {
+    id: 'changes',
+    deck: 'Changes to this policy',
+    body: ['If we change this policy, we will post the new version on this page with a new effective date.'],
+  },
+];
+---
+<Base
+  title="Privacy Policy · Everyday Legends Foundation"
+  description="We collect very little through this website. This page explains what we collect, why, and where it goes."
+>
+  <main>
+    <article class="grid policy" aria-labelledby="privacy-title">
+      <div class="policy__col">
+        <header class="policy__head">
+          <h1 id="privacy-title" class="display section-title">Privacy Policy</h1>
+          <!-- The effective date is set on launch day and changes only when the policy does -->
+          <p class="label policy__effective">Effective (to be filled at launch)</p>
+          <p class="policy__lede">{pair('We collect very little through this website. This page explains what we collect, why, and where it goes.')}</p>
+        </header>
+
+        {sections.map((s) => (
+          <section class="policy__part" aria-labelledby={`privacy-${s.id}`}>
+            <h2 id={`privacy-${s.id}`} class="display policy__deck">{pair(s.deck)}</h2>
+            {s.body.map((p) => <p class="policy__body">{pair(p)}</p>)}
+          </section>
+        ))}
+
+        <p class="policy__coda">
+          Questions about this policy? Reach us through our <a class="policy__link" href={hrefOf('Contact')}>contact&nbsp;form</a>.
+        </p>
+      </div>
+    </article>
+  </main>
+</Base>

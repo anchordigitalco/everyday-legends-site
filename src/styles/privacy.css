@@ -1,0 +1,118 @@
+/* ─────────────────────────────────────────────────────────────
+   Privacy Policy. Tokens live in global.css; nothing here adds a color.
+   Brass: 0 of 3. The quietest page on the site: plain text in one column, no niche, no photo, and
+   nothing enters or moves. Static from the first paint.
+   ───────────────────────────────────────────────────────────── */
+
+/* One column centred on the page from 900px: inside cols 3 to 10, at most 64ch wide, text left-aligned.
+   Full width below. The column takes the body size, so its ch is the body's ch; every child sets its own
+   size in rem, so nothing else changes. 63.4ch, not 64: there the longest body line fills the column to
+   within 2px, so the whitespace either side of it matches (checked at 1024, 1280, 1440, and 1920). */
+.policy {
+  position: relative;
+  padding-top: calc(var(--nav-h) + var(--space-tight));
+  padding-bottom: var(--space-generous);
+  /* Depth: deeper paper pooling at the upper corners, over the page grain */
+  background:
+    radial-gradient(50% 36% at 100% 0%, color-mix(in srgb, var(--paper-deep) 55%, transparent), transparent 70%),
+    radial-gradient(40% 30% at 0% 6%, color-mix(in srgb, var(--paper-deep) 40%, transparent), transparent 70%);
+}
+@media (min-width: 900px) {
+  .policy__col {
+    grid-column: 3 / span 8;
+    justify-self: center;
+    width: 100%;
+    max-width: 63.4ch;
+    font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  }
+}
+
+/* ── Head: title, the effective line, lede ─────────────────── */
+.policy__effective {
+  margin: var(--s-3) 0 0;
+  color: var(--ink-3);
+}
+/* Home's lede scale (global.css, .hero__lede) */
+.policy__lede {
+  max-width: 40ch;
+  margin: var(--s-4) 0 0;
+  color: var(--ink-2);
+  font-size: clamp(1.125rem, 1.55vw, 1.5rem);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+/* ── Parts: each deck an h2 between body and title in size ─── */
+.policy__part {
+  margin-top: var(--s-6);
+}
+.policy__head + .policy__part {
+  margin-top: var(--space-standard);
+}
+.policy__deck {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
+  line-height: 1.15;
+  /* opsz 144 sets the word spaces tight at this size; open them so the decks read as words */
+  letter-spacing: -0.01em;
+  word-spacing: 0.12em;
+  text-wrap: balance;
+}
+.policy__body {
+  max-width: 64ch;
+  margin: var(--s-2) 0 0;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.policy__body + .policy__body {
+  margin-top: var(--s-3);
+}
+
+/* ── Coda: set apart after an ink hairline ─────────────────── */
+.policy__coda {
+  max-width: 64ch;
+  margin: var(--space-standard) 0 0;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--ink);
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+/* The one link in the text: ink, with a hairline underline at rest that darkens on hover */
+.policy__link {
+  position: relative;
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 400;
+  text-decoration: none;
+  transition: transform 220ms var(--menu);
+}
+.policy__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.1em;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.35;
+  transition: opacity 320ms var(--sine);
+}
+.policy__link:hover::after,
+.policy__link:focus-visible::after {
+  opacity: 1;
+}
+.policy__link:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 3px;
+}
+.policy__link:active {
+  transform: translateY(1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .policy__link,
+  .policy__link::after {
+    transition: none;
+  }
+}

@@ -17,6 +17,8 @@ import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
 import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
 import { navLinks, supportHref } from '../data/nav';
 import { instagramUrl } from '../data/contact';
+// Vercel Web Analytics: cookieless page counts, sent only from the Vercel deployment
+import Analytics from '@vercel/analytics/astro';
 
 type Props = { title: string; description: string; current?: string };
 const { title, description, current } = Astro.props;
@@ -41,6 +43,7 @@ const donateHref = current === supportHref ? '#give' : supportHref;
     <!-- The Latin files every page draws first; the other subsets load only if a character needs them -->
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={bricolageLatin} as="font" type="font/woff2" crossorigin />
+    <Analytics />
   </head>
   <body>
     <svg class="sr-defs" aria-hidden="true" focusable="false">
