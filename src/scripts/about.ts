@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { MENU, ANY_MOTION, onceInView, initPillars, settleNiche } from './motion';
+import { MENU, ANY_MOTION, onceInView, initPillars, settleNiche, riseInView } from './motion';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -9,6 +9,7 @@ const MOTION = '(min-width: 900px) and (prefers-reduced-motion: no-preference)';
 
 export function initAbout() {
   settleNiche();
+  initStoryPhoto();
   initInscription();
   initTorchLine();
   initStair();
@@ -71,6 +72,13 @@ function initTorchLine() {
       gsap.set([fill, marker], { clearProps: 'transform' });
     };
   });
+}
+
+// Our Story's photo (251) rises 24px and fades in once, when 30% in view: the shared photo rise, y on the
+// menu curve, opacity on sine. Reduced motion: static.
+function initStoryPhoto() {
+  const photo = document.querySelector<HTMLElement>('[data-story-photo]');
+  if (photo) riseInView([photo], 0.3, 0);
 }
 
 // Our Story's inscription rises line by line out of a mask: each line from y 100% to 0, 0.8s, on the

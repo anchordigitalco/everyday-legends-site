@@ -151,6 +151,13 @@
   .founders__copy {
     grid-column: 2 / -1;
   }
+  /* The photo keeps its width (cols 2 to 12) and moves half a column left as one unit, so it sits on
+     the viewport's middle axis. The torch line runs only beside the paragraphs, below the photo, so
+     nothing meets it. From 1410px it stays in cols 6 to 12: centred on the page it would cross the
+     sticky side column. */
+  .founders__photo {
+    margin-inline: calc(-0.5 * (var(--col) + var(--col-gap))) calc(0.5 * (var(--col) + var(--col-gap)));
+  }
   /* The photo spans the full copy area; the paragraphs keep their 64ch measure below it */
   .founders__line {
     grid-column: 1;
@@ -217,10 +224,37 @@
 .story__body p + p {
   margin-top: var(--s-3);
 }
+/* Photo 251, full frame (no crop, no arch). Phones: full width after the body, before the pull quote. */
+.story__photo {
+  position: relative;
+  margin-top: var(--s-5);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent),
+    0 18px 36px -18px color-mix(in srgb, var(--lamp-edge) 45%, transparent);
+}
+.story__photo img {
+  width: 100%;
+  height: auto;
+}
 @media (min-width: 900px) {
   .story__title,
   .story__body {
     grid-column: 2 / span 7;
+  }
+  .story__title {
+    grid-row: 1;
+  }
+  .story__body {
+    grid-row: 2;
+  }
+  /* Cols 9 to 12, its top level with the cap line of the body's first line (0.52em below the
+     paragraph's box, at the body's size and 1.7 line height). It sits in the body's row, so the
+     row grows to hold it and the pull quote band always starts below it. */
+  .story__photo {
+    grid-column: 9 / span 4;
+    grid-row: 2;
+    align-self: start;
+    margin-top: calc(var(--s-4) + 0.52 * clamp(1.0625rem, 1.2vw, 1.1875rem));
   }
 }
 

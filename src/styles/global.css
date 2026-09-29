@@ -1000,8 +1000,6 @@ html.el-intro [data-hero-item] {
   text-wrap: balance;
 }
 .mission__lede {
-  /* The island wrapper (astro-island, display: contents) hides this from `.grid > *` */
-  grid-column: 1 / -1;
   margin: var(--s-3) 0 0;
   font-size: clamp(1.75rem, 3.2vw, 4rem);
   line-height: 1.1;
@@ -1021,8 +1019,13 @@ html.el-intro [data-hero-item] {
     transform: none !important;
   }
 }
+/* Paragraph and button, one block: under 900px it follows the lede; from 900px it stands in the
+   right column, its first line level with the title's. */
+.mission__side {
+  margin-top: var(--s-3);
+}
 .mission__body {
-  margin: var(--s-3) 0 0;
+  margin: 0;
   max-width: 34em;
   font-size: 1.0625rem;
   color: var(--ink-2);
@@ -1089,18 +1092,24 @@ html.el-intro [data-hero-item] {
 }
 
 @media (min-width: 900px) {
-  .mission__title,
-  .mission__lede {
+  .mission__head {
     grid-column: 1 / span 6;
+    grid-row: 1;
   }
-  .mission__body {
+  .mission__side {
     grid-column: 8 / span 5;
-    grid-row: 2;
-    align-self: end;
+    grid-row: 1;
+    align-self: start;
     margin-top: 0;
+  }
+  /* Both boxes start at the row's top; this sets the paragraph's cap line level with the title's.
+     The title's cap line sits 0.129 of its size below its box, the paragraph's 0.52em below its own. */
+  .mission__body {
+    margin-top: calc(0.129 * clamp(3rem, 6.4vw, 7rem) - 0.52em);
   }
   .mission__hang {
     grid-column: 1 / -1;
+    grid-row: 2;
   }
   /* One row across cols 1 to 12: first plaque flush left, last flush right, drops centred. The gap
      is a floor only: wherever the row has room to spare, space-between places the plaques exactly
@@ -1121,9 +1130,6 @@ html.el-intro [data-hero-item] {
      off from 2rem to 1.25rem at 900px: the row then fits inside the rail's ends. 2rem from 1200px. */
   .pillar__plaque {
     padding: var(--s-3) clamp(1.25rem, 4vw - 1rem, var(--s-4));
-  }
-  .mission__cta {
-    grid-column: 8 / span 5;
   }
 }
 
@@ -1299,8 +1305,13 @@ html.el-intro [data-hero-item] {
     padding: 0 var(--s-4) 0 0;
   }
   /* Row 3: the portrait stays whole (watermark intact), set inside the photo window against the text */
+  /* The whole row moves left by one and a half columns as one unit, so the space from the viewport's
+     left edge to the photo equals the space from the text block's right edge to the viewport's right
+     (both gutter + 1.5 columns). Percentages resolve against the list, the page's full width. */
   .action__row:nth-child(3) {
+    --shift: calc(1.5 * ((100% - 2 * var(--gutter) - 11 * var(--col-gap)) / 12 + var(--col-gap)));
     align-items: end;
+    margin-inline: calc(-1 * var(--shift)) var(--shift);
   }
   .action__row:nth-child(3) .action__photo {
     grid-column: 4 / span 4;
@@ -1519,75 +1530,6 @@ html.el-intro [data-hero-item] {
   }
   .support__cta {
     grid-row: 3;
-  }
-}
-
-/* ── 7 · Newsletter ────────────────────────────────────────── */
-/* The shortest section. Fields on ruled lines, no boxes. */
-.newsletter {
-  margin-top: var(--space-tight);
-  padding: var(--space-tight) 0;
-}
-.newsletter__inner {
-  text-align: center;
-}
-.newsletter__title {
-  margin: 0;
-  font-size: clamp(2.5rem, 4vw, 4rem);
-  line-height: 0.98;
-  text-wrap: balance;
-}
-.newsletter__body {
-  margin: var(--s-2) auto 0;
-  max-width: 34em;
-  color: var(--ink-2);
-  text-wrap: pretty;
-}
-.newsletter__form {
-  display: grid;
-  gap: var(--s-3);
-  margin-top: var(--s-4);
-  text-align: left;
-}
-.newsletter__field {
-  display: grid;
-  gap: 2px;
-}
-.newsletter__field .label {
-  color: var(--ink-3);
-}
-.newsletter__field input {
-  width: 100%;
-  min-height: 44px;
-  padding: 8px 0;
-  border: 0;
-  border-bottom: 1px solid var(--ink);
-  border-radius: 0;
-  background: transparent;
-  color: var(--ink);
-  font: 300 1rem/1.5 var(--body);
-}
-.newsletter__field input:hover {
-  border-bottom-width: 2px;
-  padding-bottom: 7px;
-}
-.newsletter__field input:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 4px;
-}
-.newsletter__submit {
-  justify-self: start;
-}
-
-@media (min-width: 600px) {
-  .newsletter__form {
-    grid-template-columns: 1fr 1fr auto;
-    align-items: end;
-  }
-}
-@media (min-width: 900px) {
-  .newsletter__inner {
-    grid-column: 4 / span 6;
   }
 }
 

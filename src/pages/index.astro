@@ -86,9 +86,16 @@ const actions = [
     <!-- 3 · Our Mission: three plaques hung from a brass rail -->
     <section class="mission" aria-labelledby="mission-title">
       <div class="grid mission__grid">
-        <h2 id="mission-title" class="display mission__title">Our Mission</h2>
-        <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
-        <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop well-rounded leaders, and support community initiatives that create lasting impact.</p>
+        <div class="mission__head">
+          <h2 id="mission-title" class="display mission__title">Our Mission</h2>
+          <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
+        </div>
+        <div class="mission__side">
+          <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop well-rounded leaders, and support community initiatives that create lasting impact.</p>
+          <div class="mission__cta">
+            <Button label="About the foundation" href="/about" variant="secondary" />
+          </div>
+        </div>
         <div class="mission__hang hang" data-pillars>
           <div class="hang__rail" aria-hidden="true"></div>
           <ul class="hang__pillars">
@@ -101,9 +108,6 @@ const actions = [
               </li>
             ))}
           </ul>
-        </div>
-        <div class="mission__cta">
-          <Button label="About the foundation" href="/about" variant="secondary" />
         </div>
       </div>
     </section>
@@ -164,27 +168,6 @@ const actions = [
 
     <!-- 6 · Support the Foundation: the ink slab -->
     <SupportSlab />
-
-    <!-- 7 · Newsletter. No backend yet: the form never shows a success state. -->
-    <section class="newsletter" aria-labelledby="newsletter-title">
-      <div class="grid">
-        <div class="newsletter__inner">
-          <h2 id="newsletter-title" class="display newsletter__title">Sign up to make a difference</h2>
-          <p class="newsletter__body">Join our movement. Hear about our events, our honorees, and the partners we support.</p>
-          <form class="newsletter__form" data-newsletter>
-            <label class="newsletter__field">
-              <span class="label">Name</span>
-              <input type="text" name="name" autocomplete="name" required />
-            </label>
-            <label class="newsletter__field">
-              <span class="label">Email</span>
-              <input type="email" name="email" autocomplete="email" required />
-            </label>
-            <Button label="Sign up" type="submit" class="newsletter__submit" />
-          </form>
-        </div>
-      </div>
-    </section>
   </main>
 
   <script>

@@ -10,6 +10,7 @@ import nichePhoto from '../../brand_assets/Everyday Legends Foundation Luncheon-
 import podiumPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-48_websize.jpg';
 import syreetaPhoto from '../../brand_assets/KNOW_shoot_5.jpg';
 import jaylenPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-117_websize.jpg';
+import storyPhoto from '../../brand_assets/Everyday_Legends_2026_251_websize.jpg';
 
 // What we do, the three decks and their bodies (everyday-legends-copy.md, 2.5), in copy order.
 const pillars = [
@@ -99,6 +100,16 @@ const QUOTE = 'At the intersection of these forces, legacy is built.';
         <div class="story__body">
           <p>Everyday Legends was created to honor the pillars that shape identity and purpose: sports, scholarship, and community.</p>
           <p>Athletics provides a safe space where discipline, resilience, and character are developed. Education remains the foundation for opportunity, critical thinking, and long-term advancement. Community and leadership ensure that impact extends beyond individual success, shaping culture and creating lasting change.</p>
+        </div>
+        <div class="story__photo" data-story-photo>
+          <Image
+            src={storyPhoto}
+            widths={[480, 720, 1066, 1600]}
+            sizes="(min-width: 900px) 30vw, 100vw"
+            alt="Nathan Bailey with his Young Legend Award and guests at the Legends Among Us luncheon."
+            loading="lazy"
+          />
+          <span class="photo-tint" aria-hidden="true"></span>
         </div>
       </div>
       <div class="inscription">

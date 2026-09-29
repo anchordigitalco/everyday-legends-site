@@ -224,8 +224,9 @@
 }
 
 @media (min-width: 900px) {
+  /* Cols 3 to 10: two columns clear on each side, so the block sits centred on the page */
   .news__grid > * {
-    grid-column: 4 / span 8;
+    grid-column: 3 / span 8;
   }
   .news__item {
     --bleed: var(--s-3);

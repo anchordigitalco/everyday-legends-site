@@ -22,7 +22,6 @@ export function initHome() {
   initActionRows();
   initCard();
   fadeUps();
-  initNewsletter();
 }
 
 function initIntro() {
@@ -212,10 +211,3 @@ function initActionRows() {
   });
 }
 
-// Newsletter: no provider is connected yet (CONTEXT.md, open items). The browser still checks the
-// fields, but a valid submit goes nowhere and shows no success state.
-function initNewsletter() {
-  document.querySelector<HTMLFormElement>('[data-newsletter]')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-  });
-}
