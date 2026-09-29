@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community.
 
 ## How this file works
 
@@ -73,7 +73,7 @@ How it resolves on the web:
 
 - Black and white (Yamean Studios / McKee Place, files ending `-137`, `-119`, `-117`, `-48`, `-53`, `-20`, `-9`): the day itself. Speeches, the room, the story.
 - Studio (`KNOW_shoot_5.jpg`): Dr. McClain's portrait, color. Leadership only.
-- Color (`Everyday_Legends_2026_*`, `RahwayPALAward.jpg`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work.
+- Color (`Everyday_Legends_2026_*`, `RahwayPALAward.jpg`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work. One exception by Jackson's call: 251 beside About's Our Story.
 - The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push. Home card 1 and In the Community entry 2 both read it from `community.ts`, so one swap fixes both.
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
 - Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
@@ -93,6 +93,7 @@ How it resolves on the web:
 | In the Community, niche header | 219 (focal on Natasha, 56%) |
 | In the Community entries | 148 luncheon, ELRahwayPAL.webp, ELSalvationArmy.webp (same files as Home) |
 | About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
+| About, beside Our Story | 251, full frame (alt text names only Nathan Bailey) |
 | About, beside the torch line | -48, full frame |
 | About, Leadership | KNOW_shoot_5 (Dr. McClain), -117 (Jaylen) |
 
@@ -158,11 +159,11 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 Space tokens `--space-tight`, `--space-standard`, `--space-generous`, each at least 1.5x the one before. 12-column grid.
 1. Hero on paper: intro, then fade up. The hall's rail is visible in the first viewport at 1440×900 and 390×844.
 2. Hall: pinned side scroll (scroll-driven 1), 150vh max. Five honorees in program order, names only, from `src/data/honorees.ts`. A vertical list under 900px and in reduced motion.
-3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall.
-4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home.
+3. Our Mission: text reveal on the lede; text-only plaques drop from the brass rail. At most 1.2 viewports tall. From 900px, title and lede on the left; body and the "About the foundation" button as one block in cols 8–12, the body's first line level with the title's top, the button under it at `--space-tight`. The rail follows the taller column. Nothing sits below the plaques. Under 900px: title, lede, body, button, rail.
+4. Legends in Action: three alternating photo rows in copy deck order, spotlight hover, no dates. Tallest on Home. From 900px, row 3 (photo and text as one unit) is centered: whitespace left of the photo equals whitespace right of the text.
 5. Legends Among Us: the card settles to its angle, the only rotated element on the site. The location line breaks only at the middot.
-6. Support: ink slab, fade up. The Newsletter section is removed until a provider exists; it returns only with a working backend.
-- Home height spread, tallest to shortest: 4:1 or more.
+6. Support: ink slab, full version (not `brief`), fade up. No newsletter until a provider exists; it returns only with a working backend.
+- Home height spread, tallest to shortest: 3:1 or more from 900px. Lowered from 4:1 when the Newsletter left; Jackson approved 3.48:1 at 1440 by eye.
 
 ## Inner pages
 
@@ -170,8 +171,9 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - About: niche header carrying Our Vision; Our Story with the page's one pull quote set as a full-width inscription; Founders' Story as the longest section, with the torch line (scroll-driven 2) beside the torch sentence; "We aim to" as three lines stepping down and right; What we do; Leadership as portraits in arch niches, founders large, board smaller, staggered, and complete with 2 people or 4; Accountability as the cornerstone.
   - About niche: her arch from mark path 1 (semicircle head, straight sides, flat base), 0.72 width to height, one hairline ink frame, photo on an inset inner arch, anchored center bottom. No rays, no brass.
   - Torch marker: viewBox crop `2026 1324 216 449` of mark paths 0 and 7, brass, paper outline. It rides the fill head and locks at the torch sentence.
-  - Founders grid: from 1410px up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900 to 1409px, title full width above; line col 1, photo cols 2–12, paragraphs at 64ch.
-  - Our Story: cols 2–8. Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
+  - Founders grid: from 1410px up, side cols 1–4 (sticky), line col 5, copy cols 6–12. From 900 to 1409px, title full width above; line col 1, photo centered on the page (equal whitespace both sides), paragraphs at 64ch. From 1410px the photo fills copy cols 6–12, since centering would cover the sticky column.
+  - Our Story: cols 2–8, with 251 in cols 9–12, top level with the body's first line, no crop, no arch, rising 24px once in view (`riseInView`). Under 900px, 251 runs full width after the body. It never touches the pull quote band.
+  - Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
   - We aim to: title in label style on purpose. Lines Bricolage 300 at 1.2–1.5x Home's lede, cols 1–8 / 3–10 / 5–12 under ink hairlines; step clamp(1rem, 6vw, 3rem) under 900px. Rule draws 0.5s, then line slides from -24px 0.5s, 0.18s apart.
   - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, 18em below.
   - Leadership: founders cols 1–5 / 8–12 (3.5-col arches), board cols 2–5 / 8–11 (2.5-col arches), each second bust lower by arch height ÷ 3. Stacked under 900px, arch max 22rem. Hover reveal is pointer only, no focus state, since busts are not links.
@@ -180,7 +182,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - In the Community: niche header, entries rail, In the News, closing slab.
   - Header: About's niche treatment and composition, 219. The h1 keeps "the Community" together with a non-breaking space.
   - Entries: three, identical, in `community.ts` order. No dates. A brass double rail runs along the entries' left edge at every width; from 900px each entry sits in cols 2–8, photo at 2:1, text block aligned to its left edge. Titles are h2. No links, buttons, or kickers. Each rail segment grows, then its content rises 24px, 0.12s apart.
-  - In the News: Sanity `newsItem` (headline, outlet, date, url, summary of 25 words max; all required; no image field). Build-time fetch, newest first, useCdn false. A fetch error fails the build; zero items renders nothing, heading included. Text-only cards on ink hairlines, cols 4–11 from 900px, each card one link to a new tab. Hairline draws, then the card fades in, 0.08s apart.
+  - In the News: Sanity `newsItem` (headline, outlet, date, url, summary of 25 words max; all required; no image field). Build-time fetch, newest first, useCdn false. A fetch error fails the build; zero items renders nothing, heading included. Text-only cards on ink hairlines, cols 3–10 from 900px (centered; text left-aligned), each card one link to a new tab. Hairline draws, then the card fades in, 0.08s apart.
   - Closing slab: `<SupportSlab brief />` with Home's fade up.
   - Community brass: 1 of 3 (rail).
 - Legends Among Us: invitation, recap, honorees hall, Sponsorship. Section spread at least 7:1 at every width.
@@ -229,7 +231,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed; photo 251 beside Our Story; the Privacy Policy text.
 
 ## Open client items that touch the build
 

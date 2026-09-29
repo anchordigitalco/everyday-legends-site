@@ -43,6 +43,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Contact form copy (see 6): field labels, button, sending, errors, and the sent line. The wording is ours.
 - The Sponsorship packages button points to Contact until the packages link arrives (see 4).
 - Home's Newsletter section removed until a newsletter provider exists. Our decision, so the site never collects sign-ups that go nowhere.
+- The Privacy Policy (see 7). The wording is ours. She confirms the two lines on how the foundation uses and keeps messages and donor details.
 
 ## Sitemap
 
@@ -337,7 +338,41 @@ Contact form messages go to the foundation's inbox through Formspree. The site M
 
 ---
 
-## 7. Still to come
+## 7. Privacy Policy
+
+Plain-language policy, not legal advice. Pending client approval. The two lines marked "needs her confirmation" describe the foundation's own practices, and she confirms them before launch.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| Title | Privacy Policy | 2 | NEW |
+| Marginalia | Effective (to be filled at launch) | fixed | NEW, date set on launch day |
+| Lede | We collect very little through this website. This page explains what we collect, why, and where it goes. | 18 | NEW |
+| Deck | Who we are | 3 | NEW |
+| Body | Everyday Legends Foundation, Inc. is a tax-exempt nonprofit organization. This policy covers our website, everydaylegend.com. | 15 | NEW |
+| Deck | When you contact us | 4 | NEW |
+| Body | Our contact form asks for your name, your email address, and your message. The form is run by Formspree, which delivers your message to our inbox and keeps a copy for 30 days. We use what you send only to reply to you, and we keep messages only as long as we need them for that and for our records. | 60 | NEW, needs her confirmation |
+| Body | To keep out automated spam, the form uses Cloudflare Turnstile, which reviews technical signals from your browser and device. Cloudflare handles that information under its own privacy policy. | 28 | NEW |
+| Deck | When you donate | 3 | NEW |
+| Body | Donations are processed by Zeffy through the form on our Support page. Your name, contact details, and payment information go to Zeffy under Zeffy's own privacy policy, and your payment details never pass through our website. Zeffy shares your name, contact details, and gift with us so we can thank you and issue your receipt. We use them only for that and for our own records. | 66 | NEW, needs her confirmation |
+| Deck | When you browse | 3 | NEW |
+| Body | Our website is hosted by Vercel, which keeps standard server logs, such as your IP address and browser type, to run the site and keep it secure. We also use Vercel Web Analytics to count visits. It uses no cookies, does not identify you, and shows us only totals, such as which pages are read and which countries visitors come from. | 61 | NEW |
+| Deck | What we do not do | 5 | NEW |
+| Body | We do not set cookies of our own, run advertising, or sell, rent, or trade your personal information. The donation form and the spam check come from Zeffy and Cloudflare and follow their policies. Our Instagram link takes you to Instagram, where Instagram's policy applies. | 45 | NEW |
+| Deck | Do Not Track | 3 | NEW |
+| Body | Some browsers send a Do Not Track signal. Because we do not track visitors across other websites, our site works the same way whether or not that signal is on. | 30 | NEW |
+| Deck | Children | 1 | NEW |
+| Body | Our website is not directed at children under 13, and we do not knowingly collect personal information from them. If you believe a child has sent us information, contact us and we will delete it. | 35 | NEW |
+| Deck | Your choices | 2 | NEW |
+| Body | You can ask us what information we hold about you, ask us to correct it, or ask us to delete it. Send your request through our contact form. | 28 | NEW |
+| Deck | Changes to this policy | 4 | NEW |
+| Body | If we change this policy, we will post the new version on this page with a new effective date. | 19 | NEW |
+| Coda | Questions about this policy? Reach us through our contact form. | 10 | NEW, "contact form" links to /contact |
+
+A plain text page at `/privacy`, linked from every footer. Each Deck is a subheading (h2); the page's only link inside the text is "contact form" in the Coda, to `/contact`. MUST NOT show an email address, mailing address, or phone number. MUST NOT add a button. The effective date is filled on launch day and changes only when the policy does.
+
+---
+
+## 8. Still to come
 
 None of these block the build. Each drops into a space already designed for it.
 
@@ -347,5 +382,6 @@ None of these block the build. Each drops into a space already designed for it.
 4. The new Zeffy general donation form link. **Blocks launch.**
 5. The sponsorship packages link, for the Sponsorship CTA.
 6. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
+7. Confirmation of the Privacy Policy's two practice lines: how long the foundation keeps contact messages and donor details, and that it uses them only to reply, thank, and issue receipts.
 
 Received: the luncheon program (honoree names, awards, and bios), September 2026.
