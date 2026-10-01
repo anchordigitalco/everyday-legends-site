@@ -1,7 +1,7 @@
 # Everyday Legends Foundation: Copy Deck
 
 Source: `Everyday-Legends-Copy-Deckv3.docx`, updated draft of September 21, 2026. **Approved by Dr. Syreeta McClain.**
-Honoree details filled from the Legends Among Us program book (`Everyday_legends_Progam_Book_052126_v1.pdf`), May 30, 2026.
+Honoree details filled from the Legends Among Us program book (`Everyday_legends_Progam_Book_052126_v1.pdf`), May 30, 2026. Updated October 1, 2026: the camp replaces the Salvation Army entry, and the founding date is filled.
 Rebuild of everydaylegend.com by Anchor Digital. Read alongside `HANDOFF.md`, `CLAUDE.md`, and `anchor-digital-design-process.md`.
 
 ## Rules for the build
@@ -38,7 +38,8 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Scholarship recipients left off both honorees halls.
 - In the Community's luncheon entry reuses Home card 3 body in place of the honoree list.
 - In the News as a section on In the Community, with its title and lede (see 3). The wording is ours.
-- In the Community deck lines for the Rahway PAL and Salvation Army entries (see 3). The wording is ours.
+- Home card 2 body, the camp (see 1.3). Our cut of her camp paragraph, to fit the card budget.
+- In the Community deck lines for the camp and Rahway PAL entries (see 3). The wording is ours.
 - The email address removed from the site: Contact marginalia, footer, and every mailto. The contact form is the only channel. Our decision, to keep the address away from harvesting bots.
 - Contact form copy (see 6): field labels, button, sending, errors, and the sent line. The wording is ours.
 - The Sponsorship packages button points to Contact until the packages link arrives (see 4).
@@ -93,13 +94,13 @@ Scholarship stays described as something the foundation intends to fund. No scho
 | Deck | Recent work in the community | 5 | NEW |
 | Card 1 title | Support for Youth Basketball League, Rahway PAL | 7 | REUSED |
 | Card 1 body | Jaylen McClain donated to his youth basketball league, Rahway PAL. He is pictured with the Police Athletic League's Dan Marchica and Darius Singletary. Also pictured, Dr. Syreeta McClain, Executive Director of Everyday Legends. | 34 | REUSED, comma fixed |
-| Card 2 title | Salvation Army Toy Donation | 4 | REUSED |
-| Card 2 body | Jaylen is pictured with Salvation Army leadership during his toy delivery for the Angel Tree Toy Drive, an initiative dedicated to brightening the holidays for children and families in need. | 30 | REUSED |
+| Card 2 title | Jaylen McClain Youth Football Camp | 5 | REUSED |
+| Card 2 body | At the inaugural camp, Jaylen, joined by his brothers, friends, and former coaches, spent a free day with young athletes, sharing the game that shaped him and lessons that reach beyond the field. | 33 | REWRITTEN, pending approval |
 | Card 3 title | Legends Among Us, May 30 | 5 | NEW |
 | Card 3 body | The foundation hosted its inaugural Legends Among Us luncheon at The Highlawn in West Orange, New Jersey, honoring three scholars, a Young Legend, a Community Trailblazer, and three athletic programs. | 30 | NEW, filled from program book, pending approval |
 | CTA | See all our work | 4 | NEW |
 
-Card 3 uses photos from the May 30 luncheon gallery.
+Card 2 uses the camp group photo. Card 3 uses photos from the May 30 luncheon gallery.
 
 ### 1.4 Legends Among Us
 
@@ -152,7 +153,7 @@ This is the one pull quote on the About page.
 | Body | The mission of Everyday Legends is deeply personal. The three pillars of scholarship, community, and sports are the very foundation of the McClain household, where time, energy, sacrifice, and purpose have been intentionally invested for years. These values shaped the upbringing of our family and continue to guide the next generation. | 50 | FROM YOU |
 | Body | Today, the torch is being passed to our three sons, who carry forward the importance of leadership, discipline, service, and giving back. | 23 | FROM YOU |
 | Body | Jaylen McClain, Co-Founder of Everyday Legends, uses his athletic platform as a force for good, reinforcing to young people that success is not only measured by personal accomplishments but by how you uplift others. Jaylen demonstrates that athletic achievement and community responsibility can coexist. He, with his brothers coming behind him, represents the vision of using his platform and success responsibly. Everyday Legends exists to ensure that this spirit of service continues for years to come. | 78 | FROM YOU, two typos fixed |
-| Marginalia | Founded (to be filled) | 3 | To be filled |
+| Marginalia | Founded October 8, 2025 | 4 | FROM YOU |
 
 Her words, kept as written. This is the longest section on About by design. The torch line (second body paragraph) is the sentence the scroll-driven torch moment attaches to.
 
@@ -211,22 +212,22 @@ Form 990 and annual report lines stay off the page until those documents exist.
 | Title | Everyday Legends in the Community (pending: "In the Community") | 5 | REUSED |
 | Lede | Where the work has gone so far. | 7 | NEW |
 | Deck | Partner · Place | 4 to 6 each | REUSED, dates dropped |
-| Body | One paragraph per entry, each identical to its Home card body (1.3) | 30, 34, 30 | REUSED |
+| Body | One paragraph per entry, each identical to its Home card body (1.3) | 33, 30, 34 | REUSED |
 | News title | In the News | 3 | NEW, pending approval |
 | News lede | Coverage of the foundation and its work. | 7 | NEW, pending approval |
 | News item | Outlet · Date, the headline as the link, then one sentence. No photo. | Sentence 25 max | Entered in Sanity |
 
 ### Entries, newest first
 
-The page opens with the luncheon. Every entry is built identically (see HANDOFF.md). Each entry's title and body are identical to its Home card (1.3). No entry shows a date; the luncheon's date lives in its title.
+The page opens with the camp. Every entry is built identically (see HANDOFF.md). Each entry's title and body are identical to its Home card (1.3). No entry shows a date; the luncheon's date lives in its title.
 
 | # | Title | Deck (Partner · Place) | Body |
 |---|---|---|---|
-| 1 | Legends Among Us, May 30 | The Highlawn · West Orange, New Jersey | Home card 3 body |
-| 2 | Support for Youth Basketball League, Rahway PAL | Rahway PAL · Rahway, New Jersey | Home card 1 body |
-| 3 | Salvation Army Toy Donation | Salvation Army · Columbus, Ohio | Home card 2 body |
+| 1 | Jaylen McClain Youth Football Camp | Seton Hall Prep · West Orange, New Jersey | Home card 2 body |
+| 2 | Legends Among Us, May 30 | The Highlawn · West Orange, New Jersey | Home card 3 body |
+| 3 | Support for Youth Basketball League, Rahway PAL | Rahway PAL · Rahway, New Jersey | Home card 1 body |
 
-The deck lines for entries 2 and 3 are ours, from the wireframe. No link or button renders inside any entry.
+The deck lines for entries 1 and 3 are ours. No link or button renders inside any entry.
 
 ### In the News
 
@@ -395,10 +396,9 @@ None of these block the build. Each drops into a space already designed for it.
 
 1. Board member names and titles. The program lists a board but no names.
 2. Approval of the placeholder line on Jaylen for Leadership, or her own wording.
-3. The founding year.
-4. The new Zeffy general donation form link. **Blocks launch.**
-5. The sponsorship packages link, for the Sponsorship CTA.
-6. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
-7. Confirmation of the Privacy Policy's two practice lines: how long the foundation keeps contact messages and donor details, and that it uses them only to reply, thank, and issue receipts.
+3. The new Zeffy general donation form link. **Blocks launch.**
+4. The sponsorship packages link, for the Sponsorship CTA.
+5. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
+6. Confirmation of the Privacy Policy's two practice lines: how long the foundation keeps contact messages and donor details, and that it uses them only to reply, thank, and issue receipts.
 
-Received: the luncheon program (honoree names, awards, and bios), September 2026.
+Received: the luncheon program (honoree names, awards, and bios), September 2026. The founding date, October 8, 2025, and the camp paragraph, October 2026.
