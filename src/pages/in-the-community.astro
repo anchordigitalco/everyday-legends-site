@@ -18,6 +18,9 @@ const news = await getNews();
 
 // The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
 // title, deck half, or body ever ends on one word alone.
+// Sanity text arrives unchecked, so its hyphenated compounds (Mid-Ohio) are held whole: the text splits
+// into runs, and each compound renders in a .nowrap span.
+const hyphens = (text: string) => text.split(/(\S*\w-\w\S*)/);
 const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
 ---
 <Base
@@ -91,8 +94,8 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
                     <span data-mid-b class="news__date"><time datetime={item.date}>{formatNewsDate(item.date)}</time></span>
                   </p>
                   <svg class="news__out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
-                  <h3 class="display news__headline">{pair(item.headline)}</h3>
-                  <p class="news__summary">{pair(item.summary)}</p>
+                  <h3 class="display news__headline">{hyphens(pair(item.headline)).map((run, i) => (i % 2 ? <span class="nowrap">{run}</span> : run))}</h3>
+                  <p class="news__summary">{hyphens(pair(item.summary)).map((run, i) => (i % 2 ? <span class="nowrap">{run}</span> : run))}</p>
                   <span class="sr-only">(opens in a new tab)</span>
                 </a>
               </li>
