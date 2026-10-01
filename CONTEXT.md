@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics, and October 1 for Phase 8 pass 2.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics, and October 1 for Phase 8 pass 2 and the content update (founding date, camp).
 
 ## How this file works
 
@@ -67,7 +67,7 @@ How it resolves on the web:
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Fraunces loads from its full variable file. MUST NOT swap to the lighter opsz-only file: it has no WONK axis and draws a different ampersand and h, m, n.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
-- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps; longer names wrap balanced. A hyphenated compound never splits across lines. "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps; longer names wrap balanced. A hyphenated compound never splits across lines, including in Sanity news text (`in-the-community.astro` wraps them in `.nowrap`; the text itself never changes). "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
 - Every display size grows continuously with the viewport and never gets smaller as the window widens.
 - The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
@@ -75,8 +75,8 @@ How it resolves on the web:
 
 - Black and white (Yamean Studios / McKee Place, files ending `-137`, `-119`, `-117`, `-48`, `-53`, `-20`, `-9`): the day itself. Speeches, the room, the story.
 - Studio (`KNOW_shoot_5.jpg`): Dr. McClain's portrait, color. Leadership only.
-- Color (`Everyday_Legends_2026_*`, `RahwayPALAward.jpg`, `ELRahwayPAL.webp`, `ELSalvationArmy.webp`): the honorees and the community work. One exception by Jackson's call: 251 beside About's Our Story.
-- The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push. Home card 1 and In the Community entry 2 both read it from `community.ts`, so one swap fixes both.
+- Color (`Everyday_Legends_2026_*`, `RahwayPALAward.jpg`, `ELRahwayPAL.webp`, `adj_McClainCamp--175.jpg`): the honorees and the community work. `ELSalvationArmy.webp` stays in `brand_assets/`, unused. One exception by Jackson's call: 251 beside About's Our Story.
+- The Rahway PAL photo shows the foundation's bank numbers on the check. MUST be swapped for the masked version before launch or any push. Home card 1 and In the Community entry 3 both read it from `community.ts`, so one swap fixes both.
 - The black and white files carry a baked-in watermark. Use them as they are until clean files arrive. MUST NOT crop, paint, or edit it out.
 - Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
 - Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
@@ -88,14 +88,14 @@ How it resolves on the web:
 | Slot | File |
 |---|---|
 | Home, Legends in Action card 1 | ELRahwayPAL.webp |
-| Home, Legends in Action card 2 | ELSalvationArmy.webp |
+| Home, Legends in Action card 2 | adj_McClainCamp--175.jpg (focal 50% 100%, so the 2:1 crop cuts only sky) |
 | Home, Legends in Action card 3 | -137 |
 | Home, Legends Among Us | 178 |
 | Legends Among Us, invitation | 178 (same file as Home) |
 | Legends Among Us recap | -20 and -53 as a pair, then -119 closing. Three photos. |
 | Legends Among Us honorees | 222 Natasha, 210 Nathan, 190 Seton Hall Prep, RahwayPALAward.jpg Rahway PAL (focal on the plaque), 177 Brick City Lions |
 | In the Community, niche header | 219 (focal on Natasha, 56%) |
-| In the Community entries | 148 luncheon, ELRahwayPAL.webp, ELSalvationArmy.webp (same files as Home) |
+| In the Community entries | adj_McClainCamp--175.jpg camp, 148 luncheon, ELRahwayPAL.webp (same files as Home) |
 | About, niche header | -9 (Jaylen and his brother; alt text names only Jaylen) |
 | About, beside Our Story | 251, full frame (alt text names only Nathan Bailey) |
 | About, beside the torch line | -48, full frame |
@@ -140,9 +140,9 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
 - `Niche.astro` is every arch (About, In the Community and Contact headers, portraits, Support form frame, Legends honorees). `tint={false}` drops the photo tint (Contact's torch).
-- `src/data/torch.ts` holds the torch crop for About's marker and Contact's niche. `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass).
+- `src/data/torch.ts` holds the torch crop for About's marker and Contact's niche. `Cornerstone.astro` is the one stone for About and Support (aria-hidden, no brass). Its founding line uses the same uppercase ink label as the 501(c)(3) line.
 - Nav links live in `src/data/nav.ts`; pages take paths from there. Its `supportHref` is every Donate's target.
-- `src/data/community.ts` holds the three community entries (title, deck, body, photo, focal point, alt). Home's Legends in Action cards read their titles and bodies from it.
+- `src/data/community.ts` holds the three community entries (title, deck, body, photo, focal point, alt). Home's Legends in Action cards read their titles, bodies, and focal points from it. In the Community runs camp, luncheon, Rahway PAL; Home runs Rahway PAL, camp, luncheon.
 - `SupportSlab.astro` is the one Support slab (Home, In the Community). Its `brief` prop drops Body and Marginalia.
 - `SettleHead.astro` plus `motion.ts` and `global.css` hold the niche settle and the fade-up shared by Home, About, and In the Community.
 - `src/data/sanity.ts` holds the Sanity config (no token, ever). `src/data/news.ts` fetches In the News at build time.
@@ -249,14 +249,15 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 ## Pending client approval (build as written, keep swappable)
 
-"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the Rahway PAL and Salvation Army deck lines on In the Community; no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed; photo 251 beside Our Story; the Privacy Policy text; the 404 copy.
+"In the Community" as the page title; "Inaugural class, 2026" as the hall label; mark-only nav with the full lockup in the footer; Home card 3 wording; a tighter favicon crop of the EL and torch; the About Leadership portraits and their grayscale treatment; the Support sponsorship pointer's body and button; scholarship recipients left off both honorees halls; In the News with its title and lede; the camp and Rahway PAL deck lines on In the Community; Home card 2's camp body (our cut of her paragraph); no email address on the site; the Contact form copy; the Sponsorship button pointing to Contact; Home's Newsletter removed; photo 251 beside Our Story; the Privacy Policy text; the 404 copy.
 
 ## Open client items that touch the build
 
 - Zeffy link, for the form embedded on `/support`.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
+- The camp photo shows children. It needs a parent's OK, or confirmation the camp's photo release covers the website, before launch.
 - Clean, unwatermarked photo files (including full-size 222 and 210) and the credit line.
-- Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link (goes in `luncheon.ts` `sponsorshipUrl`).
+- Board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link (goes in `luncheon.ts` `sponsorshipUrl`).
 - Newsletter provider. Until one exists, no newsletter anywhere on the site.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
 - Scholarship wording decision. Do not change the copy until she answers.
