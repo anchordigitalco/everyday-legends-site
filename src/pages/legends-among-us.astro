@@ -5,7 +5,7 @@ import Niche from '../components/Niche.astro';
 import Invitation from '../components/Invitation.astro';
 import Button from '../components/Button.astro';
 import '../styles/legends.css';
-import { honorees } from '../data/honorees';
+import { honorees, isTwoWordName } from '../data/honorees';
 import { hrefOf } from '../data/nav';
 import { column, GAP } from '../data/grid';
 import { holdCompounds } from '../data/text';
@@ -109,7 +109,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
             <li class:list={['honoree', 'honoree--person', `honoree--p${i + 1}`]}>
               <Niche class="honoree__niche" settle photo={h.photo} alt={h.alt} arch={personArch} img={{ style: `--focal: ${h.focal}` }} />
               <h4 class="honoree__deck mid-broken" data-mid-line>
-                <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                <span class:list={['display', 'honoree__name', { 'honoree__name--pair': isTwoWordName(h.name) }]} data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
                 <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
               </h4>
               <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />
@@ -123,16 +123,14 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
           <ol class="hang__pillars lhall__pillars">
             {programs.map((h, i) => (
               <li class:list={['pillar', 'honoree', 'honoree--program', `honoree--g${i + 1}`]}>
-                <div class="honoree__hang">
-                  <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
-                  <div class="honoree__plate" data-pillar-plaque>
-                    <Niche class="honoree__niche" photo={h.photo} alt={h.alt} arch={programArch} img={{ style: `--focal: ${h.focal}` }} />
-                  </div>
-                  <h4 class="honoree__deck mid-broken" data-mid-line>
-                    <span class="display honoree__name" data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
-                    <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
-                  </h4>
+                <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
+                <div class="honoree__plate" data-pillar-plaque>
+                  <Niche class="honoree__niche" photo={h.photo} alt={h.alt} arch={programArch} img={{ style: `--focal: ${h.focal}` }} />
                 </div>
+                <h4 class="honoree__deck mid-broken" data-mid-line>
+                  <span class:list={['display', 'honoree__name', { 'honoree__name--pair': isTwoWordName(h.name) }]} data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                  <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
+                </h4>
                 <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />
               </li>
             ))}

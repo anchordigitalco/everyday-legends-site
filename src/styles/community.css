@@ -8,7 +8,7 @@
    About's, so it also never grows past the column: "the Community" is held together and fits whole
    (1 / 6.6 of the column is its measured width in Fraunces 900 at opsz 144). */
 .community-hdr__title {
-  font-size: min(clamp(3.5rem, 8vw, 8rem), (100vw - 2 * var(--gutter)) / 6.6);
+  font-size: var(--community-title);
 }
 
 /* ── 2 · The entries on the rail ───────────────────────────── */
@@ -69,11 +69,11 @@
 .entry__deck [data-mid-b] {
   white-space: nowrap;
 }
-/* Never more than the section title's 72px / 1.3: a section title stays at least 1.3x an entry title */
+/* --entry-title (global.css): never more than the section title's 72px / 1.3 */
 .entry__title {
   margin: var(--s-2) 0 0;
   max-width: 18em;
-  font-size: clamp(2rem, 3.4vw, 4.5rem / 1.3);
+  font-size: var(--entry-title);
   line-height: 1;
   text-wrap: balance;
 }

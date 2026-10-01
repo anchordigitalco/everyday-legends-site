@@ -10,7 +10,7 @@ const LEDE = 'The page you are looking for has moved or does not exist.';
 // The last two words of a line travel together (a non-breaking space, the copy itself unchanged)
 const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
 ---
-<Base title="Page not found · Everyday Legends Foundation" description={LEDE}>
+<Base title="Page not found · Everyday Legends Foundation" description={LEDE} noindex>
   <main>
     <section class="lost" aria-labelledby="lost-title">
       <div class="grid">

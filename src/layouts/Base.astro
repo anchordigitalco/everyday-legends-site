@@ -22,8 +22,9 @@ import { instagramUrl } from '../data/contact';
 // Vercel Web Analytics: cookieless page counts, sent only from the Vercel deployment
 import Analytics from '@vercel/analytics/astro';
 
-type Props = { title: string; description: string; current?: string };
-const { title, description, current } = Astro.props;
+// `noindex` (the 404 page): no canonical link and no og:url, and a robots noindex instead.
+type Props = { title: string; description: string; current?: string; noindex?: boolean };
+const { title, description, current, noindex = false } = Astro.props;
 
 // The Anchor Digital mark, inline so its currentColor fill takes the footer's paper text on ink.
 // The link text names it, so the drawing is decorative here: its title and label come off.
@@ -47,10 +48,10 @@ const SITE_NAME = 'Everyday Legends Foundation';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:image" content={ogImage} />

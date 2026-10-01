@@ -3,6 +3,7 @@
 //        [--scrollto=<js>]     scroll to a y position (a number or a page-side JS expression) first
 // Without --intro the session is marked as having seen the intro, so nothing is caught mid-animation.
 // Saves to ./temporary screenshots/screenshot-N[-label].png (auto-incremented, never overwritten).
+// --full captures show a faint seam at one viewport height: the page grain is fixed and viewport-sized, so a scrolling visitor never sees it.
 import puppeteer from 'puppeteer';
 import fs from 'node:fs';
 import path from 'node:path';

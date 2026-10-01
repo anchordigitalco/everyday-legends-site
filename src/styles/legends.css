@@ -178,8 +178,7 @@
 }
 .lhall__grid {
   --drop-unit: clamp(2rem, 4vw, 3.5rem);
-  /* Every name renders on one line (global.css, --longest-name): the window its longest name must fit.
-     Under 900px, the column. */
+  /* The window a person's name must fit on one line (global.css, --longest-pair). Under 900px, the column. */
   --name-window: calc(100cqw - 2 * var(--gutter));
 }
 .lhall__class {
@@ -229,12 +228,19 @@
    (hidden visually, still read) and every entry reads the same at every width */
 .honoree__name {
   display: block;
-  font-size: min(var(--person-name), var(--name-window) / var(--longest-person));
+  font-size: var(--person-name);
   line-height: 1.02;
-  white-space: nowrap;
 }
 .honoree--program .honoree__name {
-  font-size: min(var(--program-name), var(--name-window) / var(--longest-name));
+  font-size: var(--program-name);
+}
+/* A two-word name (marked from honorees.ts at build time) always takes one line. The people's size is
+   capped against the longest two-word name only where that name would not fit its window. */
+.honoree__name--pair {
+  white-space: nowrap;
+}
+.honoree--person .honoree__name {
+  font-size: min(var(--person-name), var(--name-window) / var(--longest-pair));
 }
 .honoree__award {
   color: var(--ink-2);
@@ -249,10 +255,6 @@
   line-height: 1.7;
   color: var(--ink-2);
   text-wrap: pretty;
-}
-/* A program's drop, niche, and deck hang as one group. Under 900px the group dissolves into the entry. */
-.honoree__hang {
-  display: contents;
 }
 /* Phones: the rail and the drop lines are hidden */
 .lhall__programs .hang__rail,
@@ -292,13 +294,9 @@
     /* The one width token: a program's niche, two and a half columns */
     --hall-niche: calc(2.5 * var(--col) + 1.5 * var(--col-gap));
   }
-  /* From 900px each tier's longest name sits in a window of its own: Natasha Davis-Gomez in cols 2 to
-     6, Seton Hall Prep Football Program in cols 1 to 4 */
+  /* From 900px the longest two-word person name, Natasha Davis-Gomez, sits in cols 2 to 6 */
   .lhall__people {
     --name-window: calc(5 * var(--col) + 4 * var(--col-gap));
-  }
-  .lhall__programs {
-    --name-window: calc(4 * var(--col) + 3 * var(--col-gap));
   }
   .lhall__head {
     grid-column: 1 / span 6;
@@ -347,21 +345,8 @@
     height: var(--drop);
     margin-left: calc(var(--niche-w) / 2 - 0.5px);
   }
-  /* Each program hangs its group (drop, niche, deck) at its own height; the three bodies share one row
-     below the lowest group, so their first lines share one top edge. The awards all take the niche's
-     width as their measure, so they break alike and always run the same number of lines. */
-  .lhall .lhall__pillars {
-    grid-template-rows: auto auto;
-  }
-  .lhall .honoree--program {
-    display: grid;
-    grid-row: span 2;
-    grid-template-rows: subgrid;
-    justify-items: start;
-  }
-  .honoree--program .honoree__hang {
-    display: block;
-  }
+  /* The awards all take the niche's width as their measure, so they break alike and the three always
+     run the same number of lines */
   .honoree--program .honoree__award {
     max-width: var(--hall-niche);
   }

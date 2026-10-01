@@ -19,6 +19,10 @@ export type Honoree = {
   alt: string;
 };
 
+// A name of exactly two words (a hyphenated word counts as one: "Natasha Davis-Gomez") always renders on
+// one line; both halls mark it from here at build time. Longer names wrap, balanced.
+export const isTwoWordName = (name: string) => name.trim().split(/\s+/).length === 2;
+
 export const honorees: Honoree[] = [
   {
     name: 'Natasha Davis-Gomez',

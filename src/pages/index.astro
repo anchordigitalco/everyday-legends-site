@@ -8,7 +8,7 @@ import Invitation from '../components/Invitation.astro';
 import SupportSlab from '../components/SupportSlab.astro';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import luncheonSpeechPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-137_websize.jpg';
-import { honorees } from '../data/honorees';
+import { honorees, isTwoWordName } from '../data/honorees';
 import { entries } from '../data/community';
 import { luncheonPhotoAlt } from '../data/luncheon';
 
@@ -75,7 +75,7 @@ const actions = [
             {honorees.map(({ name }) => (
               <li class="hall__name">
                 <span class="hall__drop" aria-hidden="true"></span>
-                <span class="display hall__text">{name}</span>
+                <span class:list={['display', 'hall__text', { 'hall__text--pair': isTwoWordName(name) }]}>{name}</span>
               </li>
             ))}
           </ol>

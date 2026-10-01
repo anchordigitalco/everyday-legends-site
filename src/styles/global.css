@@ -50,11 +50,18 @@
   --s-6: 4.5rem;
   --s-7: 6rem;
   --gutter: clamp(20px, 5vw, 96px);
-  /* The longest honoree names, in em of the display face: every name renders on one line, so a name
-     size that must fit a window is declared against these. Program: "Seton Hall Prep Football Program"
-     (13.73em); person: "Natasha Davis-Gomez" (8.76em). */
-  --longest-name: 13.75;
-  --longest-person: 8.8;
+  /* The longest two-word honoree name, in em of the display face: "Natasha Davis-Gomez", 8.76em. A
+     two-word name renders on one line, so where a name size must fit a window it is capped against
+     this (with a hair to spare). Longer names wrap and need no cap. */
+  --longest-pair: 8.77;
+
+  /* Title sizes other sizes are declared against (.section-title). The niche-header h1 (About, Contact);
+     In the Community's h1, which also never grows past its column ("the Community" held whole is 6.6em);
+     an entry title (In the Community); the long-form body text. */
+  --niche-title: clamp(3.5rem, 8vw, 8rem);
+  --community-title: min(var(--niche-title), (100vw - 2 * var(--gutter)) / 6.6);
+  --entry-title: clamp(2rem, 3.4vw, 4.5rem / 1.3);
+  --body-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
   --nav-h: 84px;
   --col-gap: clamp(12px, 1.6vw, 24px);
 
@@ -107,14 +114,9 @@ img {
   overflow: hidden;
 }
 
-/* Grain for the whole paper page, behind every section that has no surface of its own. It spans the
-   whole document (body is its containing block), not the viewport: a viewport-sized layer ends at one
-   screen height wherever the page is drawn whole (a full-page capture, print), a hard step in tone. */
-body {
-  position: relative;
-}
+/* Grain for the whole paper page, behind every section that has no surface of its own */
 .page-grain {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -1;
   width: 100%;
@@ -142,25 +144,42 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* Section titles: one class for every inner page, one continuous size that never gets smaller as the
-   window widens. Declared against the longest line a title must hold whole ("Accountability", 5.88em,
-   so 1 / 6.1 of its window leaves room) and the narrowest window a title sits in: the full column under
-   900px, six columns from 900px (About's Accountability, What we do, Leadership; Legends' Honorees).
-   Under 900px the size follows the full column until it reaches what six columns hold at 900px
-   (--six-at-900: gutter 5vw and gap 1.6vw at 900px), then holds there, so it never drops at the
-   switch. From 900px it follows the six columns (cols of the page's 12-column grid) up to 72px.
-   The sections holding a title are size containers, so 100cqw is the page's width without scrollbar. */
+/* Section titles: one class for every inner page, one size that never gets smaller as the window
+   widens. In priority order:
+   1. Never larger than the page h1 on About or In the Community (In the Community's is the smaller).
+   2. At least --title-floor: 1.3x an entry title, and 2.5x the body below 440px, 3x from 440px.
+   3. The h1 at least 1.15x the title, where 2 allows (it does not from 440px to about 733px, where
+      the h1 holds at 56px and the title at 3x the 17px body, 51px).
+   It also never passes 72px and always fits its window whole: the longest line a title holds is
+   "Accountability", 5.88em, so 1 / 6.1 of the window leaves room. The window is the full column under
+   900px and six columns from 900px (About's Accountability, What we do, Leadership; Legends' Honorees);
+   under 900px it never passes what six columns hold at 900px (--six-at-900: gutter 5vw and gap 1.6vw
+   there), so the fit never drops at the switch. The sections holding a title are size containers, so
+   100cqw is the page's width without scrollbar. */
 .section-title {
   --title-fit: 6.1;
   --six-at-900: calc((900px - 2 * 900px * 0.05 - 900px * 0.016) / 2);
+  --title-floor: max(2.5 * var(--body-size), 1.3 * var(--entry-title));
   margin: 0;
   font-size: min(
-    4.5rem,
-    (100cqw - 2 * var(--gutter)) / var(--title-fit),
-    max(var(--six-at-900), (100cqw - 2 * var(--gutter) - var(--col-gap)) / 2) / var(--title-fit)
+    var(--community-title),
+    max(
+      var(--title-floor),
+      min(
+        4.5rem,
+        var(--community-title) / 1.15,
+        (100cqw - 2 * var(--gutter)) / var(--title-fit),
+        max(var(--six-at-900), (100cqw - 2 * var(--gutter) - var(--col-gap)) / 2) / var(--title-fit)
+      )
+    )
   );
   line-height: 0.98;
   text-wrap: balance;
+}
+@media (min-width: 440px) {
+  .section-title {
+    --title-floor: max(3 * var(--body-size), 1.3 * var(--entry-title));
+  }
 }
 
 /* A term that never breaks inside itself (a hyphenated compound, the EIN, 501(c)(3)) */
@@ -304,7 +323,7 @@ html.el-settle:not(.el-settle-js) .niche__plate {
 
 .niche-hdr__title {
   margin: var(--s-4) 0 0;
-  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-size: var(--niche-title);
   line-height: 0.94;
   text-wrap: balance;
 }
@@ -991,13 +1010,18 @@ html.el-intro [data-hero-item] {
 .hall__name:nth-child(odd):last-child {
   margin-right: 0;
 }
-/* Every name on one line, as a plaque carries it */
 .hall__text {
   display: block;
+  max-width: 7.4em;
   margin-top: var(--s-2);
   font-size: var(--name-size);
   line-height: 0.95;
   text-align: center;
+  text-wrap: balance;
+}
+/* A two-word name (marked from honorees.ts at build time) always takes one line */
+.hall__text--pair {
+  max-width: none;
   white-space: nowrap;
 }
 
@@ -1696,12 +1720,13 @@ html.el-intro [data-hero-item] {
 /* ── Hall fallback: phones and reduced motion ──────────────── */
 /* A plain vertical list: the double rail runs down the left, each name on a short drop. */
 @media (max-width: 899.98px), (prefers-reduced-motion: reduce) {
-  /* The names share one size, and the longest must fit on one line beside its drop: the column less
-     the rail (8px), the drop, and the gap before the name */
+  /* The names share one size. Where the longest two-word name would not fit on one line beside its
+     drop (the column less the rail's 8px, the drop, and the gap before the name), the size is capped
+     against it. */
   .hall {
     --name-size: min(
       clamp(2.25rem, 7.4vw, 4rem),
-      (100cqw - 2 * var(--gutter) - 8px - var(--drop-short) - var(--s-2)) / var(--longest-name)
+      (100cqw - 2 * var(--gutter) - 8px - var(--drop-short) - var(--s-2)) / var(--longest-pair)
     );
     --drop-short: 28px;
     height: auto !important;
