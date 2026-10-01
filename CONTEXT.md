@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics.
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics, and October 1 for Phase 8 pass 2.
 
 ## How this file works
 
@@ -65,8 +65,9 @@ How it resolves on the web:
 - Body: Bricolage Grotesque 300. Text under 16px (nav links, small UI labels) may use 400. Nothing else uses 400.
 - Fonts are self-hosted through Fontsource, main files preloaded. No outside font requests.
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
+- Fraunces loads from its full variable file. MUST NOT swap to the lighter opsz-only file: it has no WONK axis and draws a different ampersand and h, m, n.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
-- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps. A hyphenated compound never splits across lines. "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps; longer names wrap balanced. A hyphenated compound never splits across lines. "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
 - Every display size grows continuously with the viewport and never gets smaller as the window widens.
 - The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
@@ -80,7 +81,8 @@ How it resolves on the web:
 - Black and white files go in an arch only when tall, so the watermark stays in frame; wide ones run full frame. Color files may crop into an arch, with a focal point set per file.
 - Leadership portraits render in grayscale plus the paper-deep tint so both founders match. CSS only, files untouched.
 - Every content photo goes through `astro:assets` with real alt text. MUST NOT set content photos as CSS backgrounds. Alt text MUST NOT name anyone, or any award or title, that the copy deck does not name.
-- Niche photos are delivered at no fewer pixels than they display, at 1x and 2x density. `Niche.astro` works out `widths` and `sizes` from the arch height and the photo's aspect ratio, since a landscape file cropped into a tall arch displays far wider than the arch. If a source file is itself too small, report it as a clean-file request.
+- Niche photos are delivered at no fewer pixels than they display, at 1x and 2x density. `Niche.astro` works out `widths` and `sizes` from the arch height and the photo's aspect ratio, since a landscape file cropped into a tall arch displays far wider than the arch. If a source file is itself too small, report it as a clean-file request. 222 and 210 run slightly short only at 1920 on 2x screens; full-size files are requested.
+- Page grain stays fixed to the viewport. Its seam at viewport height shows only in full-page screenshots, never to visitors. Not a defect.
 - Photo treatment as built in Phase 5 (paper-deep tint through `mix-blend-multiply`). One file per slot so each swaps cleanly.
 
 | Slot | File |
@@ -146,7 +148,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 - `src/data/sanity.ts` holds the Sanity config (no token, ever). `src/data/news.ts` fetches In the News at build time.
 - `Invitation.astro` is the one invitation card (Home, Legends Among Us), copy passed as props. `src/data/luncheon.ts` holds its pre/post state (now `post`), the 178 alt text, and `sponsorshipUrl`.
 - `src/data/honorees.ts` holds the five honorees for both halls: name, award, body, tier, photo, focal point, alt.
-- Section titles use `.section-title` in global.css: one continuous size across all widths, never smaller at a wider width, and at least 1.3x every entry or card title on the same page (honoree names in the halls are exempt). Only About's Founders title keeps its 4-column formula, and it also never shrinks as the window widens. Niche photo styles live in global.css too.
+- Section titles use `.section-title` in global.css: one continuous size across all widths, never smaller at a wider width, and at least 1.3x every entry, pillar, bust, and headline title on the same page (honoree names in the halls are exempt). The 1.3x rule exempts page h1s, including the Legends invitation card title. On About and In the Community the h1 always stays larger than `.section-title`, aiming for 1.15x; between 440 and about 733px the body floor wins and the h1 runs about 1.1x. Accepted. Only About's Founders title keeps its 4-column formula, and it also never shrinks as the window widens. Niche photo styles live in global.css too.
 - `Base.astro` also holds the canonical link, Open Graph and Twitter tags, and the favicon set (see Launch basics).
 - Anchors clear the fixed nav through `scroll-padding-top` on html; no per-section scroll-margin.
 
@@ -191,7 +193,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - Legends Among Us: invitation, recap, honorees hall, Sponsorship. Section spread at least 7:1 at every width.
   - Invitation: `Invitation.astro` in its post state ("Next luncheon · date to be announced", no Buy tickets) on 178, full bleed, starting under the nav. The card title is the page's h1. It settles to its 2° angle once on load; the photo stays still.
   - Recap: the Body opens it, centered on the middle axis (cols 3–10, 46ch, 1.25x body). Then -20 and -53 side by side at one height (cols 2–11, flex-grow set to each aspect ratio), then -119 closing, cols 3–10. No photo overlaps another, none is cropped. Photos rise 24px once in view, 0.12s stagger. Under 900px: Body, -53, -20 (max 28rem, centered), -119.
-  - Hall: two tiers in program order, no logos. People: Natasha cols 2–6, Nathan cols 9–12 set lower; niches 1.4x `--hall-niche`; About's niche settle, 0.15s apart. Programs hang from Home's double rail on brass drop lines: niches at `--hall-niche` (2.5 cols), cols 1–4 / 5–9 / 10–12 at drops of 1, 3 and 2 units; plate drop, 0.12s apart. Each name takes its own line above the award; program names are 0.8x people's (`--program-name`). Under 900px: one column, no rail, niches max 22rem / 16rem.
+  - Hall: two tiers in program order, no logos. People: Natasha cols 2–6, Nathan cols 9–12 set lower; niches 1.4x `--hall-niche`; About's niche settle, 0.15s apart. Programs hang from Home's double rail on brass drop lines: niches at `--hall-niche` (2.5 cols), cols 1–4 / 5–9 / 10–12 at drops of 1, 3 and 2 units; plate drop, 0.12s apart. Each name takes its own line above the award; `--program-name` stays 0.8x `--person-name`. Program bodies stay staggered with their drops; the three awards share one measure so they wrap alike. Under 900px: one column, no rail, niches max 22rem / 16rem.
   - Sponsorship (`#sponsorship`): full-bleed paper-deep band, static. Title h2 at `--program-name` in cols 1–6; body and primary button in cols 7–12, bottom-aligned. Button href is `sponsorshipUrl`, `/contact` until the packages link arrives. Never a mailto.
   - Legends brass: 3 of 3 (card frame, hall rail, hall drop lines).
 - Support: ink slab (no niche), then the gift, then the sponsorship pointer.
@@ -242,7 +244,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - One shared OG image, `public/og.png`, 1200×630: the footer's full lockup on ink, as the footer renders it. No photos until honoree consent and clean files arrive.
 - Favicon set: the SVG, a 32px `favicon.ico`, and a 180px `apple-touch-icon.png`, all from the current crop. When the tighter crop is approved, all three swap together.
 - `@astrojs/sitemap` and `public/robots.txt` (allow all, plus the sitemap line). The 404 page is not in the sitemap.
-- 404: `src/pages/404.astro` on `Base`, copy from deck section 8. Privacy's composition: one centered column in cols 3–10, h1 at `.section-title`, lede at Home's lede scale, one primary button to `/`. No niche, photo, or motion. Brass 0 of 3.
+- 404: `src/pages/404.astro` on `Base`, copy from deck section 8. The one page with `noindex`, and no canonical or `og:url`. Privacy's composition: one centered column in cols 3–10, h1 at `.section-title`, lede at Home's lede scale, one primary button to `/`. No niche, photo, or motion. Brass 0 of 3.
 - None of these add an outside request, so the Privacy Policy stays true as written.
 
 ## Pending client approval (build as written, keep swappable)
@@ -253,7 +255,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 
 - Zeffy link, for the form embedded on `/support`.
 - Honoree consent to be named publicly. Names render in the build; launch waits on consent.
-- Clean, unwatermarked photo files and the credit line.
+- Clean, unwatermarked photo files (including full-size 222 and 210) and the credit line.
 - Founding year (cornerstone placeholder), board names (Leadership works with 2 or 4), Jaylen's Leadership line (researched placeholder in the copy deck, pending her approval), sponsorship packages link (goes in `luncheon.ts` `sponsorshipUrl`).
 - Newsletter provider. Until one exists, no newsletter anywhere on the site.
 - Instagram URL, currently assumed to be instagram.com/everydaylegendsfoundation.
