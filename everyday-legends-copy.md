@@ -120,7 +120,7 @@ Card 2 uses the camp group photo. Card 3 uses photos from the May 30 luncheon ga
 | Lede | Every gift goes to education, sports, and community. | 8 | FROM CALL |
 | Body | We give to people and programs already doing the work, and we add to what they have started. Community organizations, athletic programs, and scholarships. | 24 | FROM CALL |
 | Marginalia | Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3). EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law. | 25 | NEW |
-| CTA | Donate | 1 | NEW, link to be filled |
+| CTA | Donate | 1 | NEW, points to Support |
 
 ---
 
@@ -289,15 +289,11 @@ The program's own pages use "Young Legend Award"; its order of program says "You
 | Lede | Every gift goes to education, sports, and community. | 8 | FROM CALL |
 | Body | We give to people and programs already doing the work. We add to what they have started, help it go further, and show up behind it. That means community organizations running their own initiatives, football camps and school athletic programs, and scholarships for students. These are the things that built our family. | 52 | FROM CALL |
 | Body | Everyday Legends Foundation, Inc. is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code. EIN 39-4769708. Contributions are tax-deductible to the extent permitted by law. A receipt is issued for every gift. | 38 | NEW |
-| CTA | Donate | 1 | NEW, Zeffy link to be filled |
+| CTA | Donate | 1 | NEW, the form's own button on this page |
 
 The Zeffy general donation form is embedded on this page so people give without leaving the site. No payments in our code. On this page the Donate CTA is the form's own button. No separate Donate button renders beside the form.
 
-Until the Zeffy link arrives, the form area shows only the placeholder line below. It never ships, since launch waits on the link. MUST NOT draw fake fields, amounts, or buttons.
-
-| Register | Copy | Words | Source |
-|---|---|---|---|
-| Marginalia | Donation form · link to be filled | 6 | NEW, placeholder |
+The form area holds Zeffy's embed code, exactly as Zeffy supplies it. Every word inside the form is Zeffy's, not ours. MUST NOT add a title, caption, or note around the form.
 
 ### Sponsorship pointer
 
@@ -396,9 +392,8 @@ None of these block the build. Each drops into a space already designed for it.
 
 1. Board member names and titles. The program lists a board but no names.
 2. Approval of the placeholder line on Jaylen for Leadership, or her own wording.
-3. The new Zeffy general donation form link. **Blocks launch.**
-4. The sponsorship packages link, for the Sponsorship CTA.
-5. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
-6. Confirmation of the Privacy Policy's two practice lines: how long the foundation keeps contact messages and donor details, and that it uses them only to reply, thank, and issue receipts.
+3. The sponsorship packages link, for the Sponsorship CTA.
+4. A copy of the 501(c)(3) letter, for records only. Not posted on the site.
+5. Confirmation of the Privacy Policy's two practice lines: how long the foundation keeps contact messages and donor details, and that it uses them only to reply, thank, and issue receipts.
 
-Received: the luncheon program (honoree names, awards, and bios), September 2026. The founding date, October 8, 2025, and the camp paragraph, October 2026.
+Received: the luncheon program (honoree names, awards, and bios), September 2026. The founding date, October 8, 2025, the camp paragraph, and the Zeffy donation form, October 2026.
