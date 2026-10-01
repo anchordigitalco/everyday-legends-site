@@ -4,3 +4,5 @@ dist/
 .astro/
 temporary screenshots/
 frontend-design copy/
+.env*
+.vercel
