@@ -53,7 +53,6 @@
    hides what falls inside it. The group never reaches the body: the gap to the text column is always wider than
    the gutter. --ray-rise is how far the rays stand above the arch's top, so the section makes room. */
 .give {
-  --give-embed-h: 44rem;
   container-type: inline-size;
   position: relative;
 }
@@ -133,26 +132,24 @@
   opacity: 0.07;
   pointer-events: none;
 }
-/* The form area. Its height is the one value to change when the Zeffy embed arrives. */
-.give__embed {
+/* The doorway: About's inset inner arch inside the paper gap, filled edge to edge, dome included, in the
+   Zeffy card's own color, so the card's edges and rounded corners vanish into it. The form starts at the
+   inner springline (a percentage padding resolves against the width, so 50% is the inner head's radius)
+   and sits flush on the jambs and the base: nothing of ours pads, backs, or borders it. Its height is the
+   form's as Zeffy sizes it, so the frame grows with it: no fixed height, no inner scroll. Above the grain,
+   which shows only in the paper gap. */
+.give__fill {
   position: relative;
-  display: grid;
-  place-items: center;
-  height: var(--give-embed-h);
-  padding: var(--s-3);
-  background: var(--paper-deep);
-  text-align: center;
+  padding-top: 50%;
+  border-radius: 9999px 9999px 0 0;
+  background: var(--color-give);
 }
-.give__placeholder {
-  margin: 0;
-  color: var(--ink-2);
-}
-.give__iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+/* Zeffy's script backs its card in white, an inline style on its own wrapper (in this page, outside the
+   iframe). Behind the dark form that white shows as a pale arc where the rounded corners are smoothed,
+   and as a white box whenever the form lags a resize. Backed in the fill's color, both vanish. The
+   override needs !important to beat the inline style; nothing inside the iframe is touched. */
+.give__fill [data-zeffy-embed] {
+  background: var(--color-give) !important;
 }
 
 /* The fade (support.ts): with motion allowed the head script's html.el-rays-wait holds the rays hidden

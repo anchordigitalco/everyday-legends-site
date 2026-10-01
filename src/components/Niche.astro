@@ -13,8 +13,9 @@
 // `img` passes further attributes to the <img> (loading, fetchpriority, style, data-*).
 // `tint={false}` leaves out the paper-deep tint, for a niche that holds a drawing instead of a photo
 // (Contact's torch, passed in the slot): the drawing sits on clean paper.
-// `frame` is the empty niche: the same frame (the .niche rule in global.css) with paper inside and its
-// height set by the slot's content instead of the 0.72 ratio. Support's gift form sits in it.
+// `frame` is the empty niche: the same frame and paper gap (the .niche rule in global.css), its height set
+// by the slot's content instead of the 0.72 ratio. The slot brings its own inner arch: Support's is
+// filled and holds the gift form.
 import { Image } from 'astro:assets';
 
 interface Props {

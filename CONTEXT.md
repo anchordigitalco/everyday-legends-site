@@ -1,6 +1,6 @@
 # CONTEXT.md: Everyday Legends Foundation
 
-Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics, and October 1 for Phase 8 pass 2 and the content update (founding date, camp).
+Per-project source of truth. Decisions only. Written September 25, 2026, after Phase 5 chose Brass and Ink. Updated September 26 for About, September 27 for Support and Legends Among Us, September 28 for In the Community and Contact, September 29 for layout edits on Home, About, and In the Community, for the Privacy Policy, and for the Phase 8 QA fixes and launch basics, and October 1 for Phase 8 pass 2, the content update (founding date, camp), and the Zeffy embed.
 
 ## How this file works
 
@@ -29,7 +29,7 @@ The site is a hall of honor. You enter through the arch in her mark, and inside,
 How it resolves on the web:
 - A building is walked through; a page is scrolled. Home is the only page that moves you: the intro takes you through the arch once, and the hall walks you along the wall.
 - Inner pages stand still. Each opens in a niche (her arch as a static frame) holding that page's photo, with two exceptions. Legends Among Us opens on the invitation card laid on the room photo. Support's header is a plain slab, and the arch sits lower on the page as the frame around the donation form. The arch does not move. Contact's niche holds only the torch.
-- The dark wall exists only in the intro. After it, the paper page is the inside of the building. The one exception is the invitation band on Home and Legends Among Us: from 900px it sits on ink beside the room photo; under 900px the card sits on paper below the photo.
+- The dark wall exists only in the intro. After it, the paper page is the inside of the building. There are two exceptions. The invitation band on Home and Legends Among Us: from 900px it sits on ink beside the room photo; under 900px the card sits on paper below the photo. And Support's doorway: the arch around the donation form, filled in `--color-give`.
 
 ## Home intro (built)
 
@@ -48,6 +48,7 @@ How it resolves on the web:
 | brass-light | #C9A76A | Focus rings only |
 | gold | #DDAF3C, #D8B450 | Rays inside the mark only |
 | lamp, lamp-edge | #F6D9A0, #2A2016 | The intro's arch glow only |
+| color-give | #000000 | Support's arch fill only: the Zeffy card's own color, sampled from the loaded form |
 
 - Brass MUST NOT be used as text on paper (2.9:1). Paper text MUST NOT sit on brass. Ink on brass passes (5.4:1).
 - Every text pairing MUST meet 4.5:1, or 3:1 for text 24px and larger.
@@ -198,9 +199,9 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Legends brass: 3 of 3 (card frame, hall rail, hall drop lines).
 - Support: ink slab (no niche), then the gift, then the sponsorship pointer.
   - Slab: static, not full-screen; title is the h1 in label style, lede at display scale. Under 900px, bottom padding `--space-generous`.
-  - Gift (`#give`): from 900px, cols 1–5 hold body, cornerstone, tax paragraph, sticky beside the arch in cols 7–12; under 900px, body, arch, cornerstone, tax paragraph. The arch is `Niche.astro`'s frame variant, height set by content.
+  - Gift (`#give`): from 900px, cols 1–5 hold body, cornerstone, tax paragraph, sticky beside the arch in cols 7–12; under 900px, body, arch, cornerstone, tax paragraph. The arch is `Niche.astro`'s frame variant, height set by content: About's hairline and paper gap, then an inset inner arch filled edge to edge, dome included, in `--color-give`, so the card's edges vanish. The form starts at the inner springline and sits flush on the jambs and base.
   - Rays: the mark's ray paths in brass behind the frame, placed as in the mark and scaled down only to clear the viewport; never behind text. The page's only motion: one opacity fade at 20% in view, center outward.
-  - The form and frame never animate. Zeffy: v2 script embed, sized by the real form; until then a paper-deep placeholder, height `--give-embed-h`.
+  - The form and frame never animate. Zeffy: v2 script embed exactly as supplied, sized by the form (no fixed height, no inner scroll); dashboard color #000000, dark mode. Nothing inside the iframe is styled; Zeffy's own wrapper is backed in `--color-give` so its white never shows at the corners. If Zeffy's color changes, re-sample and update the token.
   - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
   - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
 - Contact: niche header, the register, Instagram marginalia. No newsletter. The page has no motion.
