@@ -14,7 +14,7 @@ Per-project source of truth. Decisions only. Written September 25, 2026, after P
 ## Project
 
 - Client: Dr. Syreeta McClain, Co-Founder & Executive Director. Jaylen McClain, Co-Founder.
-- Pages: Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy, plus a 404 page (not in the nav).
+- Pages: 8 in all, the 404 included. Home, About, In the Community, Legends Among Us, Support, Contact, Privacy Policy, plus the 404 page (not in the nav).
 - Stack: Astro 7.3.4 (SSG), Tailwind 4.3.3 (tokens live in CSS, no tailwind.config), gsap 3.15.0. React islands through `@astrojs/react` plus `motion`, added in the Home slice. Vercel. Sanity for In the News only: project `dfzf4x6m`, dataset `production` (public), Studio in `studio/` (never bundled into the site), deployed at everyday-legends.sanity.studio. Jackson makes all updates. At launch, a Sanity webhook triggers a Vercel deploy hook so published news rebuilds the site. Vercel Web Analytics through `@vercel/analytics` (Astro component, last in `<head>` of `Base.astro`): cookieless, switched on in the Vercel project at launch; locally its script 404s, which is expected.
 - Contact form: Formspree form `mdekyelo` on the foundation's own account. Cloudflare Turnstile public site key in `src/data/contact.ts`. Formspree's CAPTCHA is on: the Turnstile secret key is set in Formspree and lives only there, never in the repo.
 - EIN 39-4769708 is verified. Use it exactly as the copy deck has it.
@@ -68,7 +68,7 @@ How it resolves on the web:
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Fraunces loads from its full variable file. MUST NOT swap to the lighter opsz-only file: it has no WONK axis and draws a different ampersand and h, m, n.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
-- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. Keep-together units (two-word names, hyphenated compounds, 'Among Us', 'the Community') use `.keep`: inline-block, max-width 100%. At default text spacing they never split at any width. They wrap inside only when one unit alone is wider than its line (user text spacing, WCAG 1.4.12). Accepted. Longer names wrap balanced. A hyphenated compound never splits across lines, including in Sanity news text (`in-the-community.astro` wraps them in `.nowrap`; the text itself never changes). "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. Keep-together units (two-word names, hyphenated compounds, 'Among Us', 'the Community') use `.keep`: inline-block, max-width 100%. At default text spacing they never split at any width. They wrap inside only when one unit alone is wider than its line (user text spacing, WCAG 1.4.12). Accepted. Longer names wrap balanced. A hyphenated compound never splits across lines, including in Sanity news text (the text itself never changes). "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
 - Every display size grows continuously with the viewport and never gets smaller as the window widens.
 - The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
@@ -119,7 +119,7 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
    Keep: per word, slide preset (opacity 0 to 1, y 20 to 0), 0.05s stagger, 0.3s per word.
    Change: plays once when 30% in view. Reduced motion shows static text. Blur presets never used.
 2. `hover-reveal-cards.tsx`, Legends in Action rows and About Leadership.
-   Keep: hovered image scales to 1.05; siblings scale to 0.97 at opacity 0.6; 500ms ease-in-out; focus-visible matches hover.
+   Keep: hovered image scales to 1.05; siblings scale to 0.97 at opacity 0.6; 500ms ease-in-out; focus-visible shows the two-tone ring (standing rule 15).
    Change: no blur, no `transition-all`, real images through `astro:assets`, applied to the three alternating rows (never a card grid), Brass and Ink styling. Touch devices get no hover effect. Legends in Action rows are pointer only and not focusable, since they are not links.
 3. `interactive-hover-button.tsx`, every solid button on the site.
    Keep: label slides out right and fades; a second label with an arrow slides in; 300ms.
@@ -211,7 +211,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Formspree through fetch; without JS the form posts through `action`. Turnstile renders explicitly on /contact only, Managed mode, always visible above the button at its normal size, light theme. A send waits for its token (posting the moment one arrives), never posts without one, fails after 30s or a Turnstile error, and resets the widget after any failed send.
   - The Instagram middot follows the site-wide rule.
   - Contact brass: 1 of 3 (torch).
-- Privacy Policy: plain text page at `/privacy`, linked from every footer. The quietest page: no niche, photo, motion, or button; brass 0 of 3. From 900px one column inside cols 3–10, centered, at most 63.4ch (the longest body line fills it, so its whitespace matches both sides), text left-aligned; full width below. h1 at `.section-title`, effective line in label style, lede at Home's lede scale, Decks as Fraunces h2 with `word-spacing: 0.12em`, Coda after an ink hairline. The only link in the text is "contact form" in the Coda. The policy's claims MUST stay true: the site sets no cookies, and the only outside requests are Cloudflare on `/contact` and Zeffy on `/support`. Any new service goes into the policy first.
+- Privacy Policy: plain text page at `/privacy`, linked from every footer. The quietest page: no niche, photo, motion, or button; brass 0 of 3. From 900px one column inside cols 3–10, centered, at most 63.4ch (the longest body line fills it, so its whitespace matches both sides), text left-aligned; full width below. h1 at `.section-title`, effective line in label style, lede at Home's lede scale, Decks as Fraunces h2 with `word-spacing: 0.12em`, Coda after an ink hairline. The only link in the text is "contact form" in the Coda. The policy's claims MUST stay true: the site sets no cookies, and the only outside requests our code makes are Cloudflare on `/contact` and Zeffy on `/support`. Zeffy's iframe then loads its own third-party trackers (Stripe, Google Tag Manager, Meta Pixel, HubSpot, Microsoft Clarity, and others), which set their own cookies inside its frame. Any new service goes into the policy first.
 
 ## Breakpoints
 
@@ -246,6 +246,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 - `Base.astro` sets the canonical link, `og:title`, `og:description` (the page's existing meta description, verbatim), `og:url`, `og:image` with its alt, `og:type` website, `og:site_name` Everyday Legends Foundation, and `twitter:card` summary_large_image.
 - One shared OG image, `public/og.png`, 1200×630: the footer's full lockup on ink, as the footer renders it. No photos until honoree consent and clean files arrive.
 - Favicon set: the SVG, a 32px `favicon.ico`, and a 180px `apple-touch-icon.png`, all from the current crop. When the tighter crop is approved, all three swap together.
+- Organization JSON-LD: one site-wide block in `Base.astro` with `name`, `url`, `logo`, `foundingDate`, and `taxID` only. `sameAs` waits on Dr. McClain confirming the Instagram URL.
 - `@astrojs/sitemap` and `public/robots.txt` (allow all, plus the sitemap line). The 404 page is not in the sitemap.
 - 404: `src/pages/404.astro` on `Base`, copy from deck section 8. The one page with `noindex`, and no canonical or `og:url`. Privacy's composition: one centered column in cols 3–10, h1 at `.section-title`, lede at Home's lede scale, one primary button to `/`. No niche, photo, or motion. Brass 0 of 3.
 - None of these add an outside request, so the Privacy Policy stays true as written.

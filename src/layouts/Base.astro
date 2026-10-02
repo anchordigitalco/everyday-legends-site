@@ -42,6 +42,18 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonical = new URL(path, Astro.site).href;
 const ogImage = new URL('/og.png', Astro.site).href;
 const SITE_NAME = 'Everyday Legends Foundation';
+
+// The foundation as one Organization, on every page. taxID is the EIN exactly as the copy deck has it.
+// No sameAs until the Instagram URL is confirmed, and no contact fields (no email on the site).
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: new URL('/', Astro.site).origin,
+  logo: new URL('/apple-touch-icon.png', Astro.site).href,
+  foundingDate: '2025-10-08',
+  taxID: '39-4769708',
+};
 ---
 <html lang="en">
   <head>
@@ -60,6 +72,7 @@ const SITE_NAME = 'Everyday Legends Foundation';
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="The Everyday Legends Foundation logo on a dark ground." />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
     <!-- Her mark: the SVG, a 32px ico for browsers without SVG icons, and the 180px home-screen icon.
          All three come from the same crop (scripts/launch-images.mjs makes the two raster files). -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

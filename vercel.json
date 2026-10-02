@@ -1,0 +1,18 @@
+{
+  "redirects": [
+    { "source": "/about-the-foundation", "destination": "/about", "statusCode": 301 },
+    { "source": "/about-the-foundation/", "destination": "/about", "statusCode": 301 },
+    { "source": "/legends-among-us-lunch", "destination": "/legends-among-us", "statusCode": 301 },
+    { "source": "/legends-among-us-lunch/", "destination": "/legends-among-us", "statusCode": 301 },
+    { "source": "/past-events", "destination": "/in-the-community", "statusCode": 301 },
+    { "source": "/past-events/", "destination": "/in-the-community", "statusCode": 301 },
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "statusCode": 301 }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "everyday-legends-site.vercel.app" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    }
+  ]
+}
