@@ -1,8 +1,30 @@
 import { gsap } from 'gsap';
 import { ANY_MOTION, onceInView } from './motion';
+import { donationFormTitle } from '../data/a11y';
 
 export function initSupport() {
   initRays();
+  initFormTitle();
+}
+
+// Zeffy's script inserts its form as an iframe with no title, so screen readers would announce an
+// unnamed frame. The embed stays exactly as Zeffy supplies it: this names the iframe Zeffy inserts
+// (copy deck 9), at once if it is already there, otherwise the moment it appears, then stops watching.
+// Zeffy's own fallback iframe (data-zeffy-embed-src) carries its own title and is left alone.
+function initFormTitle() {
+  const host = document.querySelector<HTMLElement>('.give__fill');
+  if (!host) return;
+  const IFRAME = 'iframe:not([data-zeffy-embed-src])';
+  const name = () => {
+    const frame = host.querySelector<HTMLIFrameElement>(IFRAME);
+    if (frame) frame.title = donationFormTitle;
+    return Boolean(frame);
+  };
+  if (name()) return;
+  const watch = new MutationObserver(() => {
+    if (name()) watch.disconnect();
+  });
+  watch.observe(host, { childList: true, subtree: true });
 }
 
 // The page's only motion: the rays fade in once when the gift section is 20% in view, center ray first,

@@ -47,13 +47,13 @@ const SPONSOR_HREF = `${hrefOf('Legends Among Us')}#sponsorship`;
     </script>
   </Fragment>
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- 1 · The slab: ink, static -->
     <section class="slab" aria-labelledby="support-title">
       <svg class="slab__grain" aria-hidden="true" focusable="false"><rect width="100%" height="100%" filter="url(#grain)" /></svg>
       <div class="grid slab__grid">
         <h1 id="support-title" class="label slab__title">Support the Foundation</h1>
-        <p class="display slab__lede">Every gift goes to education, sports, and&nbsp;community.</p>
+        <p class="display slab__lede">Every gift goes to education, sports, <span class="keep">and community.</span></p>
       </div>
     </section>
 
@@ -68,7 +68,7 @@ const SPONSOR_HREF = `${hrefOf('Legends Among Us')}#sponsorship`;
           <div class="give__stone">
             <Cornerstone />
           </div>
-          <p class="give__tax">Everyday Legends Foundation, Inc. is a <span class="give__term">tax-exempt</span> organization under Section <span class="give__term">501(c)(3)</span> of the Internal Revenue Code. EIN&nbsp;<span class="give__term">39-4769708.</span> Contributions are <span class="give__term">tax-deductible</span> to the extent permitted by law. A receipt is issued for every gift.</p>
+          <p class="give__tax">Everyday Legends Foundation, Inc. is a <span class="keep">tax-exempt</span> organization under Section <span class="keep">501(c)(3)</span> of the Internal Revenue Code. <span class="keep">EIN&nbsp;39-4769708.</span> Contributions are <span class="keep">tax-deductible</span> to the extent permitted by law. A receipt is issued for every gift.</p>
         </div>
         <div class="give__arch">
           <svg class="give__rays" viewBox={RAYS_VIEWBOX} aria-hidden="true" focusable="false">
@@ -101,8 +101,8 @@ const SPONSOR_HREF = `${hrefOf('Legends Among Us')}#sponsorship`;
     <section class="pointer" aria-labelledby="pointer-title">
       <div class="grid pointer__grid">
         <div class="pointer__inner">
-          <h2 id="pointer-title" class="display pointer__title">Interested in&nbsp;sponsoring?</h2>
-          <p class="pointer__body">Sponsorship runs through the Legends&nbsp;Among&nbsp;Us&nbsp;luncheon.</p>
+          <h2 id="pointer-title" class="display pointer__title">Interested <span class="keep">in sponsoring?</span></h2>
+          <p class="pointer__body">Sponsorship runs through the <span class="keep">Legends <span class="keep">Among Us</span> luncheon.</span></p>
           <Button label="Sponsor the luncheon" href={SPONSOR_HREF} variant="secondary" class="pointer__cta" />
         </div>
       </div>

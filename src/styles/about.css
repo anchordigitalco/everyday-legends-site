@@ -36,7 +36,7 @@
   grid-row: 1;
   container-type: inline-size;
 }
-/* "Story & Inspiration" is held together (non-breaking spaces) so the title can only break after
+/* "Story & Inspiration" is held together (a .keep unit) so the title can only break after
    "Founders'": never an orphan. That line is 7.74em wide. From 1410px the size is the 4-column
    formula (the side column / 7.9). Below 1410px it never passes what four columns hold at 1410px
    (--four-at-1410: gutter 5vw and gap 1.6vw there), so it never drops at the switch; on phones it
@@ -381,12 +381,15 @@
   margin-top: var(--space-tight);
 }
 /* Under 900px the plates stack, one per line, with room to spare: the sentence sets the plate at
-   18em (never wider than the column), and the deck sits inside it. */
+   18em (never wider than the column), and the deck sits inside it. The plate states that width
+   itself (18em plus its side padding, capped at the column), so the sentence's min(18em, 100%)
+   resolves against it and the plate never grows to the column's full width. */
 .what__plate {
+  width: min(100%, 18rem + 2 * var(--s-3));
   max-width: 100%;
 }
 .what__body {
-  width: 18em;
+  width: min(18em, 100%);
   max-width: 100%;
   margin: var(--s-2) 0 0;
   font-size: 1rem;
@@ -412,11 +415,17 @@
   }
   .what__plate {
     align-self: stretch;
+    width: auto;
   }
   .what__body {
     width: 0;
     min-width: 100%;
     max-width: none;
+  }
+  /* The deck sets the plate's floor in the row, so here it holds one line, as it did before it became
+     a keep-together unit (1440 passes WCAG text spacing this way); under 900px it may wrap (.keep) */
+  .what__plate .pillar__name .keep {
+    white-space: nowrap;
   }
 }
 
@@ -560,10 +569,6 @@
   color: var(--ink-2);
   text-wrap: pretty;
 }
-/* Terms that never break inside themselves: the EIN, 501(c)(3), tax-exempt, and tax-deductible */
-.account__term {
-  white-space: nowrap;
-}
 .account__text h2 + p {
   margin-top: var(--s-4);
 }
@@ -593,10 +598,6 @@
 .marg-link:hover::after,
 .marg-link:focus-visible::after {
   opacity: 1;
-}
-.marg-link:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
 }
 .marg-link:active {
   transform: translateY(1px);

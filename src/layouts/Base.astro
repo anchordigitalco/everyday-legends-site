@@ -19,6 +19,7 @@ import logoUrl from '../../brand_assets/everyday-legends-logo.svg?url';
 import anchorMarkRaw from '../../brand_assets/anchor-digital-mark.svg?raw';
 import { navLinks, supportHref } from '../data/nav';
 import { instagramUrl } from '../data/contact';
+import { skipLink, newTab } from '../data/a11y';
 // Vercel Web Analytics: cookieless page counts, sent only from the Vercel deployment
 import Analytics from '@vercel/analytics/astro';
 
@@ -71,6 +72,7 @@ const SITE_NAME = 'Everyday Legends Foundation';
     <Analytics />
   </head>
   <body>
+    <a class="skip" href="#main">{skipLink}</a>
     <svg class="sr-defs" aria-hidden="true" focusable="false">
       <filter id="grain" x="0" y="0" width="100%" height="100%">
         <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
@@ -108,13 +110,14 @@ const SITE_NAME = 'Everyday Legends Foundation';
           <img src={logoUrl} alt="" width="2924" height="2147" loading="lazy" />
         </a>
         <ul class="footer__contact">
-          <li><a class="footer__link" href={instagramUrl} target="_blank" rel="noopener">Instagram&nbsp;· @everydaylegendsfoundation</a></li>
+          <!-- Breaks only at its middot where the column is too narrow for the whole line (site.ts) -->
+          <li><a class="footer__link footer__ig" href={instagramUrl} target="_blank" rel="noopener" data-mid-line><span data-mid-a>Instagram</span><span data-mid>&nbsp;·</span> <span class="footer__handle" data-mid-b>@everydaylegendsfoundation</span><span class="sr-only">{newTab}</span></a></li>
         </ul>
         <div class="footer__base">
           <p class="footer__copy">© 2026 Everyday Legends Foundation, Inc. All rights&nbsp;reserved.</p>
           <ul class="footer__legal">
             <li><a class="footer__link" href="/privacy">Privacy Policy</a></li>
-            <li><a class="footer__link footer__credit" href="https://anchordigitalco.com" target="_blank" rel="noopener"><Fragment set:html={anchorMark} /><span>Built by Anchor Digital</span></a></li>
+            <li><a class="footer__link footer__credit" href="https://anchordigitalco.com" target="_blank" rel="noopener"><Fragment set:html={anchorMark} /><span>Built by Anchor Digital</span><span class="sr-only">{newTab}</span></a></li>
           </ul>
         </div>
       </div>

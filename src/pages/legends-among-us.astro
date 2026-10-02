@@ -5,10 +5,10 @@ import Niche from '../components/Niche.astro';
 import Invitation from '../components/Invitation.astro';
 import Button from '../components/Button.astro';
 import '../styles/legends.css';
-import { honorees, isTwoWordName } from '../data/honorees';
+import { honorees } from '../data/honorees';
 import { hrefOf } from '../data/nav';
 import { column, GAP } from '../data/grid';
-import { holdCompounds } from '../data/text';
+import { holdCompounds, holdName } from '../data/text';
 import { luncheon, luncheonPhotoAlt } from '../data/luncheon';
 import roomPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import recapLectern from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-53_websize.jpg';
@@ -54,7 +54,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
     </script>
   </Fragment>
 
-  <main class="lpage">
+  <main id="main" class="lpage" tabindex="-1">
     <!-- 1 · The invitation, laid at full size on the room (Home's card and section, on this page's copy) -->
     <section class="legends legends--page" aria-labelledby="page-title">
       <div class="legends__photo">
@@ -65,7 +65,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
       <Invitation
         id="page-title"
         titleTag="h1"
-        title={pair('Legends Among Us')}
+        title="Legends Among Us"
         deck={pair('The Everyday Legends Honors Luncheon')}
         lede={pair('An afternoon of purpose, recognition, and meaningful connection.')}
         marg={['Next\u00a0luncheon', 'date\u00a0to\u00a0be\u00a0announced']}
@@ -109,7 +109,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
             <li class:list={['honoree', 'honoree--person', `honoree--p${i + 1}`]}>
               <Niche class="honoree__niche" settle photo={h.photo} alt={h.alt} arch={personArch} img={{ style: `--focal: ${h.focal}` }} />
               <h4 class="honoree__deck mid-broken" data-mid-line>
-                <span class:list={['display', 'honoree__name', { 'honoree__name--pair': isTwoWordName(h.name) }]} data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                <span class="display honoree__name" data-mid-a set:html={holdName(h.name)} /><span data-mid>&nbsp;·</span>{' '}
                 <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
               </h4>
               <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />
@@ -128,7 +128,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
                   <Niche class="honoree__niche" photo={h.photo} alt={h.alt} arch={programArch} img={{ style: `--focal: ${h.focal}` }} />
                 </div>
                 <h4 class="honoree__deck mid-broken" data-mid-line>
-                  <span class:list={['display', 'honoree__name', { 'honoree__name--pair': isTwoWordName(h.name) }]} data-mid-a>{pair(h.name)}</span><span data-mid>&nbsp;·</span>{' '}
+                  <span class="display honoree__name" data-mid-a set:html={holdName(h.name)} /><span data-mid>&nbsp;·</span>{' '}
                   <span class="label honoree__award" data-mid-b>{pair(h.award)}</span>
                 </h4>
                 <p class="honoree__body" set:html={holdCompounds(pair(h.body))} />

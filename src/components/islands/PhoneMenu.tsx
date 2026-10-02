@@ -6,7 +6,9 @@
 // Changed: the trigger sits at the top right in the nav, never floating at the bottom; the ink circle
 //          scales up (transform) from the trigger into a full-screen ink panel; no per-letter hover
 //          roll; real links; a real button with aria-expanded; Escape closes; focus stays inside while
-//          open; the page behind cannot scroll; tapping outside the links or tapping a link closes it.
+//          open; everything outside the menu is inert while open (the skip link, the rest of the nav,
+//          main, the footer), so screen readers cannot reach the page behind the panel either; the page
+//          behind cannot scroll; tapping outside the links or tapping a link closes it.
 //          Colors are fixed per surface (no animated color): paper bars on the ink trigger.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
@@ -14,6 +16,21 @@ import { motion, useReducedMotion } from 'motion/react';
 const ease = [0.22, 1, 0.36, 1] as const;
 
 type NavLink = { label: string; href: string };
+
+// "Among Us" and "the Community" are keep-together units (.keep, global.css): a label wraps only
+// when it is wider than the screen (user text spacing), and never inside either unit.
+const KEEP = /(Among Us|the Community)$/;
+function Label({ text }: { text: string }) {
+  const [head, unit] = text.split(KEEP);
+  return unit ? (
+    <>
+      {head}
+      <span className="keep">{unit}</span>
+    </>
+  ) : (
+    <>{text}</>
+  );
+}
 type Props = { links: NavLink[]; donateHref: string; current?: string };
 
 export default function PhoneMenu({ links, donateHref, current }: Props) {
@@ -53,6 +70,19 @@ export default function PhoneMenu({ links, donateHref, current }: Props) {
     const root = document.documentElement;
     root.classList.add('menu-open'); // locks page scroll (global.css)
 
+    // Everything outside the menu goes inert: at each level from the menu up to <body>, every sibling
+    // of the branch holding it. Only elements made inert here are released, on every close path (each
+    // one sets open to false, which runs this effect's cleanup).
+    const outside: HTMLElement[] = [];
+    for (let node = rootRef.current; node && node !== document.body; node = node.parentElement) {
+      for (const sibling of node.parentElement?.children ?? []) {
+        if (sibling === node || !(sibling instanceof HTMLElement) || sibling.inert) continue;
+        if (['SCRIPT', 'STYLE', 'TEMPLATE'].includes(sibling.tagName)) continue;
+        sibling.inert = true;
+        outside.push(sibling);
+      }
+    }
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
@@ -80,6 +110,7 @@ export default function PhoneMenu({ links, donateHref, current }: Props) {
     document.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
     return () => {
+      outside.forEach((el) => (el.inert = false));
       root.classList.remove('menu-open');
       document.removeEventListener('keydown', onKey);
       window.removeEventListener('resize', onResize);
@@ -147,7 +178,7 @@ export default function PhoneMenu({ links, donateHref, current }: Props) {
                   animate={{ opacity: open ? 1 : 0 }}
                   transition={t(0.4, open ? 0.4 + 0.08 * i : 0)}
                 >
-                  {link.label}
+                  <Label text={link.label} />
                 </motion.a>
               </li>
             ))}
@@ -162,9 +193,9 @@ export default function PhoneMenu({ links, donateHref, current }: Props) {
                 transition={t(0.4, open ? 0.4 + 0.08 * links.length : 0)}
               >
                 <span className="btn__fill" aria-hidden="true" />
-                <span className="btn__label">Donate</span>
+                <span className="btn__label keep">Donate</span>
                 <span className="btn__hover" aria-hidden="true">
-                  <span>Donate</span>
+                  <span className="keep">Donate</span>
                   <svg className="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" focusable="false">
                     <path d="M5 12h14" />
                     <path d="m12 5 7 7-7 7" />

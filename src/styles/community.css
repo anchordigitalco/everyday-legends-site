@@ -204,10 +204,6 @@
     transform: translate(3px, -3px);
   }
 }
-.news__card:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 2px;
-}
 .news__card:focus-visible::before {
   opacity: 1;
 }

@@ -41,11 +41,11 @@ How it resolves on the web:
 
 | Token | Hex | Allowed uses |
 |---|---|---|
-| ink | #15120E | Text, primary buttons, Support slab, footer, intro wall, menu panel |
+| ink | #15120E | Text, primary buttons, Support slab, footer, intro wall, menu panel, the focus ring's outer band |
 | paper | #F2EADB | Page surface, text on ink |
 | paper-deep | #E4D7BF | Secondary surfaces, secondary buttons, photo tint |
 | brass | #A9844F | Rails, drop lines, card frame, button hover fill |
-| brass-light | #C9A76A | Focus rings only |
+| brass-light | #C9A76A | Focus rings only: the inner band of the two-tone ring. |
 | gold | #DDAF3C, #D8B450 | Rays inside the mark only |
 | lamp, lamp-edge | #F6D9A0, #2A2016 | The intro's arch glow only |
 | color-give | #000000 | Support's arch fill only: the Zeffy card's own color, sampled from the loaded form |
@@ -68,7 +68,7 @@ How it resolves on the web:
 - Labels: Bricolage Grotesque `wght 600`, uppercase, tracked, as built in Phase 5.
 - Fraunces loads from its full variable file. MUST NOT swap to the lighter opsz-only file: it has no WONK axis and draws a different ampersand and h, m, n.
 - Display to body size ratio of 3x or more from 440px up; 2.5x or more below 440px, so the hero title fits without orphans.
-- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. A two-word name (an honoree or a program) never wraps; longer names wrap balanced. A hyphenated compound never splits across lines, including in Sanity news text (`in-the-community.astro` wraps them in `.nowrap`; the text itself never changes). "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
+- No orphans anywhere, with no exceptions: any text block that wraps ends with at least two words on its last line, at every width. Keep-together units (two-word names, hyphenated compounds, 'Among Us', 'the Community') use `.keep`: inline-block, max-width 100%. At default text spacing they never split at any width. They wrap inside only when one unit alone is wider than its line (user text spacing, WCAG 1.4.12). Accepted. Longer names wrap balanced. A hyphenated compound never splits across lines, including in Sanity news text (`in-the-community.astro` wraps them in `.nowrap`; the text itself never changes). "Among Us" never splits wherever "Legends Among Us" renders. Titles and ledes use `text-wrap: balance`, body uses `text-wrap: pretty`, and `orphans.mjs` confirms it. One word alone on a first or middle line is fine.
 - Every display size grows continuously with the viewport and never gets smaller as the window widens.
 - The middot `·` is copy and is never replaced. A middot that falls at a line break is hidden visually and stays in the text.
 
@@ -120,7 +120,7 @@ Source files sit in `reference/21st/`. Keep every motion value listed under "Kee
    Change: plays once when 30% in view. Reduced motion shows static text. Blur presets never used.
 2. `hover-reveal-cards.tsx`, Legends in Action rows and About Leadership.
    Keep: hovered image scales to 1.05; siblings scale to 0.97 at opacity 0.6; 500ms ease-in-out; focus-visible matches hover.
-   Change: no blur, no `transition-all`, real images through `astro:assets`, applied to the three alternating rows (never a card grid), Brass and Ink styling. Touch devices get no hover effect.
+   Change: no blur, no `transition-all`, real images through `astro:assets`, applied to the three alternating rows (never a card grid), Brass and Ink styling. Touch devices get no hover effect. Legends in Action rows are pointer only and not focusable, since they are not links.
 3. `interactive-hover-button.tsx`, every solid button on the site.
    Keep: label slides out right and fades; a second label with an arrow slides in; 300ms.
    Change: default state is a solid fill, never an outline. The fill grows by transform scale from a dot, never by width, height, top, or left. Renders as `<a>`, except a form submit, which is a `<button>`. The fill's starting dot stays hidden at rest so it never counts as brass. Auto width. Pressed state scales to 0.97. Focus-visible matches hover.
@@ -137,7 +137,7 @@ About adds no new 21st.dev components. Its other motion is custom gsap: the nich
 
 ## Shared shell
 
-- `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links.
+- `src/layouts/Base.astro` holds the head, grain, nav, and footer. Its `current` prop sets aria-current on the nav and phone menu links. Base.astro opens with the skip link to <main id="main">. The phone menu sets inert on everything outside it while open.
 - Shared behavior lives in `src/scripts/site.ts`. Page scripts hold only that page's motion.
 - Shared motion (menu curve, in-view trigger, plate drop) lives in `src/scripts/motion.ts`. Rail markup: `.hang`, `.hang__rail`, `.hang__pillars`. Rail plates from 900px: side padding clamp(1.25rem, 4vw - 1rem, 2rem), gap at least 1rem.
 - `Niche.astro` is every arch (About, In the Community and Contact headers, portraits, Support form frame, Legends honorees). `tint={false}` drops the photo tint (Contact's torch).
@@ -181,7 +181,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Our Story: cols 2–8, with 251 in cols 9–12, top level with the body's first line, no crop, no arch, rising 24px once in view (`riseInView`). Under 900px, 251 runs full width after the body. It never touches the pull quote band.
   - Pull quote: full-bleed paper-deep band, ink hairlines, Fraunces display clamp(2.25rem, 5.9vw, 7rem), SplitText line rise (0.8s, 0.12s stagger), read once by screen readers.
   - We aim to: title in label style on purpose. Lines Bricolage 300 at 1.2–1.5x Home's lede, cols 1–8 / 3–10 / 5–12 under ink hairlines; step clamp(1rem, 6vw, 3rem) under 900px. Rule draws 0.5s, then line slides from -24px 0.5s, 0.18s apart.
-  - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, 18em below.
+  - What we do: Home's rail and plate drop. Plates hold deck plus sentence: deck width at 900px up, min(18em, 100%) below.
   - Leadership: founders cols 1–5 / 8–12 (3.5-col arches), board cols 2–5 / 8–11 (2.5-col arches), each second bust lower by arch height ÷ 3. Stacked under 900px, arch max 22rem. Hover reveal is pointer only, no focus state, since busts are not links.
   - Founders is the longest section by copy. Leadership may run taller where portraits stack. Accepted.
   - About brass: 2 of 3 (torch line, What we do rail).
@@ -201,7 +201,7 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
   - Slab: static, not full-screen; title is the h1 in label style, lede at display scale. Under 900px, bottom padding `--space-generous`.
   - Gift (`#give`): from 900px, cols 1–5 hold body, cornerstone, tax paragraph, sticky beside the arch in cols 7–12; under 900px, body, arch, cornerstone, tax paragraph. The arch is `Niche.astro`'s frame variant, height set by content: About's hairline and paper gap, then an inset inner arch filled edge to edge, dome included, in `--color-give`, so the card's edges vanish. The form starts at the inner springline and sits flush on the jambs and base.
   - Rays: the mark's ray paths in brass behind the frame, placed as in the mark and scaled down only to clear the viewport; never behind text. The page's only motion: one opacity fade at 20% in view, center outward.
-  - The form and frame never animate. Zeffy: v2 script embed exactly as supplied, sized by the form (no fixed height, no inner scroll); dashboard color #000000, dark mode. Nothing inside the iframe is styled; Zeffy's own wrapper is backed in `--color-give` so its white never shows at the corners. If Zeffy's color changes, re-sample and update the token.
+  - The form and frame never animate. Zeffy: v2 script embed exactly as supplied, sized by the form (no fixed height, no inner scroll); dashboard color #000000, dark mode. Nothing inside the iframe is styled; Zeffy's own wrapper is backed in `--color-give` so its white never shows at the corners. If Zeffy's color changes, re-sample and update the token. A small script sets the Zeffy iframe's title from the copy deck. The embed stays exactly as supplied.
   - Pointer: static, centered, ink hairline above, secondary button to `/legends-among-us#sponsorship`.
   - On `/support`, Donate points to `#give`. Brass: 1 of 3 (rays).
 - Contact: niche header, the register, Instagram marginalia. No newsletter. The page has no motion.
@@ -236,6 +236,8 @@ Each slice fills its own rows from its wireframe at the start of that slice. The
 11. Any change to a page's entrance gets motion-on proof, not only reduced motion. Contact's torch sat hidden for 2.5s and reduced-motion screenshots missed it.
 12. Display sizes never shrink as the window widens. Phase 8 QA found section titles dropping from 72px to 51px at 900 and 1410.
 13. Check scripts carry no exception this file does not record. `orphans.mjs` hid an unrecorded exception that let two-word names stack.
+14. Every keep-together unit survives WCAG text spacing at 375 and fits at 320. The ADA audit found clipped hall names and an overflowing footer handle.
+15. The focus ring is two-tone everywhere. Brass-light alone measured 1.91:1 on paper.
 
 ## Launch basics
 

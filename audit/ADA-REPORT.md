@@ -81,6 +81,8 @@ There were no conflicts from this prompt with CONTEXT.md.
 
 ## 5. Conformance record
 
+Updated after the fix pass (section 9). Rows marked "Pass (fix pass)" failed in the audit.
+
 | Criterion | Level | Result | Why |
 |---|---|---|---|
 | 1.1.1 Non-text Content | A | Pass | Every content photo has descriptive alt (structure JSON `imgs`); the mark and logo are `alt=""` inside named links; every decorative SVG is `aria-hidden` (0 exposed SVGs of ours) |
@@ -95,9 +97,9 @@ There were no conflicts from this prompt with CONTEXT.md.
 | 1.4.3 Contrast (Minimum) | AA | Pass | Lowest text on real pixels 5.22:1 (card marginalia); axe found no failures; see `manual-contrast.json` |
 | 1.4.4 Resize Text | AA | Pass | 200% at 1280: no clipping, overlap, or horizontal scroll on 8 pages (`zoom200-1280-*.png`) |
 | 1.4.5 Images of Text | AA | Pass | Only the logo (exempt); all other text is live |
-| 1.4.10 Reflow | AA | **Fail** | S2, S3 |
-| 1.4.11 Non-text Contrast | AA | **Fail** | S1 (focus ring); input rules and the menu trigger pass |
-| 1.4.12 Text Spacing | AA | **Fail** | S4 (375); 1440 passes |
+| 1.4.10 Reflow | AA | Pass (fix pass) | Was Fail (S2, S3). At 320 no page scrolls sideways (8 of 8), the footer handle is whole, About's plates fit; 200% at 1280 still clean |
+| 1.4.11 Non-text Contrast | AA | Pass (fix pass) | Was Fail (S1). Two-tone ring: the ink band measures 13.10–15.62:1 on paper and paper-deep, the brass-light band 7.29–8.20:1 on ink, and the two bands 8.20:1 against each other |
+| 1.4.12 Text Spacing | AA | Pass (fix pass) | Was Fail (S4). At 375 no text clips and no keep-together unit overflows, on 8 pages and in the open menu. One note: Home's decorative "2026" numeral (aria-hidden; the year is in the heading) runs 9px past the edge; no content is lost |
 | 1.4.13 Content on Hover or Focus | AA | Pass | No content appears on hover or focus |
 | 2.1.1 Keyboard | A | Pass | Every control reachable at 375, 1440, and 200% in Chromium and WebKit |
 | 2.1.2 No Keyboard Trap | A | Pass | The menu trap releases on Escape and on the close control, returning focus to the trigger; focus leaves Zeffy and Turnstile |
@@ -105,7 +107,7 @@ There were no conflicts from this prompt with CONTEXT.md.
 | 2.2.1 Timing Adjustable | A | Pass | No user time limit; the 30s Turnstile wait keeps all values |
 | 2.2.2 Pause, Stop, Hide | A | Pass | The intro runs 3.15–3.19s (under 5s), skips on any input, and plays once per session; reveals play once; the hall is scroll-driven |
 | 2.3.1 Three Flashes or Below | A | Pass | At most 2 qualifying flashes in any second; flame area 14,806 px² at 1440 (limit 21,824); no qualifying change while the flame grows (`manual-flash.json`) |
-| 2.4.1 Bypass Blocks | A | Pass | Landmarks and headings; no skip link (M1) |
+| 2.4.1 Bypass Blocks | A | Pass | Landmarks and headings, and now a skip link first on every page (M1) |
 | 2.4.2 Page Titled | A | Pass | 8 unique titles |
 | 2.4.3 Focus Order | A | Pass | No order inversions except Contact's form-then-margin column order, which is logical; see M2 and M3 |
 | 2.4.4 Link Purpose (In Context) | A | Pass | All link names meaningful |
@@ -133,8 +135,8 @@ There were no conflicts from this prompt with CONTEXT.md.
 | 3.3.7 Redundant Entry | A | N/A | Single-step form |
 | 3.3.8 Accessible Authentication (Minimum) | AA | N/A | No login. Turnstile is not authentication |
 | 4.1.1 Parsing | A | N/A | Removed in WCAG 2.2 |
-| 4.1.2 Name, Role, Value | A | **Fail** | B1 (Zeffy iframe title); our own controls pass |
-| 4.1.3 Status Messages | AA | **Fail** | S5 |
+| 4.1.2 Name, Role, Value | A | Pass (fix pass) | Was Fail (B1). The Zeffy iframe is named; axe `frame-title` is gone. Zeffy's own `link-name` and `nested-interactive` inside its frame remain (section 7) |
+| 4.1.3 Status Messages | AA | Pass (fix pass) | Was Fail (S5). "Sending" is written to the polite live region, replaced by the failed line, cleared on success |
 
 ## 6. Needs copy
 
@@ -195,3 +197,43 @@ Setup: Settings › Accessibility › VoiceOver on, or set the side-button tripl
 - axe could not decide contrast on 737 nodes (fixed grain SVG, gradients, pseudo-content), so contrast was measured on real pixels instead: `manual-contrast.json` and `audit/shots/contrast-*.png`.
 - Manual: `audit/raw/manual-{structure,keyboard,menu,menu-ax,focusring,reflow,zoomkb,spacing,contrast,targets,motion,flash,contact,zeffy,webkit}.json`.
 - Screenshots: `audit/shots/` (104 files): `focus-*`, `reflow-320-*`, `zoom200-1280-*`, `spacing-*`, `contrast-*`, `menu-open-*`, `contact-errors-*`, `contact-error-flow-*`.
+
+## 9. Fix pass
+
+Branch `ada-fixes` from `3e05209` (ADA audit: report and axe script), uncommitted. Built with `astro build`, served from dist/ with `astro preview` on 4323. The audit's pre-fix raw data and shots are kept in `audit/raw/before/` and `audit/shots/before/` (both gitignored). New proof script: `audit/fixes.mjs` (writes `audit/raw/fix-*.json` and `audit/shots/fix-*.png`). Formspree was never reached: in `fixes.mjs` every formspree.io request was held in the browser and answered there, and Turnstile was replaced by a stub.
+
+All 9 IDs are fixed.
+
+| ID | Status | Before (audit) | After (fix pass) | Evidence |
+|---|---|---|---|---|
+| **B1** | Fixed | iframe `title: null` at 375 and 1440; axe `frame-title` in 4 of 4 Support scans | `title="Everyday Legends Foundation donation form"` at 375 and 1440; `frame-title` in 0 scans. The embed markup is byte for byte as supplied; `support.ts` names the iframe Zeffy inserts (at once, or through a MutationObserver that then disconnects) and leaves Zeffy's fallback iframe alone | `audit/raw/manual-zeffy.json`, `audit/raw/support-*.wcag.json` |
+| **S1** | Fixed | Brass-light alone: 1.82–1.91:1 on paper, 1.55–1.59:1 on paper-deep | One rule in global.css: 2px brass-light (box-shadow), then 2px ink (outline, offset 2px). Real pixels at 2x: ink band vs paper 15.07–15.62, vs paper-deep 13.10–13.39; brass-light band vs ink surfaces 7.29 (slab), 7.61 (footer), 8.20 (menu); ink band vs brass-light band 8.20 everywhere. Shadows are combined through `--shadow`, never replaced. All 13 old focus-visible ring rules are gone; the keyboard walk shows one ring style on every stop (`solid 2px #15120e, offset 2px`) | `audit/raw/fix-ring.json`; `audit/shots/fix-focus-{primary-button,secondary-button,form-field,nav-link}-1440.png` and 11 more |
+| S1, Support arch | Note | n/a | Nothing of ours takes focus on the arch. Focus goes into Zeffy's frame, which does not match `:focus-visible`, so Zeffy draws its own ring inside. Against the arch's measured fill (#000000): brass-light band 9.22, ink band 1.12; the pair still reads, since the bands are 8.20 apart | `audit/raw/fix-ring.json` (zeffy-frame), `audit/shots/fix-focus-zeffy-frame-1440.png` |
+| **S2** | Fixed | Footer link 326px in a 280px column, handle cut to "@everydaylegendsfoundat" | At 320 the line breaks at its middot (middot hidden, still read); the handle carries `overflow-wrap: anywhere` as a last resort. At 375 and up the line is unchanged (word positions identical to the base build at 13 widths) | `audit/shots/fix-reflow-320-footer.png`; `audit/raw/manual-reflow.json` |
+| **S3** | Fixed | About scrollWidth 356 at 320 | 320. The sentence is `min(18em, 100%)`. Alone, that let every plate under 900px grow to the full column (a cyclic percentage), so the plate also states its old width, `min(100%, 18rem + 2 × --s-3)`; plates are unchanged from 375 to 899 (375 is 1px narrower, where it overflowed by 1px before) | `audit/shots/fix-reflow-320-about-what.png` |
+| **S4** | Fixed | Text-spacing scrollWidth at 375: Home 461, About 491, Community 446, Legends 397, Support 387 | Home 384 (see note), About, Community, Legends, Support, Contact, Privacy, 404 all 375; no text past the edge on any page or in the open menu. `.keep` (inline-block, max-width 100%, white-space normal) now holds the hall names, honoree names, both pillar decks, compounds (`holdCompounds`, the news runs, the tax lines), every "Among Us", "the Community", the Support slab lede and pointer, button labels, and the menu links. `orphans.mjs` passes at default spacing: 8 pages × 13 widths × 2 motion modes, 208 runs, no hits | `audit/shots/fix-spacing-375-*.png` (16 shots); `audit/raw/manual-spacing.json`, `audit/raw/fix-shots.json` |
+| **S5** | Fixed | Only the button label changed to "Sending" | The live region is written once per state: "Sending" (read only; clipped like the hidden middot, the button already shows it), then the failed line (visible), then "Sending" again, then emptied on success, with the coda focused. MutationObserver log: 4 writes for 4 states, none doubled | `audit/raw/fix-contact.json`; `audit/shots/fix-contact-{sending,failed}-1440.png` |
+| **M1** | Fixed | No skip link; first Tab is the nav mark | "Skip to content" is the first Tab stop on 8 of 8 pages. At 375 and 1440 it sits top left (20,16 / 72,16), 48px tall, z-index 70 above the nav's 60, ink fill and paper text with the two-tone ring. Enter moves focus to `<main id="main">`, and the next Tab is inside main | `audit/shots/fix-skip-375.png`, `fix-skip-1440.png`; `audit/raw/fix-skip.json` |
+| **M2** | Fixed | 3 `LI.action__row` Tab stops on Home | 0. `tabindex` is null, the rows are not focusable, the spotlight is pointer only. Home's Tab stops: 20 → 18 at 1440 (−3 rows, +1 skip link) | `audit/raw/manual-keyboard.json`, `manual-structure.json` (`rows`) |
+| **M3** | Fixed | Menu open: `main` in the tree, 4 page nodes reachable behind the panel | Menu open: skip link, main, footer, nav mark, and nav Donate are inert; main and contentinfo are absent from the tree (16 nodes vs 78 closed). Both return after Escape, the close control, tapping outside, and tapping a link | `audit/raw/fix-menu.json`, `manual-menu-ax.json` |
+| **M4** | Fixed | 3 new-tab links with no warning | Footer Instagram, footer credit, and Contact's Instagram end in a `.sr-only` "(opens in a new tab)"; `warns: true` for all three on every page. Visible text is unchanged | `audit/raw/manual-structure.json` (`newTab`) |
+
+**axe, rerun:** 38 of 38 scans have zero WCAG violations in our markup. The 4 Support scans still list Zeffy's `link-name` and `nested-interactive`, both inside Zeffy's frame (section 7), which this pass may not touch.
+
+**Default spacing, unchanged layout:** word positions and element boxes were compared against the base build at 13 widths on 8 pages. The only differences are the intended ones (S2 and S3 at 320, the skip link, the live region, the About plate at 375), plus two one-word line moves in `text-wrap: pretty` paragraphs that now hold a `.keep` compound. Nathan Bailey's body at 1409–1440: "at" starts the next line. Support's tax paragraph at 1280: "to" starts the next line. Both remain orphan-free.
+
+**Decisions made in this pass, for Jackson**
+- Chrome may break a line right after an inline-block, even before a comma or after a non-breaking space. Without care, "Us," lost its comma to the next line, and "EIN" split from its number. So each `.keep` unit carries the punctuation and the non-breaking-space neighbours glued to it (`Among Us,`, `EIN 39-4769708.`).
+- About's What we do decks keep one line from 900px up (`white-space: nowrap` on the deck's `.keep`). There the deck sets the plate's minimum width; without it, plates narrowed and decks wrapped at 900 and 901. 1440 passes text spacing as before.
+- Text spacing showed three holds the audit's S4 rows did not list, all text overflowing past their boxes: Home's hero "Legends Foundation" (the cause of Home's 461), About's "Story & Inspiration" (the cause of About's 491), and the phone menu's "In the Community" and "Legends Among Us". All are now `.keep` units.
+- The skip link is a plain link styled as the primary button (ink fill, paper text at focus; brass fill, ink text on hover; scale 0.97 when pressed). It does not use the button's hover-face swap, so it stays ink while focused, as asked.
+- `#main` and the Contact coda take focus from a link or a script, not from Tab, so they draw no ring.
+- `.sr-only` is not added to global.css. Tailwind already generates it from global.css's `@import "tailwindcss"`, and it is in the built CSS.
+- `orphans.mjs` needed no change: it already counts inline-block children as part of their text block.
+
+**Not fixed or open**
+- Home's decorative "2026" numeral (aria-hidden) runs 9px past the edge at 375 under text spacing. It is one word, so it cannot wrap; the year is in the heading "Inaugural class, 2026". Fixing it would change the numeral's sizing.
+- `<Analytics />` renders a custom element as the last thing in `<head>`. The parser therefore opens the body early, and at runtime `vercel-analytics`, its script, and the stylesheet links sit before the skip link. The skip link is still the first Tab stop and the first element Base.astro writes in `<body>`.
+- `audit/manual.mjs focusring` now stops at its Home row target, which is no longer focusable (M2). It is left untouched; `audit/fixes.mjs ring` replaces it.
+- `webkit-focus.mjs` was not rerun (its Playwright install lives outside the repo). The VoiceOver script in section 8 still applies; steps 2, 4, 7, and 8 now expect the fixed behavior.
+- CONTEXT.md still mentions `.nowrap` in the Typography line on compounds, and island 2's Keep list still says "focus-visible matches hover". This pass made only the CONTEXT edits it listed.

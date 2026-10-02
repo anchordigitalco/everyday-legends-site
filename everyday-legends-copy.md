@@ -46,6 +46,7 @@ These came out of wireframing. Build them, but treat them as swappable until app
 - Home's Newsletter section removed until a newsletter provider exists. Our decision, so the site never collects sign-ups that go nowhere.
 - The Privacy Policy (see 7). The wording is ours. She confirms the two lines on how the foundation uses and keeps messages and donor details.
 - The 404 page (see 8). The wording is ours.
+- The three accessibility lines (see 9): "Skip to content", "Everyday Legends Foundation donation form", and "(opens in a new tab)". The wording is ours.
 
 ## Sitemap
 
@@ -386,7 +387,19 @@ MUST NOT add any other line, link, or photo to this page.
 
 ---
 
-## 9. Still to come
+## 9. Accessibility (site-wide)
+
+Lines for assistive technology, on every page. Pending client approval.
+
+| Register | Copy | Words | Source |
+|---|---|---|---|
+| CTA | Skip to content | 3 | NEW (skip link, first on every page, shown on keyboard focus) |
+| Marginalia | Everyday Legends Foundation donation form | 5 | NEW (accessible name of the Zeffy form on Support, not visible) |
+| Marginalia | (opens in a new tab) | 5 | NEW (screen reader only, appended to links that open a new tab) |
+
+---
+
+## 10. Still to come
 
 None of these block the build. Each drops into a space already designed for it.
 

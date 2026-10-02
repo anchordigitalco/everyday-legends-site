@@ -234,11 +234,8 @@
 .honoree--program .honoree__name {
   font-size: var(--program-name);
 }
-/* A two-word name (marked from honorees.ts at build time) always takes one line. The people's size is
-   capped against the longest two-word name only where that name would not fit its window. */
-.honoree__name--pair {
-  white-space: nowrap;
-}
+/* A two-word name is one keep-together unit (holdName, data/text.ts): it takes one line. The people's
+   size is capped against the longest two-word name only where that name would not fit its window. */
 .honoree--person .honoree__name {
   font-size: min(var(--person-name), var(--name-window) / var(--longest-pair));
 }

@@ -5,7 +5,8 @@
 //       (48px to -4px) and fades up; the fill grows from an 8px dot at left 20%, top 40%; 300ms.
 // Changed: solid fill at rest, never an outline; the fill grows by transform scale only; renders as
 //          <a> (a submit control renders as <button>); auto width; pressed scales to 0.97;
-//          focus-visible matches hover. Styles live in global.css under "Buttons".
+//          focus-visible matches hover. Each label is a keep-together unit (.keep): it wraps only when
+//          it alone is wider than its line (user text spacing). Styles live in global.css under "Buttons".
 type Props = {
   label: string;
   href?: string;
@@ -20,9 +21,9 @@ const tagProps = href ? { href } : { type: type ?? 'button' };
 ---
 <Tag class:list={['btn', `btn--${variant}`, extra]} {...tagProps} {...rest}>
   <span class="btn__fill" aria-hidden="true"></span>
-  <span class="btn__label">{label}</span>
+  <span class="btn__label keep">{label}</span>
   <span class="btn__hover" aria-hidden="true">
-    <span>{label}</span>
+    <span class="keep">{label}</span>
     <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
   </span>
 </Tag>

@@ -4,8 +4,12 @@
 //   under its rule, aria-invalid, and aria-describedby, and focus moves to the first. After the first
 //   attempt an error clears the moment its field becomes valid.
 // Sending: the button reads "Sending" and takes no second press (aria-disabled, so focus stays on it).
-// Sent: the coda replaces the form inside a live region and takes focus; it fades in once (CSS).
-// Send failed: the deck line appears above the button inside a live region; every value stays.
+//   The same line goes into the form's live region, read by screen readers only (data-state, CSS).
+// Sent: the live region empties; the coda replaces the form inside a live region and takes focus; it
+//   fades in once (CSS).
+// Send failed: the deck line replaces "Sending" in the live region, shown above the button; every
+//   value stays.
+// One announcement per state: each state writes the region once, and each write changes its text.
 // No motion but the coda's fade, and none at all with reduced motion.
 // Turnstile: Formspree verifies its token and rejects a send without one, so a send never goes out
 // with an empty token. With a token in hand it posts at once; without one it waits, in its Sending
@@ -161,6 +165,13 @@ export function initContact() {
 
   const setLabel = (text: string) => labels.forEach((l) => (l.textContent = text));
 
+  // The live region's line for each state: 'sending' is read only; 'failed' shows above the button
+  const announce = (state: 'sending' | 'failed' | null) => {
+    if (state) fail.dataset.state = state;
+    else delete fail.dataset.state;
+    fail.textContent = state === 'sending' ? copy.sending : state === 'failed' ? pair(copy.sendFailed) : '';
+  };
+
   const setSending = (on: boolean) => {
     sending = on;
     setLabel(on ? copy.sending : copy.submit);
@@ -168,19 +179,14 @@ export function initContact() {
     else submit.removeAttribute('aria-disabled');
   };
 
-  // A repeat failure clears the line first, so the live region announces it again
+  // "Sending" always stands between two failures, so a repeat failure changes the text and is read again
   const showFailed = () => {
     setSending(false);
-    const line = pair(copy.sendFailed);
-    if (fail.textContent === line) {
-      fail.textContent = '';
-      setTimeout(() => (fail.textContent = line), 100);
-    } else {
-      fail.textContent = line;
-    }
+    announce('failed');
   };
 
   const showSent = () => {
+    announce(null);
     const coda = document.createElement('p');
     coda.className = 'display register__coda';
     coda.tabIndex = -1;
@@ -210,12 +216,13 @@ export function initContact() {
       return Boolean(message);
     });
     if (invalid.length) {
-      fail.textContent = '';
+      announce(null);
       invalid[0].focus();
       return;
     }
 
     setSending(true);
+    announce('sending');
     // The values sent are the ones just checked
     const body = new FormData(form);
     try {

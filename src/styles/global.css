@@ -109,6 +109,69 @@ img {
   max-width: 100%;
 }
 
+/* Focus: one ring for every focusable element. From the element outward, 2px brass-light, then 2px
+   ink, so one band always stands clear of its neighbour: ink on paper and paper-deep, brass-light on
+   ink. An element with a shadow of its own sets it as --shadow (never box-shadow directly), so the
+   ring is added in front of it, never in place of it. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--brass-light), var(--shadow, 0 0 transparent);
+}
+:where(.btn, .menu__trigger, .register__entry, .skip) {
+  box-shadow: var(--shadow, none);
+}
+/* The skip link's target and the contact coda take focus from a script or a link, never from Tab:
+   they are not controls, so they draw no ring */
+#main:focus,
+.register__coda:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Skip to content (copy deck 9): first in every page, hidden until focused, then top left above the
+   fixed nav, as a primary button: ink fill, paper text; hover brass fill, ink text. */
+.skip {
+  position: fixed;
+  top: var(--s-2);
+  left: var(--gutter);
+  z-index: 70;
+  display: inline-grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 0 var(--s-3);
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  --shadow:
+    0 1px 1px color-mix(in srgb, var(--ink) 12%, transparent),
+    0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
+  transition: transform 220ms var(--menu);
+}
+.skip:not(:focus) {
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip:hover {
+  background: var(--brass);
+  color: var(--ink);
+}
+.skip:active {
+  transform: scale(0.97);
+}
+
 .sr-defs {
   position: absolute;
   width: 0;
@@ -184,9 +247,13 @@ img {
   }
 }
 
-/* A term that never breaks inside itself (a hyphenated compound, the EIN, 501(c)(3)) */
-.nowrap {
-  white-space: nowrap;
+/* A keep-together unit: a two-word name, a hyphenated compound, "Among Us", "the Community". It moves
+   to the next line whole, so at default text spacing it never splits. Only when the unit alone is
+   wider than its line (user text spacing, WCAG 1.4.12) does it wrap inside, rather than overflow. */
+.keep {
+  display: inline-block;
+  max-width: 100%;
+  white-space: normal;
 }
 
 /* Marginalia and labels */
@@ -417,10 +484,6 @@ html.el-settle:not(.el-settle-js) .niche__plate {
   opacity: 1;
   transform: scale(1);
 }
-.btn:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
-}
 .btn:active {
   transform: scale(0.97);
 }
@@ -436,7 +499,7 @@ html.el-settle:not(.el-settle-js) .niche__plate {
 .btn--primary {
   background: var(--ink);
   color: var(--paper);
-  box-shadow:
+  --shadow:
     0 1px 1px color-mix(in srgb, var(--ink) 12%, transparent),
     0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
 }
@@ -451,7 +514,7 @@ html.el-settle:not(.el-settle-js) .niche__plate {
 .btn--secondary {
   background: var(--paper-deep);
   color: var(--ink);
-  box-shadow:
+  --shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent),
     0 1px 1px color-mix(in srgb, var(--ink) 10%, transparent),
     0 6px 14px -8px color-mix(in srgb, var(--ink) 30%, transparent);
@@ -467,7 +530,7 @@ html.el-settle:not(.el-settle-js) .niche__plate {
 .btn--on-ink {
   background: var(--paper);
   color: var(--ink);
-  box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--ink) 80%, transparent);
+  --shadow: 0 8px 18px -10px color-mix(in srgb, var(--ink) 80%, transparent);
 }
 .btn--on-ink .btn__fill {
   background: var(--brass);
@@ -523,10 +586,6 @@ html.nav-backed .nav::before {
 }
 .nav__mark:hover {
   transform: translateY(-1px);
-}
-.nav__mark:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 6px;
 }
 .nav__mark:active {
   transform: scale(0.97);
@@ -590,10 +649,6 @@ html.nav-backed .nav::before {
 .nav__link[aria-current="page"]::after {
   height: 2px;
   transform: scaleX(1);
-}
-.nav__link:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
 }
 .nav__link:active {
   transform: translateY(1px);
@@ -670,16 +725,12 @@ html.menu-open body {
   border-radius: 2px;
   background: var(--ink);
   cursor: pointer;
-  box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
+  --shadow: 0 6px 14px -6px color-mix(in srgb, var(--lamp-edge) 35%, transparent);
   transition: transform 220ms var(--menu);
   -webkit-tap-highlight-color: transparent;
 }
 .menu__trigger:hover {
   transform: scale(1.05);
-}
-.menu__trigger:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
 }
 .menu__trigger:active {
   transform: scale(0.97);
@@ -730,7 +781,6 @@ html.menu-open body {
   font-size: clamp(2.25rem, 10vw, 3.25rem);
   line-height: 1;
   text-decoration: none;
-  white-space: nowrap;
 }
 .menu__link::after {
   content: "";
@@ -748,10 +798,6 @@ html.menu-open body {
 .menu__link:focus-visible::after,
 .menu__link[aria-current="page"]::after {
   transform: scaleX(1);
-}
-.menu__link:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 6px;
 }
 .menu__link:active {
   transform: translateY(1px);
@@ -877,7 +923,7 @@ html.el-intro-dark:not(.el-intro-js) .nav__link > span {
 }
 .hero__title {
   margin: 0;
-  /* Breaks only as "Everyday / Legends Foundation" (a non-breaking space holds the last two words),
+  /* Breaks only as "Everyday / Legends Foundation" (the last two words are one .keep unit),
      so on phones the size is capped where "Legends Foundation" (8.21em) still fits the column. */
   font-size: min(clamp(3rem, 7.4vw, 8.5rem), calc((100vw - 40px) / 8.4));
   line-height: 0.94;
@@ -1019,10 +1065,10 @@ html.el-intro [data-hero-item] {
   text-align: center;
   text-wrap: balance;
 }
-/* A two-word name (marked from honorees.ts at build time) always takes one line */
+/* A two-word name (marked from honorees.ts at build time) is one keep-together unit (holdName,
+   data/text.ts): it takes one line */
 .hall__text--pair {
   max-width: none;
-  white-space: nowrap;
 }
 
 /* ── 3 · Our Mission ───────────────────────────────────────── */
@@ -1127,7 +1173,6 @@ html.el-intro [data-hero-item] {
   margin: 0;
   font-size: clamp(1.5rem, 2.2vw, 2.75rem);
   line-height: 1.05;
-  white-space: nowrap; /* a deck never wraps, so it can never orphan */
 }
 .mission__cta {
   margin-top: var(--space-tight);
@@ -1178,7 +1223,7 @@ html.el-intro [data-hero-item] {
 /* ── 4 · Legends in Action ─────────────────────────────────── */
 /* A paper-deep band. Photo and text swap sides each row. Spotlight on hover, adapted from
    reference/21st/hover-reveal-cards.tsx: the row's photo scales to 1.05; the other rows' photos
-   scale to 0.97 at opacity 0.6; 500ms ease-in-out; focus-visible matches hover. No blur. */
+   scale to 0.97 at opacity 0.6; 500ms ease-in-out. Pointer only: the rows are not links. No blur. */
 .action {
   position: relative;
   overflow-x: clip; /* a spotlit photo at 1.05 never widens the page */
@@ -1231,10 +1276,6 @@ html.el-intro [data-hero-item] {
   align-items: center;
   row-gap: var(--s-3);
   border-radius: 2px;
-}
-.action__row:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 8px;
 }
 .action__photo {
   position: relative;
@@ -1290,7 +1331,7 @@ html.el-intro [data-hero-item] {
   text-wrap: pretty;
 }
 
-/* Spotlight: pointer devices only (touch gets none); keyboard focus everywhere */
+/* Spotlight: pointer devices only (touch gets none). The rows are not links, so they take no focus. */
 @media (hover: hover) and (pointer: fine) {
   .action__rows:has(.action__row:hover) .action__row:not(:hover) .action__photo {
     transform: scale(0.97);
@@ -1299,13 +1340,6 @@ html.el-intro [data-hero-item] {
   .action__row:hover .action__photo {
     transform: scale(1.05);
   }
-}
-.action__rows:has(.action__row:focus-visible) .action__row:not(:focus-visible) .action__photo {
-  transform: scale(0.97);
-  opacity: 0.6;
-}
-.action__row:focus-visible .action__photo {
-  transform: scale(1.05);
 }
 @media (prefers-reduced-motion: reduce) {
   .action__row .action__photo,
@@ -1617,10 +1651,6 @@ html.el-intro [data-hero-item] {
 .footer__logo:hover {
   transform: translateY(-2px);
 }
-.footer__logo:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 8px;
-}
 .footer__logo:active {
   transform: scale(0.98);
 }
@@ -1660,12 +1690,16 @@ html.el-intro [data-hero-item] {
 .footer__link:focus-visible::after {
   transform: scaleX(1);
 }
-.footer__link:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
-}
 .footer__link:active {
   transform: translateY(1px);
+}
+/* The Instagram line may break at its middot (the middot then hides, site.ts); the handle breaks
+   inside itself only as a last resort, when it alone is wider than the column */
+.footer__ig {
+  white-space: normal;
+}
+.footer__handle {
+  overflow-wrap: anywhere;
 }
 .footer__base {
   display: flex;

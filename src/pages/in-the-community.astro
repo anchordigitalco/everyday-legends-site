@@ -8,6 +8,7 @@ import '../styles/community.css';
 import { entries } from '../data/community';
 import { hrefOf } from '../data/nav';
 import { getNews, formatNewsDate } from '../data/news';
+import { holdAmongUs } from '../data/text';
 import nichePhoto from '../../brand_assets/Everyday_Legends_2026_219_websize.jpg';
 import { headerArch } from '../data/niches';
 
@@ -19,8 +20,8 @@ const news = await getNews();
 // The last two words of a line travel together (a non-breaking space, the copy itself unchanged), so no
 // title, deck half, or body ever ends on one word alone.
 // Sanity text arrives unchecked, so its hyphenated compounds (Mid-Ohio) are held whole: the text splits
-// into runs, and each compound renders in a .nowrap span.
-const hyphens = (text: string) => text.split(/(\S*\w-\w\S*)/);
+// into runs, and each compound renders in a .keep span.
+const hyphens = (text: string) => text.split(/([^ \t\n\r]*\w-\w[^ \t\n\r]*)/);
 const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
 ---
 <Base
@@ -30,7 +31,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
 >
   <SettleHead slot="head" />
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- 1 · Niche header, on paper: About's composition, niche, title, and lede -->
     <section class="niche-hdr" aria-labelledby="community-title">
       <div class="grid niche-hdr__grid">
@@ -42,7 +43,7 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
           arch={headerArch}
           img={{ loading: 'eager', fetchpriority: 'high', style: '--focal: 56% 0', 'data-niche-img': true }}
         />
-        <h1 id="community-title" class="display niche-hdr__title community-hdr__title">In the&nbsp;Community</h1>
+        <h1 id="community-title" class="display niche-hdr__title community-hdr__title">In <span class="keep">the Community</span></h1>
         <p class="niche-hdr__lede">{pair('Where the work has gone so far.')}</p>
       </div>
     </section>
@@ -69,8 +70,8 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
                 <span data-mid-a>{pair(e.deck[0])}</span><span data-mid>&nbsp;·</span>{' '}
                 <span data-mid-b>{pair(e.deck[1])}</span>
               </p>
-              <h2 class="display entry__title">{pair(e.title)}</h2>
-              <p class="entry__body">{pair(e.body)}</p>
+              <h2 class="display entry__title" set:html={holdAmongUs(pair(e.title))} />
+              <p class="entry__body" set:html={holdAmongUs(pair(e.body))} />
             </div>
           </li>
         ))}
@@ -94,8 +95,8 @@ const pair = (text: string) => text.replace(/ (\S+)$/, ' $1');
                     <span data-mid-b class="news__date"><time datetime={item.date}>{formatNewsDate(item.date)}</time></span>
                   </p>
                   <svg class="news__out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
-                  <h3 class="display news__headline">{hyphens(pair(item.headline)).map((run, i) => (i % 2 ? <span class="nowrap">{run}</span> : run))}</h3>
-                  <p class="news__summary">{hyphens(pair(item.summary)).map((run, i) => (i % 2 ? <span class="nowrap">{run}</span> : run))}</p>
+                  <h3 class="display news__headline">{hyphens(pair(item.headline)).map((run, i) => (i % 2 ? <span class="keep">{run}</span> : run))}</h3>
+                  <p class="news__summary">{hyphens(pair(item.summary)).map((run, i) => (i % 2 ? <span class="keep">{run}</span> : run))}</p>
                   <span class="sr-only">(opens in a new tab)</span>
                 </a>
               </li>

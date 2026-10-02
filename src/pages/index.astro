@@ -9,6 +9,7 @@ import SupportSlab from '../components/SupportSlab.astro';
 import luncheonPhoto from '../../brand_assets/Everyday_Legends_2026_178_websize.jpg';
 import luncheonSpeechPhoto from '../../brand_assets/Everyday Legends Foundation Luncheon- Yamean Studios Mckee Place Creative Nikon Ambassador-137_websize.jpg';
 import { honorees, isTwoWordName } from '../data/honorees';
+import { holdAmongUs, holdName } from '../data/text';
 import { entries } from '../data/community';
 import { luncheonPhotoAlt } from '../data/luncheon';
 
@@ -48,11 +49,11 @@ const actions = [
 
   <HomeIntro slot="overlay" />
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- 1 · Hero, on paper -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="grid hero__grid">
-        <h1 id="hero-title" class="display hero__title" data-hero-item>Everyday Legends&nbsp;Foundation</h1>
+        <h1 id="hero-title" class="display hero__title" data-hero-item>Everyday <span class="keep">Legends Foundation</span></h1>
         <p class="hero__lede" data-hero-item>Supporting scholars, athletes, and community leaders who exemplify excellence and impact.</p>
         <div class="hero__ctas" data-hero-item>
           <Button label="Donate" href="/support" />
@@ -75,7 +76,7 @@ const actions = [
             {honorees.map(({ name }) => (
               <li class="hall__name">
                 <span class="hall__drop" aria-hidden="true"></span>
-                <span class:list={['display', 'hall__text', { 'hall__text--pair': isTwoWordName(name) }]}>{name}</span>
+                <span class:list={['display', 'hall__text', { 'hall__text--pair': isTwoWordName(name) }]} set:html={isTwoWordName(name) ? holdName(name) : name} />
               </li>
             ))}
           </ol>
@@ -91,7 +92,7 @@ const actions = [
           <TextReveal client:visible className="mission__lede" text="Our work bridges scholarship, sports, and service." />
         </div>
         <div class="mission__side">
-          <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop <span class="nowrap">well-rounded</span> leaders, and support community initiatives that create lasting impact.</p>
+          <p class="mission__body">Everyday Legends Foundation, Inc. is a nonprofit organization that aims to honor achievement, expand scholarship opportunities, reinvest in athletic programs that develop <span class="keep">well-rounded</span> leaders, and support community initiatives that create lasting impact.</p>
           <div class="mission__cta">
             <Button label="About the foundation" href="/about" variant="secondary" />
           </div>
@@ -103,7 +104,7 @@ const actions = [
               <li class="pillar">
                 <span class="pillar__drop" aria-hidden="true" data-pillar-drop></span>
                 <div class="pillar__plaque" data-pillar-plaque>
-                  <h3 class="display pillar__name">{name}</h3>
+                  <h3 class="display pillar__name"><span class="keep">{name}</span></h3>
                 </div>
               </li>
             ))}
@@ -122,7 +123,7 @@ const actions = [
       </div>
       <ol class="action__rows">
         {actions.map((a, i) => (
-          <li class="grid action__row" tabindex="0" aria-labelledby={`action-${i + 1}`} data-action-row>
+          <li class="grid action__row" aria-labelledby={`action-${i + 1}`} data-action-row>
             <div class="action__photo">
               <Image
                 src={a.photo}
@@ -136,8 +137,8 @@ const actions = [
               <span class="action__tint" aria-hidden="true"></span>
             </div>
             <div class="action__text">
-              <h3 id={`action-${i + 1}`} class="display action__name">{a.title}</h3>
-              <p class="action__body">{a.body}</p>
+              <h3 id={`action-${i + 1}`} class="display action__name" set:html={holdAmongUs(a.title)} />
+              <p class="action__body" set:html={holdAmongUs(a.body)} />
             </div>
           </li>
         ))}
@@ -159,7 +160,7 @@ const actions = [
       </div>
       <Invitation
         id="legends-title"
-        title={'Legends Among\u00a0Us'}
+        title="Legends Among Us"
         lede={'Our signature afternoon of\u00a0recognition.'}
         body={'The Everyday Legends Luncheon brings together scholars, coaches, business leaders, and community champions to honor those who embody the spirit of legacy and\u00a0leadership.'}
         marg={['The\u00a0Highlawn', 'West\u00a0Orange,\u00a0New\u00a0Jersey']}

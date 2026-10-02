@@ -71,23 +71,16 @@
   min-height: calc(var(--entry-size) * 1.35 * 4 + 0.5em);
   resize: vertical;
 }
-.register__entry:focus {
-  outline: none;
-}
-.register__entry:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 4px;
-}
 .register__entry[aria-invalid="true"] {
-  box-shadow: inset 0 -1px 0 var(--ink);
+  --shadow: inset 0 -1px 0 var(--ink);
 }
 /* The browser's autofill fill would box the entry: paper under the text keeps it written on the page */
 .register__entry:autofill {
   -webkit-text-fill-color: var(--ink);
-  box-shadow: inset 0 0 0 100px var(--paper);
+  --shadow: inset 0 0 0 100px var(--paper);
 }
 .register__entry[aria-invalid="true"]:autofill {
-  box-shadow:
+  --shadow:
     inset 0 -1px 0 var(--ink),
     inset 0 0 0 100px var(--paper);
 }
@@ -128,13 +121,24 @@
   margin: 0;
   text-wrap: pretty;
 }
-.register__fail:empty {
-  display: none;
+/* Empty, or holding "Sending" (the button already shows it), the live region stays in the
+   accessibility tree but takes no room: clipped to nothing, as the hidden middot is */
+.register__fail:empty,
+.register__fail[data-state="sending"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 .register__submit {
   margin-top: calc(var(--s-3) * -1);
 }
-.register__fail:not(:empty) + .register__submit {
+.register__fail[data-state="failed"] + .register__submit {
   margin-top: calc(var(--s-4) * -1);
 }
 /* Sending: the button holds still at rest with its label changed; it takes no second press */
@@ -164,9 +168,6 @@
   line-height: 1.02;
   text-wrap: balance;
   animation: register-coda 0.4s var(--sine) both;
-}
-.register__coda:focus {
-  outline: none;
 }
 @keyframes register-coda {
   from {
@@ -208,10 +209,6 @@
 .register__ig:hover,
 .register__ig:focus-visible {
   text-decoration-color: var(--ink);
-}
-.register__ig:focus-visible {
-  outline: 2px solid var(--brass-light);
-  outline-offset: 3px;
 }
 .register__ig:active {
   transform: translateY(1px);

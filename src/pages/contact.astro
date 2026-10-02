@@ -6,6 +6,7 @@ import '../styles/contact.css';
 import { hrefOf } from '../data/nav';
 import { torchPaths, TORCH_VIEWBOX } from '../data/torch';
 import { contactForm as f, formspreeEndpoint, formspreeSubject, instagramUrl } from '../data/contact';
+import { newTab } from '../data/a11y';
 
 // Page order (everyday-legends-copy.md, section 6): the niche header, then the register. The quietest
 // page on the site: nothing enters and nothing moves. The header is in its final state from the first
@@ -28,7 +29,7 @@ const fields = [
   description="For questions, partnerships, or ways to get involved, send us a note and we will be in touch."
   current={hrefOf('Contact')}
 >
-  <main>
+  <main id="main" tabindex="-1">
     <!-- 1 · Niche header, on paper: About's composition, the niche holding only the torch -->
     <section class="niche-hdr" aria-labelledby="contact-title">
       <div class="grid niche-hdr__grid">
@@ -82,6 +83,8 @@ const fields = [
                form's left edge. A send waits for its token. -->
           <div class="register__check" data-turnstile></div>
 
+          <!-- The live region for the send: "Sending" (read only, the button already shows it), then the
+               send-failed line (visible); emptied when the note is sent -->
           <p class="register__fail" aria-live="polite" data-fail></p>
           <Button label={f.submit} type="submit" class="register__submit" data-submit />
         </form>
@@ -91,7 +94,7 @@ const fields = [
 
       <aside class="register__marg">
         <p class="register__marg-line">
-          <a class="register__ig" href={instagramUrl} target="_blank" rel="noopener" data-mid-line><span data-mid-a>Instagram</span><span data-mid>&nbsp;·</span> <span data-mid-b>@everydaylegendsfoundation</span></a>
+          <a class="register__ig" href={instagramUrl} target="_blank" rel="noopener" data-mid-line><span data-mid-a>Instagram</span><span data-mid>&nbsp;·</span> <span data-mid-b>@everydaylegendsfoundation</span><span class="sr-only">{newTab}</span></a>
         </p>
       </aside>
     </section>

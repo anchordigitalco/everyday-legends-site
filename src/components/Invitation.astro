@@ -2,9 +2,11 @@
 // The invitation card: paper, an inner double brass frame, set at its angle. The site's one rotated
 // object (CONTEXT.md). Styles live in global.css under "5 · Legends Among Us" (.card). Every line is
 // copy from everyday-legends-copy.md, passed in by the page; a line left out does not render.
+// The title keeps "Among Us" whole (.keep, data/text.ts).
 // `marg` is the marginalia's two halves, which break only at the middot (site.ts, data-mid-line).
 // `state` gates the tickets CTA: it renders only in `pre` (src/data/luncheon.ts).
 import Button from './Button.astro';
+import { holdAmongUs } from '../data/text';
 
 type Cta = { label: string; href: string };
 type Props = {
@@ -24,7 +26,7 @@ const { id, title, titleTag = 'h2', deck, lede, body, marg, cta, state = 'post',
 const Title = titleTag;
 ---
 <article class:list={['card', className]} data-card>
-  <Title id={id} class="card__title">{title}</Title>
+  <Title id={id} class="card__title" set:html={holdAmongUs(title)} />
   {deck && <p class="label card__deck">{deck}</p>}
   <p class="card__lede">{lede}</p>
   {body && <p class="card__body">{body}</p>}
