@@ -7,8 +7,9 @@
 // Sent: the coda replaces the form inside a live region and takes focus; it fades in once (CSS).
 // Send failed: the deck line appears above the button inside a live region; every value stays.
 // No motion but the coda's fade, and none at all with reduced motion.
-// Turnstile guards the form but never blocks it: whatever it does, a valid note is sent, and Formspree
-// decides.
+// Turnstile: Formspree verifies its token and rejects a send without one, so a send never goes out
+// with an empty token. With a token in hand it posts at once; without one it waits, in its Sending
+// state, for Turnstile to issue one (a challenge included), then posts on its own.
 import { contactForm as copy, formspreeEndpoint, turnstileSiteKey } from '../data/contact';
 
 type Field = HTMLInputElement | HTMLTextAreaElement;
@@ -24,42 +25,85 @@ declare global {
 }
 
 // Loaded here, so only /contact ever fetches it. render=explicit: the widget draws into the form's
-// container, and its token goes in as the hidden field cf-turnstile-response, so it rides in the
-// FormData with every send. A blocked script, a domain Cloudflare does not allow, or no token yet each
-// leave the form sending as before. reset() gets a fresh token after a failed send.
+// container, always visible above the button, at its normal size in the light theme.
 const TURNSTILE_API = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
-function initTurnstile(container: HTMLElement) {
+// How long a send waits for a token before it gives up and reads as failed
+const TOKEN_WAIT = 30_000;
+
+type Check = {
+  // A token to post now, or a promise of one; it rejects on a Turnstile error or after TOKEN_WAIT
+  token: () => string | Promise<string>;
+  // A fresh token for the next try: each token works once
+  reset: () => void;
+};
+
+function initTurnstile(container: HTMLElement): Check {
   let widget: string | null | undefined;
+  let token = '';
+  // A blocked script or a failed render: no token will ever come, so a send fails at once
+  let broken = false;
+  let waiting: { resolve: (token: string) => void; reject: () => void; timer: number } | null = null;
+
+  const settle = (value: string | null) => {
+    if (!waiting) return;
+    const { resolve, reject, timer } = waiting;
+    waiting = null;
+    clearTimeout(timer);
+    if (value) resolve(value);
+    else reject();
+  };
+
   const render = () => {
     try {
       widget = window.turnstile?.render(container, {
         sitekey: turnstileSiteKey,
+        size: 'normal',
+        theme: 'light',
         'response-field-name': 'cf-turnstile-response',
-        // The container holds no room (contact.css) until a person must interact; only then it opens
-        appearance: 'interaction-only',
-        'before-interactive-callback': () => container.setAttribute('data-shown', ''),
-        'after-interactive-callback': () => container.removeAttribute('data-shown'),
-        // Turnstile still logs the error; the form carries on without a token
-        'error-callback': () => {},
+        callback: (value: string) => {
+          token = value;
+          settle(value);
+        },
+        'expired-callback': () => {
+          token = '';
+        },
+        // Handled here (a true return keeps Turnstile from throwing); a waiting send fails
+        'error-callback': () => {
+          token = '';
+          settle(null);
+          return true;
+        },
       });
+      if (!widget) broken = true;
     } catch {
-      widget = null;
+      broken = true;
     }
   };
   const script = document.createElement('script');
   script.src = TURNSTILE_API;
   script.async = true;
   script.addEventListener('load', render);
+  script.addEventListener('error', () => (broken = true));
   document.head.append(script);
 
-  return () => {
-    if (!widget) return;
-    try {
-      window.turnstile?.reset(widget);
-    } catch {
-      // nothing to reset; the next send goes without a token
-    }
+  return {
+    token: () => {
+      if (token) return token;
+      if (broken) return Promise.reject();
+      return new Promise<string>((resolve, reject) => {
+        waiting = { resolve, reject, timer: window.setTimeout(() => settle(null), TOKEN_WAIT) };
+      });
+    },
+    reset: () => {
+      token = '';
+      if (!widget) return;
+      try {
+        window.turnstile?.reset(widget);
+      } catch {
+        // nothing to reset; the next send waits for a token as usual
+      }
+    },
   };
 }
 
@@ -91,7 +135,8 @@ export function initContact() {
   const check = form?.querySelector<HTMLElement>('[data-turnstile]');
   if (!form || !done || !fail || !submit || !check) return;
 
-  const resetTurnstile = initTurnstile(check);
+  const turnstile = initTurnstile(check);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const fields = ['name', 'email', 'message'].map((n) => form.elements.namedItem(n) as Field);
   const labels = submit.querySelectorAll<HTMLElement>('.btn__label, .btn__hover > span');
@@ -171,17 +216,26 @@ export function initContact() {
     }
 
     setSending(true);
+    // The values sent are the ones just checked
+    const body = new FormData(form);
     try {
+      let token = turnstile.token();
+      if (typeof token !== 'string') {
+        // No token yet: bring the widget into view in case it asks for a click, and post when it lands
+        check.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'auto' : 'smooth' });
+        token = await token;
+      }
+      body.set('cf-turnstile-response', token);
       const response = await fetch(formspreeEndpoint, {
         method: 'POST',
-        body: new FormData(form),
+        body,
         headers: { Accept: 'application/json' },
       });
       if (!response.ok) throw new Error(`Formspree ${response.status}`);
       showSent();
     } catch {
       showFailed();
-      resetTurnstile();
+      turnstile.reset();
     }
   });
 }

@@ -8,7 +8,7 @@ export const formspreeId = 'mdekyelo';
 
 export const formspreeEndpoint = `https://formspree.io/f/${formspreeId}`;
 
-// Cloudflare Turnstile, set to Invisible in Cloudflare. A site key is public by design; the secret key
+// Cloudflare Turnstile, set to Managed in Cloudflare. A site key is public by design; the secret key
 // never enters this repo. Its token rides in the form as cf-turnstile-response (scripts/contact.ts).
 export const turnstileSiteKey = '0x4AAAAAAFH5byucUdyIuMZn';
 

@@ -112,20 +112,14 @@
   border: 0;
 }
 
-/* Turnstile's container. It takes no room (its frame keeps running, clipped), and its negative margin
-   cancels the form's gap, so the button stands where it would without it. Turnstile draws a full-size
-   frame even when Invisible if its challenge cannot load, so the room opens only when Turnstile says a
-   person must interact (data-shown, scripts/contact.ts): then it stands above the button on the form's
-   left edge. */
+/* Turnstile's container: always visible, one more entry in the register, so it takes the form's gap
+   above it like a field. Its room is held at the widget's normal size (300 by 65) before it paints,
+   so nothing below it moves; it stands on the form's left edge, above the send-failed line and the
+   button. Never wider than the column, which at 375 still gives the widget more than its 300. */
 .register__check {
-  height: 0;
-  margin-bottom: calc(var(--s-5) * -1);
-  overflow: hidden;
-}
-.register__check[data-shown] {
-  height: auto;
-  margin-bottom: 0;
-  overflow: visible;
+  width: 300px;
+  max-width: 100%;
+  min-height: 65px;
 }
 
 /* Send failed: one line above the button, inside its live region. Empty, it takes no room. */

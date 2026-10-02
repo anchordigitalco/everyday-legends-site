@@ -78,8 +78,8 @@ const fields = [
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" />
           </div>
 
-          <!-- Turnstile renders here (scripts/contact.ts). Invisible, it takes no room; if it ever shows,
-               it stands above the button on the form's left edge. -->
+          <!-- Turnstile renders here (scripts/contact.ts), always visible, above the button on the
+               form's left edge. A send waits for its token. -->
           <div class="register__check" data-turnstile></div>
 
           <p class="register__fail" aria-live="polite" data-fail></p>
