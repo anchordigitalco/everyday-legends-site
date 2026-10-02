@@ -7,3 +7,5 @@ frontend-design copy/
 .env*
 .vercel
 Claude outputs/
+audit/raw/
+audit/shots/

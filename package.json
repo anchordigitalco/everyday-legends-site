@@ -27,6 +27,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@axe-core/puppeteer": "^4.13.0",
     "puppeteer": "^25.12.0"
   }
 }
